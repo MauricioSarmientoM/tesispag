@@ -1,0 +1,30 @@
+Grupo 4, Página de Alumnos Tesistas
+- Diego Astorga
+- Fernando Díaz
+- Celeste Marambio
+
+Index
+- aaa
+
+Acerca de (organización o contexto a la cual se está desarrollado el sitio web)
+- bbb
+
+Login
+- ccc
+
+Contacto
+- ddd
+
+Gestor
+- CRUD completo
+
+Extra
+- fff
+
+Esquema de colores consistente
+Considerar validaciones
+
+DB
+- Normalizar
+- Usuarios
+- Super Usuarios (fk Usuarios)
