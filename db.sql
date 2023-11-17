@@ -1,0 +1,2 @@
+CREATE DATABASE tesis;
+CREATE TABLE users (name VARCHAR(128));
