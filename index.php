@@ -17,6 +17,9 @@
         <!-- HACER NAVBAR -->
 	    <main>
             <!-- HACER BANNER (NOTICIAS) -->
+            <div>
+                Zaza
+            </div>
             <!-- HACER FOOTER -->
             <?php
             if (isset($_SESSION['success'])) {
@@ -29,6 +32,6 @@
             }
             ?>
 
-        </main>
+            </main>
     </body>
 </html>
