@@ -11,10 +11,10 @@ CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY,
 --CREATE TABLE userTesist (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
 --CREATE TABLE userTutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
 CREATE TABLE super (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT UNIQUE,
+    rut INT UNIQUE NOT NULL,
     FOREIGN KEY (rut) REFERENCES users(rut));
 CREATE TABLE contact (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT UNIQUE,
+    rut INT NOT NULL,
     subject VARCHAR(64) NOT NULL,
     body VARCHAR(1000),
     readed BOOLEAN,
@@ -27,10 +27,13 @@ CREATE TABLE works (id INT AUTO_INCREMENT PRIMARY KEY,
     image VARCHAR(256));
 CREATE TABLE workuser (id INT AUTO_INCREMENT PRIMARY KEY,
     rut INT NOT NULL,
-    idWork INT NOT NULL);
+    idWork INT NOT NULL,
+    FOREIGN KEY (rut) REFERENCES users(rut),
+    FOREIGN KEY (idWork) REFERENCES works(id));
 CREATE TABLE workfile (id INT AUTO_INCREMENT PRIMARY KEY,
     idWork INT NOT NULL,
-    files VARCHAR(256));
+    files VARCHAR(256),
+    FOREIGN KEY (idWork) REFERENCES works(id));
 CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(256) NOT NULL,
     description VARCHAR(1000),
@@ -40,11 +43,11 @@ CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY,
 INSERT INTO users (rut, name, surname, description, email, phone, password, imageURL, direction) VALUES
     (20751584, 'Celeste', 'Marambio', NULL, 'celestemarmar2@gmail.com', 42707297, '$2y$10$dmooAIPaTY80/rpajWPfsO/jEdFn8kMD03K6JhFhnhFPjcWgzujWG', NULL, 'Caburga 1105 Villa Arauco'),
     (20036002, 'Javier', 'Ponce', NULL, NULL, NULL, '$2y$10$Q2/JWgpTVCcJ8LrJm2w2b.iwyqaHeRbvXpdUu.4k7aORQUEMxReNm', NULL, 'Los Carreras 3465 Villa Modelo'),
-    (20864127, 'Gutemberg', 'Ávila', NULL, NULL, 'gutemberg.avila.21@alumnos.uda.cl', '$2y$10$fdLEEzEZ6zWRo/IQYx8mZeMyeQiUwhRDtOYu0PtBVqcdx4EkfnxS6', NULL, 'Aldunate 402'),
-    (21239226, 'José', 'Herrera', NULL, NULL, 'jose.herrera.21@alumnos.uda.cl', '$2y$10$GRh3DlflxWwBcw/U/U6yGOTEP2d8Nxf.n/gRP/VX/oznKjhE0BOQC', NULL, 'Guacolda 1062 Ampliacion Prat'),
-    (15871295, 'Andrés', 'Alfaro', NULL, NULL, 'andres.alfaro@uda.cl', '$2y$10$C9ExGRnNn7VmsLM4FsFeU.GYOGCE5HODOAl3O9ik81qLtUUpDims.', NULL, 'Rio Copiapo 1591 V Valle De Los Rios'),
-    (8368745, 'Manuel', 'Monasterio', NULL, NULL, 'manuel.monasterio@uda.cl', '$2y$10$6oZVlFk0H7eupble7f8DXuTzNwn0mlfWvRx54qXwaLUVD5ni0dkhK', NULL, 'Pj Jose O Valdivia 609 Ampl Los Sauces'),
-    (13015354, 'Héctor', 'Córnide', NULL, NULL, 'hector.cornide@uda.cl', '$2y$10$OqzqynOEHEbv3aKfdcjSmOkrhE6.RQ0BPC6i3wpC/ioGZt7UG.age', NULL, 'Salitrera Limeñita 2496 El Palomar'),
+    (20864127, 'Gutemberg', 'Ávila', NULL, 'gutemberg.avila.21@alumnos.uda.cl', NULL, '$2y$10$fdLEEzEZ6zWRo/IQYx8mZeMyeQiUwhRDtOYu0PtBVqcdx4EkfnxS6', NULL, 'Aldunate 402'),
+    (21239226, 'José', 'Herrera', NULL, 'jose.herrera.21@alumnos.uda.cl', NuLL, '$2y$10$GRh3DlflxWwBcw/U/U6yGOTEP2d8Nxf.n/gRP/VX/oznKjhE0BOQC', NULL, 'Guacolda 1062 Ampliacion Prat'),
+    (15871295, 'Andrés', 'Alfaro', NULL, 'andres.alfaro@uda.cl', NULL, '$2y$10$C9ExGRnNn7VmsLM4FsFeU.GYOGCE5HODOAl3O9ik81qLtUUpDims.', NULL, 'Rio Copiapo 1591 V Valle De Los Rios'),
+    (8368745, 'Manuel', 'Monasterio', NULL, 'manuel.monasterio@uda.cl', NULL, '$2y$10$6oZVlFk0H7eupble7f8DXuTzNwn0mlfWvRx54qXwaLUVD5ni0dkhK', NULL, 'Pj Jose O Valdivia 609 Ampl Los Sauces'),
+    (13015354, 'Héctor', 'Córnide', NULL, 'hector.cornide@uda.cl', NULL, '$2y$10$OqzqynOEHEbv3aKfdcjSmOkrhE6.RQ0BPC6i3wpC/ioGZt7UG.age', NULL, 'Salitrera Limeñita 2496 El Palomar'),
     (1, 'root', 'user', NULL, NULL, NULL, '$2y$10$A4vsESvIBw2iFHlYdUd3M.cjzOzL5JNrhAX2OxyKBTKdwOS9ahC0S', NULL, NULL);
 INSERT INTO super (rut) VALUES
     (20751584),
