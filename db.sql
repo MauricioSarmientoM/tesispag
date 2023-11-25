@@ -6,7 +6,7 @@ CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY,
     email VARCHAR(128),
     phone INT,
     password VARCHAR(256) NOT NULL,
-    imageURL VARCHAR(256)
+    imageURL VARCHAR(256),
     direction VARCHAR(128));
 --CREATE TABLE userTesist (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
 --CREATE TABLE userTutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
@@ -52,9 +52,9 @@ INSERT INTO super (rut) VALUES
     (13015354), 
     (1);
 INSERT INTO contact (rut, subject, body) VALUES
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.')
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.')
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.')
+    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
+    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
+    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
     (20864127, 'Invitar colaboradores', 'Como se añaden compañeros a las tesis???');
 INSERT INTO works (name, obj, area, abstract) VALUES
     ('Advanced Machine Learning Techniques', 'Development of a new machine learning algorithm', 'Machine Learning', 'This thesis explores advanced machine learning techniques and proposes a novel algorithm for improved predictive modeling.'),
