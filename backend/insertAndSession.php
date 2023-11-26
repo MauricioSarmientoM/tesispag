@@ -1,15 +1,16 @@
 <?php
 	session_start();
 	include 'connection.php';
-	if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email']) && isset($_POST['birthday']) && isset($_POST['sex']) && isset($_POST['interest'])) { 
+	if (isset($_POST['rut']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['description']) && isset($_POST['email']) && isset($_POST['phone']) && isset($_POST['password']) && isset($_POST['imageURL']) && isset($_POST['direction'])) { 
+        $rut = $_POST['rut'];
 		$name = $_POST['name'];
 		$surname = $_POST['surname'];
-		$username = $_POST['username'];
-		$password = $_POST['password'];
+		$description = $_POST['description'];
 		$email = $_POST['email'];
-		$birthdate = $_POST['birthday'];
-		$sex = $_POST['sex'];
-		$interests = $_POST['interest'];
+        $phone = $_POST['phone'];
+		$password = $_POST['password'];
+		$imageURL = $_POST['imageURL'];
+		$direction = $_POST['direction'];
 
 		$query = $connection->prepare("INSERT INTO users (name, surname, username, password, email, birthdate, sex, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		if (!$query) {
