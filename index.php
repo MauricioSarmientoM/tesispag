@@ -7,6 +7,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel = "stylesheet" href = "styles.css"/>
+        <link rel = "stylesheet" href = "./css/general.css"/>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
@@ -79,9 +80,7 @@
             </div>
 
             <!-- HACER BANNER (NOTICIAS) -->
-            <div>
-
-            </div>
+            <?php include './comp/banner.php'; ?>
             <!-- HACER FOOTER -->
             <div>
                 
