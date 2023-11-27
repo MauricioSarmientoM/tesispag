@@ -20,7 +20,7 @@
             <div class="header-top" style="background-color: #364c59;">
                 <div class="container-fluid py-2">
                     <div class="row px-4">
-                        <div class="col-md-8">
+                        <div class="col-md-8 d-flex mx-auto my-auto">
                             <a href="https://uda.cl" target="_blank">
                                 <img width="297px" id="udaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
                             </a>
@@ -48,6 +48,7 @@
                     </div>
                 </div>
             </div>
+            <!-- end of navbar -->
         
             <!-- Modal de Login -->
             <div class="modal" id="loginModal" tabindex="-1" role="dialog">
@@ -77,15 +78,58 @@
                     </div>
                 </div>
             </div>
+            <!-- end of modal login -->
 
             <!-- HACER BANNER (NOTICIAS) -->
-            <div>
-
+            <div class="py-4">
+                <!-- por ahora, solo hace espacio -->
             </div>
             <!-- HACER FOOTER -->
-            <div>
-                
-            </div>
+            <footer>
+                <div class="row px-4 py-4" style="border-bottom: 1px solid gray">
+                    <div class="col d-flex mx-auto my-auto">
+                        <a href="https://uda.cl" target="_blank">
+                            <img width="297px" id="footerUdaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
+                        </a>
+                    </div>
+                    <div class="col">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim velit fugit, exercitationem reiciendis delectus aliquam deserunt vero iure adipisci sint rem dolor error accusamus animi neque nihil architecto nostrum aut!
+                    </div>
+                    <div class="col text-center">
+                        <h2>Acerca De</h2>
+                        <a href="https://about:blank" target="_blank">Nosotros</a><br>
+                        <a href="https://about:blank" target="_blank">Términos y Condiciones</a><br>
+                        <a href="https://about:blank" target="_blank">Políticas de Privacidad</a>
+                    </div>
+                    <div class="col text-center">
+                        <h2>Otros</h2>
+                        <a href="http://www.alumnos.uda.cl" target="_blank">Intranet</a><br>
+                        <a href="https://www.moodle.uda.cl" target="_blank">Moodle</a><br>
+                        <a href="https://www.portal.uda.cl" target="_blank">Portal</a>
+                    </div>
+                    <div class="col text-center">
+                        <h2>Redes</h2>
+                        <a href="https://www.facebook.com/UDAinstitucional" target="_blank">
+                            <img id="facebookLogo" src="logos\facebookLogo.png">
+                        </a>
+                        <a href="https://www.instagram.com/u_atacama/" target="_blank">
+                            <img id="instagramLogo" src="logos\instagramLogo.png">
+                        </a>
+                        <a href="https://twitter.com/UAtacama" target="_blank">
+                            <img id="xLogo" src="logos\xLogo.png">
+                        </a>
+                        <a href="https://www.youtube.com/channel/UCTTKoSvDWYwQS8HgG3pf-SA" target="_blank">
+                            <img id="youtubeLogo" src="logos\youtubeLogo.png">
+                        </a>
+                        <a href="https://www.linkedin.com/company/uda-universidad-de-atacama" target="_blank">
+                            <img id="linkedInLogo" src="logos\linkedInLogo.png">
+                        </a>
+                    </div>
+                </div>
+                <div class="text-center py-4" style="color: lightgray">
+                    © Grupo n, Copyleft.
+                </div>
+            </footer>
             <?php
             if (isset($_SESSION['success'])) {
                 echo '<div class="alert alert-success" role="alert">'.$_SESSION['success'].'</div>';
