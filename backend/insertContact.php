@@ -15,7 +15,7 @@
         }
         $query->execute();
 		if ($query->affected_rows > 0) {
-			$_SESSION["success"] = "Event was created successfully!";
+			$_SESSION["success"] = "Message was sent successfully!";
 		}
 		else {
 			$_SESSION["warning"] = $connection->error;
