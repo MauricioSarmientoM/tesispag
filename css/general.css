@@ -1,0 +1,14 @@
+:root {
+    --carouselHeight: 35rem;
+}
+
+.carousel {
+    height: var(--carouselHeight);
+    width: 100%;
+    overflow: hidden;
+}
+.carousel-img {
+    object-fit: cover;
+    height: var(--carouselHeight);
+    width: 100%;
+}

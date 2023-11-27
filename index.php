@@ -7,6 +7,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel = "stylesheet" href = "styles.css"/>
+        <link rel = "stylesheet" href = "./css/general.css"/>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
@@ -81,9 +82,7 @@
             <!-- end of modal login -->
 
             <!-- HACER BANNER (NOTICIAS) -->
-            <div class="py-4">
-                <!-- por ahora, solo hace espacio -->
-            </div>
+            <?php include './comp/banner.php'; ?>
             <!-- HACER FOOTER -->
             <footer>
                 <div class="row px-4 py-4" style="border-bottom: 1px solid gray">
