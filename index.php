@@ -84,7 +84,8 @@
             <!-- HACER BANNER (NOTICIAS) -->
             <?php include './comp/banner.php'; ?>
             <!-- HACER FOOTER -->
-            <footer>
+
+            <footer class="container-fluid">
                 <div class="row px-4 py-4" style="border-bottom: 1px solid gray">
                     <div class="col d-flex mx-auto my-auto">
                         <a href="https://uda.cl" target="_blank">
