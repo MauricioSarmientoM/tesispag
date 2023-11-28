@@ -33,7 +33,7 @@
                     <span>
                         <img class="icon" src="gestor/img/u.png" alt="">
                     </span>
-                    <a href="gestor/users.php?page=1"><span>Usuarios</span> </a>
+                    <a href="http://localhost:8000/gestor/users.php?page=1"><span>Usuarios</span> </a>
                 </div>
                 <div class="foption"><span ><img class="icon" src="gestor/img/s.png" alt=""></span><a href="gestor/super/super.php"><span>Administracion</span></a></div>
                 <div  class="foption"><span ><img class="icon" src="gestor/img/w.png" alt=""></span><a href="gestor/works/works.php"><span>Trabajos</span> </a></div>

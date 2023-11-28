@@ -57,7 +57,7 @@
             </div>
             <div>
             <!-- gestorbarra -->
-                <a href="../../gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
+                <a href="http://localhost:8000/gestor"><button type="button" class="btn btn-danger">Volver</button></a>
             </div>
             <div class="container mt-5">
                 <div class="row"> 
@@ -82,7 +82,7 @@
                                 <th>Descripción</th>
                                 <th>Email</th>
                                 <th>Telefono</th>
-                                <!--th>Telefono</th-->
+                                <!--th>Contraseña</th-->
                                 <th>Imagen</th>
                                 <th>Direccion</th>
                                 <th></th>
