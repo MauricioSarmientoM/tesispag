@@ -1,8 +1,8 @@
 <?php
 function conectar(){
-    $host="localhost";
+    $host="127.0.0.0";
     $user="root";
-    $pass="sonsofeter";
+    $pass="";
     $bd="tesis";
 
     $con=mysqli_connect($host,$user,$pass);
