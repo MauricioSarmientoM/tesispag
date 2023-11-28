@@ -6,19 +6,29 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat semibold', sans-serif;
 }
 
+h1 {
+    margin-bottom: 0 !important; /* me jodia el titulo "Tesis", Por lo que me iba a joder el resto */
+}
+
 p {
     font-family: 'Trebuchet MS', sans-serif;
 }
 
-a {
+.header-top a {
     text-decoration: none;
     color: white;
 }
+
+footer a {
+    text-decoration: none;
+    color: white;
+}
+
 a:hover {
     color: black;
 }
 
-.btn {
+.header-top button {
     color: white;
 }
 

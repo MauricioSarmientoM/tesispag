@@ -81,9 +81,39 @@
             </div>
             <!-- end of modal login -->
 
-            <!-- HACER BANNER (NOTICIAS) -->
+            <!-- banner -->
             <?php include './comp/banner.php'; ?>
-            <!-- HACER FOOTER -->
+            <!-- end of banner -->
+
+            <!-- Zona de tesis -->
+            <div class="container-fluid pt-4"style="background-color: #364c59; color: white"><h1 class="container">Tesis</h1></div>
+            <div class="container my-4">
+                <div class="row">
+                    <div class="col-md-7 p-4" style="border: 2px solid #364c59;">
+                        <img src="..." alt="...">
+                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <h2>Título - Área</h2>
+                    </div>
+                    <div class="col-md-4 ms-auto">
+                        <div class="row mb-4" style="border: 2px solid #364c59">
+                        <img src="..." alt="...">
+                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <h2>Título - Área</h2>
+                        </div>
+                        <div class="row mb-4" style="border: 2px solid #364c59">
+                        <img src="..." alt="...">
+                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <h2>Título - Área</h2>
+                        </div>
+                        <div class="row text-center" style="border: 2px solid #364c59">
+                            <a href="https://about:blank" target="_blank">
+                                <button class="btn"><h1>Más</h1></button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end of Zona de tesis -->
 
             <footer class="container-fluid">
                 <div class="row px-4 py-4" style="border-bottom: 1px solid gray">
