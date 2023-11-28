@@ -20,6 +20,7 @@
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel = "stylesheet" href = "../css/general.css" />
         <script type = "text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
@@ -29,15 +30,9 @@
     </head>
     <body>
         <main>
-            <?php
-            if (isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success" role="alert">'.$_SESSION['success'].'</div>';
-                unset($_SESSION['success']);
-            }
-            if (isset($_SESSION['warning'])) {
-                echo '<div class="alert alert-warning" role="alert">'.$_SESSION['warning'].'</div>';
-                unset($_SESSION['warning']);
-            }
+            <?php 
+                include '../comp/navbar.php';
+                include '../comp/alerts.php';
             ?>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -116,7 +111,7 @@
                     </table>
                 </div>
             </div>
-            <div class="container w-100 mt-5">
+            <div class="container w-100 mt-5 p-5">
                 <?php
                     $usersAmount = $usersAmount->fetch_assoc();
                     $pagesAmount = ceil($usersAmount['count'] / $showUsers);
@@ -127,5 +122,6 @@
                 ?>
             </div>
         </main>
+        <?php include '../comp/footer.php'; ?>
     </body>
 </html>
