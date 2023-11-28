@@ -58,6 +58,8 @@
                 </div>
             </div>
             <!-- end of Zona de tesis -->
+            
+            
 
             <?php include './comp/footer.php' ?>
         </main>
