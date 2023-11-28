@@ -3,13 +3,14 @@
     include("../backend/connection.php");
     include("../backend/select.php");
     $con = conectar();
-
+    $showUsers = 2;
+    $usersAmount = SelectUsersCount($con);
     /* datos de users */
     if (isset($_GET['search']) == false){  /* si no es una busqueda */
-        $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, 4);
+        $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
     }
     else {
-        $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, 4, $_GET['search']);
+        $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
     }
 ?>
 <!DOCTYPE html>
@@ -50,7 +51,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <a href="delete.php?rut=<?php echo $row0['rut'] ?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
+                            <a href="delete.php?rut=<?php echo $row['rut'] ?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
                         </div>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
             <!-- gestorbarra -->
                 <a href="http://localhost:8000/gestor"><button type="button" class="btn btn-danger">Volver</button></a>
             </div>
-            <div class="container mt-5">
+            <div class="container w-100 mt-5">
                 <div class="row"> 
                     <div class="col-md-4">
                         <form action="users.php" method="get">
@@ -105,7 +106,7 @@
                                         <th><?php  echo $row['imageurl']?></th>
                                         <th><?php  echo $row['direction']?></th>
                                                 
-                                        <th><a href="actualizar.php?rut=<?php echo $row0['rut'] ?>" class="btn btn-info">Editar</a></th>
+                                        <th><a href="actualizar.php?rut=<?php echo $row['rut'] ?>" class="btn btn-info">Editar</a></th>
                                         <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                       
                                     </tr>
                                 <?php 
@@ -114,7 +115,17 @@
                         </tbody>
                     </table>
                 </div>
-            </div>  
+            </div>
+            <div class="container w-100 mt-5">
+                <?php
+                    $usersAmount = $usersAmount->fetch_assoc();
+                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
+                        <a href="http://localhost:8000/gestor/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
+                <?php
+                    }
+                ?>
+            </div>
         </main>
     </body>
 </html>

@@ -17,4 +17,9 @@
         return $result;
         //if ($result->num_rows > 0) {}  With this I can verify if the query got data
     }
+    function SelectUsersCount($con) {
+        $sql = "SELECT COUNT(rut) as count FROM users";
+        $result = $con->query($sql);
+        return $result;
+    }
 ?>
