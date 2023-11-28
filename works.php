@@ -12,13 +12,15 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en-US" data-bs-theme="dark">
+<html lang="en-US">
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
-        <link rel = "stylesheet" href = "../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <script type = "text/javascript" src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
+        <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

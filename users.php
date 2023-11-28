@@ -1,7 +1,7 @@
 <?php 
     session_start();
-    include("../backend/connection.php");
-    include("../backend/select.php");
+    include("./backend/connection.php");
+    include("./backend/select.php");
     $con = conectar();
     $showUsers = 2;
     $usersAmount = SelectUsersCount($con);
@@ -19,9 +19,9 @@
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
-        <link rel = "stylesheet" href = "../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel = "stylesheet" href = "../css/general.css" />
-        <script type = "text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel = "stylesheet" href = "./css/general.css" />
+        <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -31,8 +31,8 @@
     <body>
         <main>
             <?php 
-                include '../comp/navbar.php';
-                include '../comp/alerts.php';
+                include './comp/navbar.php';
+                include './comp/alerts.php';
             ?>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -53,7 +53,7 @@
             </div>
             <div>
             <!-- gestorbarra -->
-                <a href="http://localhost:8000/gestor"><button type="button" class="btn btn-danger">Volver</button></a>
+                <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
             </div>
             <div class="container w-100 mt-5">
                 <div class="row"> 
@@ -122,6 +122,6 @@
                 ?>
             </div>
         </main>
-        <?php include '../comp/footer.php'; ?>
+        <?php include './comp/footer.php'; ?>
     </body>
 </html>
