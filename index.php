@@ -6,7 +6,8 @@
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel = "stylesheet" href = "styles.css"/>
+        <link rel = "stylesheet" href = "./css/mainPage.css"/>
+        <link rel = "stylesheet" href = "./css/general.css"/>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
@@ -17,75 +18,48 @@
     <body>
         <main>
             <!-- navbar -->
-            <div class="header-top" style="background-color: #364c59;">
-                <div class="container-fluid py-2">
-                    <div class="row px-4">
-                        <div class="col-md-8">
-                            <a href="https://uda.cl" target="_blank">
-                                <img width="297px" id="udaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
+            <?php include './comp/navbar.php'; ?>
+            <!-- end of navbar -->
+            
+            <!-- Alerts -->
+            <?php include './comp/alerts.php' ?>
+            <!-- end alerts -->
+
+            <!-- banner -->
+            <?php include './comp/banner.php'; ?>
+            <!-- end of banner -->
+
+            <!-- Zona de tesis -->
+            <div class="container-fluid pt-4"style="background-color: #364c59; color: white"><h1 class="container">Tesis</h1></div>
+            <div class="container my-4">
+                <div class="row">
+                    <div class="col-md-7 p-4" style="border: 2px solid #364c59;">
+                        <img src="..." alt="...">
+                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <h2>Título - Área</h2>
+                    </div>
+                    <div class="col-md-4 ms-auto">
+                        <div class="row mb-4" style="border: 2px solid #364c59">
+                        <img src="..." alt="...">
+                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <h2>Título - Área</h2>
+                        </div>
+                        <div class="row mb-4" style="border: 2px solid #364c59">
+                        <img src="..." alt="...">
+                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <h2>Título - Área</h2>
+                        </div>
+                        <div class="row text-center" style="border: 2px solid #364c59">
+                            <a href="https://about:blank" target="_blank">
+                                <button class="btn"><h1>Más</h1></button>
                             </a>
                         </div>
-                        <div class="col d-flex">
-                            <div class="dropdown mx-auto my-auto">
-                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Personas
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Tesistas</a>
-                                    <a class="dropdown-item" href="#">Tutores</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col d-flex">
-                            <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Trabajos</a>
-                        </div>
-                        <div class="col d-flex">
-                            <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
-                        </div>
-                        <div class="col d-flex my-auto">
-                            <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
-                        </div>
                     </div>
                 </div>
             </div>
-        
-            <!-- Modal de Login -->
-            <div class="modal" id="loginModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Iniciar Sesión</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                                <div class="form-group pb-2">
-                                    <label for="inputEmail">Correo institucional*</label>
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese su correo institucional" required>
-                                </div>
-                                <div class="form-group py-2 mb-3">
-                                    <label for="inputPassword">Contraseña*</label>
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Ingrese su contraseña" required>
-                                </div>
-                                <div class="text-end">
-                                    <hr class="my-1">
-                                    <button type="submit" class="btn btn-primary mt-3">Iniciar Sesión</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- end of Zona de tesis -->
 
-            <!-- HACER BANNER (NOTICIAS) -->
-            <div>
-
-            </div>
-            <!-- HACER FOOTER -->
-            <div>
-                
-            </div>
+            <?php include './comp/footer.php' ?>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
