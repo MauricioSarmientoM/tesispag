@@ -36,26 +36,22 @@
                     $_SESSION["password"] = $row['password'];
                     $_SESSION["imageURL"] = $row['imageURL'];
                     $_SESSION["direction"] = $row['direction'];
-                    header("Location: ../index.php");
-                    exit();
                 }
                 else {
-                    header("Location: ../signin.php");
-                    exit();
+                    $_SESSION['error'] = "Couldn't enter to your session, try again.";
                 }
             }
             else {
-                header("Location: ../signin.php");
-                exit();
+                $_SESSION['warning'] = "Invalid password.";
             }
         }
         else {
-            header("Location: ../signin.php");
-            exit();
+            $_SESSION['error'] = "$rut is not an user.";
         }
     }
 	else {
-		header("Location: ../index.php/#");
-		exit();
+		$_SESSION['warning'] = "Must provide a RUT and a password.";
 	}
+    $connection->close();
+    header("Location: ../index.php");
 ?>

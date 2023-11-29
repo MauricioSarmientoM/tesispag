@@ -8,12 +8,12 @@
             </div>
             <div class="col d-flex">
                 <div class="dropdown mx-auto my-auto">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownPersonas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Personas
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Tesistas</a>
-                        <a class="dropdown-item" href="#">Tutores</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownPersonas">
+                        <a style="color: black" class="dropdown-item" href="#">Tesistas</a>
+                        <a style="color: black" class="dropdown-item" href="#">Tutores</a>
                     </div>
                 </div>
             </div>
@@ -25,19 +25,24 @@
             </div>
             <div class="col d-flex my-auto">
                 <?php 
-                if (!empty($_SESSION('rut'))) {
+                if (isset($_SESSION['rut'])) {
                     ?>
                     <div class="dropdown mx-auto my-auto">
-                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <?php
-                                echo $_SESSION('surname');
+                                echo $_SESSION['surname'];
                             ?>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu" aria-labelledby="dropdownUser">
                             <a class="dropdown-item" href="#">Perfil</a>
-                            <?php
-                                $rut = $_SESSION('rut');
+                            <!--
+                            <?php /*
+                                $rut = $_SESSION['rut'];
                                 $sql = "SELECT * FROM super WHERE rut = $rut";
+                                $server = "127.0.0.1";
+                                $user = "root";
+                                $pass = "12345678";
+                                $db = "tesis";
                                 $connection = new mysqli($server, $user, $pass, $db);
                                 $result = mysqli_query($connection, $sql);
                                 if($result) {
@@ -45,7 +50,8 @@
                                     <a class="dropdown-item" href="#">Gestor</a>
                                     <?php
                                 }
-                                ?>
+                                */?>
+                                -->
                             <a class="dropdown-item" href="#">Cerrar Session</a>
                         </div>
                     </div>
