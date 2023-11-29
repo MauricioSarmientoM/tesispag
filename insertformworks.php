@@ -1,6 +1,6 @@
 <?php ?>
 <?php 
-    include("/backend/connection.php");
+    include("./backend/connection.php");
     $con=conectar();
 
 $id=$_GET['id'];

@@ -1,6 +1,6 @@
 <?php /* session_start() */?>
 <?php 
-    include("conexion.php");
+    include("./backend/connection.php");
     $con=conectar();
 
     /* datos de admins */
@@ -14,7 +14,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en-US" data-bs-theme="dark">
+<html lang="en-US">
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>

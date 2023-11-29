@@ -3,7 +3,7 @@
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
-    $showUsers = 2;
+    $showUsers = 10;
     $usersAmount = SelectUsersCount($con);
     /* datos de users */
     if (isset($_GET['search']) == false){  /* si no es una busqueda */
@@ -51,27 +51,28 @@
                     </div>
                 </div>
             </div>
-            <div>
-            <!-- gestorbarra -->
-                <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
+            <div class="container w-100 mt-5">
+                <form action="users.php" method="get">
+                    <div class="row"> 
+                        <div class="col-md-2">
+                            <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="searchinput"><h2>Buscar</h2></label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
+                        </div>
+                        <div class="col-md-2">
+                            <input type = "hidden" name = "page" value = "1"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="container w-100 mt-5">
-                <div class="row"> 
-                    <div class="col-md-4">
-                        <form action="users.php" method="get">
-                            <label for="searchinput"><h2>Buscar</h2></label>
-                            <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
-                            <input type = "hidden" name = "page" value = "1"/>
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </form>
-                    </div>
-                </div>
-
-            <div class="container w-100 mt-5">
-                
-               <div class="container d-flex justify-content-end">
-<a href="insertformusers.php"><button type="button" class="btn btn-primary btn-block ">Añadir Usuario</button></a>
-                </div>
              <!-- crud de usuario -->
                 <div class="col-md-8">
                     <table class="table" >
@@ -117,11 +118,14 @@
                 </div>
             </div>
             <div class="container w-100 mt-5 p-5">
+                <a href="insertformusers.php"><button type="button" class="btn btn-primary btn-block ">Añadir Usuario</button></a>
+            </div>
+            <div class="container w-100 mt-5 p-5">
                 <?php
                     $usersAmount = $usersAmount->fetch_assoc();
                     $pagesAmount = ceil($usersAmount['count'] / $showUsers);
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <a href="http://localhost:8000/gestor/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
+                        <a href="/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
                 <?php
                     }
                 ?>

@@ -1,6 +1,6 @@
 <?php /* session_start() */?>
 <?php 
-    include("backend/connection.php");
+    include("./backend/connection.php");
     $con=conectar();
 
     /* datos de works */
