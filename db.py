@@ -4,7 +4,7 @@ class OrderBy(Enum):
     ASC = 0
     DESC = 1
 class DB():
-    def __init__(self, host : str = 'localhost', user : str = 'root', password : str = '', database : str = '') -> None:
+    def __init__(self, host : str = 'localhost', user : str = 'root', password : str = '12345678', database : str = 'tesis') -> None:
         try:
             self.connection = connect(
                 host = host,

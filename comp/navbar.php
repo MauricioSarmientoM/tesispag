@@ -41,7 +41,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="login.php" method="POST">
+                <form action="./backend/login.php" method="POST">
                     <div class="form-group pb-2">
                         <label for="inputEmail">Rut*</label>
                         <input type="text" class="form-control" name="rut" id="inputRut" placeholder="Ingrese su Rut" required>
