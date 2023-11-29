@@ -1,7 +1,7 @@
 <?php
-    include("connection.php");
+    include("./connection.php");
     $con = conectar();
-	if (isset($_POST['rut']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['description']) && isset($_POST['email']) && isset($_POST['phone']) && isset($_POST['password']) && isset($_POST['imageURL']) && isset($_POST['direction'])) {
+	if (isset($_POST['rut']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
         $rut = $_POST['rut'];
 		$name = $_POST['name'];
 		$surname = $_POST['surname'];
@@ -9,23 +9,22 @@
 		$email = $_POST['email'];
         $phone = $_POST['phone'];
 		$password = $_POST['password'];
-		$imageURL = $_POST['imageurl'];
+		$imageURL = $_POST['imageURL'];
 		$direction = $_POST['direction'];
 
- 		$query = $con->prepare("INSERT INTO users (name, surname, username, password, email, birthdate, sex, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+ 		$query = $con->prepare("INSERT INTO users (rut, name, surname, description, email, phone, password, imageURL, direction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		if (!$query) {
 			die("Preparation failed: " . $con->error);
 		}
-		$query->bind_param("ssssssss", $name, $surname, $username, password_hash($password, PASSWORD_BCRYPT), $email, $birthdate, $sex, $interests);
-		if (!$query) {
-			die("Binding parameters failed: " . $query->error);
+		$query->bind_param("issssssss", $rut, $name, $surname, $description, $email, $phone, password_hash($password, PASSWORD_BCRYPT), $imageURL, $direction);
+		if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
         }
-		$query->execute();
-		if ($query->affected_rows > 0) {
+		if ($query->execute()) {
 			$_SESSION["success"] = "User was created successfully!";
 		}
 		else {
-			$_SESSION["warning"] = $con->error;
+			$_SESSION["warning"] = $query->error;
 		}
 	}
     else {
@@ -33,5 +32,4 @@
     }
     $con->close();
     Header("Location: ../users.php");
-}
 ?>
