@@ -70,7 +70,7 @@
             <div class="container w-100 mt-5">
                 
                <div class="container d-flex justify-content-end">
-<a href="insertUser"><button type="submit" class="btn btn-primary btn-block ">Añadir Usuario</button></a>
+<a href="insertformusers.php"><button type="button" class="btn btn-primary btn-block ">Añadir Usuario</button></a>
                 </div>
              <!-- crud de usuario -->
                 <div class="col-md-8">
