@@ -5,16 +5,76 @@
     }
 
     include("./backend/connection.php");
-    $con=conectar();
+    include("./backend/select.php");
+    $con = conectar();
 
-    /* datos de works */
+    if (isset($_POST['name'])) {
+    	$name = $_POST['name'];
+    	$obj = $_POST['obj'];
+		$area = $_POST['area'];
+    	$abstract = $_POST['abstract'];
+        $image = $_POST['image'];
+    	if (isset($_POST['insert'])) {
+     		$query = $con->prepare("INSERT INTO works (name, obj, area, abstract, image) VALUES (?, ?, ?, ?, ?)");
+    		if (!$query) {
+    			die("Preparation failed: " . $con->error);
+    		}
+    		$query->bind_param("sssss", $name, $obj, $area, $abstract, $image);
+    		if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+    		if ($query->execute()) {
+    			$_SESSION["success"] = "$name was created successfully!";
+    		}
+    		else {
+    			$_SESSION["warning"] = $query->error;
+    		}
+    	}
+        elseif (isset($_POST['update'])) {
+            $id = $_POST['id'];
+            $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
+    		if (!$query) {
+    			die("Preparation failed: " . $con->error);
+    		}
+    		$query->bind_param("sssssi", $name, $obj, $area, $abstract, $image, $id);
+    		if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+    		if ($query->execute()) {
+    			$_SESSION["success"] = "$name was updated successfully!";
+    		}
+    		else {
+    			$_SESSION["warning"] = $query->error;
+    		}
+        }
+    }
+    elseif (isset($_POST['delete'])) {
+        $id = $_POST['id'];
+        $query = $con->prepare("DELETE FROM works WHERE id = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $id);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "$name was deleted successfully!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
+        }
+    }
 
-    $sql2="SELECT *  FROM works";
-    $query2=mysqli_query($con,$sql2);
-
-    $row2=mysqli_fetch_array($query2);
+    $showWorks = 10;
+    $worksAmount = SelectWorksCount($con);
+    if (isset($_GET['search']) == false){  /* si no es una busqueda */
+        $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
+    }
+    else {
+        $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+    }
 ?>
-
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
@@ -23,153 +83,208 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css" />
-        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
-        <script>
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-        </script>
     </head>
     <body>
         <main>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ¿Está seguro de que desea borrar los datos seleccionado?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <a href="/backend/deleteWork.php?id=<?php echo $row2['id']?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 	<main>
-        <?php
-/*         if (isset($_SESSION['success'])) {
-            echo '<div class="alert alert-success" role="alert">'.$_SESSION['success'].'</div>';
-            unset($_SESSION['success']);
-        }
-        if (isset($_SESSION['warning'])) {
-            echo '<div class="alert alert-warning" role="alert">'.$_SESSION['warning'].'</div>';
-            unset($_SESSION['warning']);
-        } */
-        ?> 
-        </main> -->
+            <?php 
+                include './comp/navbar.php';
+                include './comp/alerts.php';
+            ?>
 
-        <?php  ?>
-
-
-        <?php 
-        /* pagina de la paginación por defecto*/
-        if(isset($gestorpage) == false ){
-            $gestorpage = 0;
-        };
-        ?>
-
-        <div>
-            navbar
-        </div>
-        <div>
-            <!-- gestorbarra -->
-
-<a href="../../gestor.php"><button type="button" class="btn btn-danger">Volver </button></a>
-
-        </div>
-
-
-        <!-- tablas de gestion -->
-
-
-            <!-- /* tabla de Trabajo */ -->
-             <div class="container mt-5">
+            <div class="container w-100 mt-5">
+                <form action="works.php" method="get">
+                    <label for="searchinput"><h2>Buscar</h2></label>
                     <div class="row"> 
-                    <div class="col-md-4">
-                        <form action="search.php" method="post">
-                            <label for="searchinput"><h2>Buscar</h2></label>
-                            <input id = "searchinput" type = "text" name = "search" placeholder ="Inserte busqueda" />
-                            <button type="submit" class="btn">Enviar</button>
-                        </form>
-                    </div>
-                        <div class="col-md-8">
-                            <table class="table" >
-                                <thead class="table-success table-striped" >
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Titulo</th>
-                                        <th>Area</th>
-                                        <th>Abstract</th>
-                                        <th>Imagen</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                        <?php
-                                        if (isset($search) == false){  /* si no es una busqueda */
-                                            do{
-                                        ?>
-                                            <tr>
-                                                <th><?php  echo $row2['id']?></th>
-                                                <th><?php  echo $row2['name']?></th>
-                                                <th><?php  echo $row2['obj']?></th>
-                                                <th><?php  echo $row2['area']?></th>
-                                                <th><?php  echo $row2['abstract']?></th>
-                                                <th><?php  echo $row2['image']?></th>
-                                                
-                                                <th><a href="/backend/updateformworks.php?rut=<?php echo $row2['rut'] ?>" class="btn btn-info">Editar</a></th>
-                                                <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                       
-                                            </tr>
-                                        <?php 
-                                            }while($row2=mysqli_fetch_array($query2));
-                                            }
-                                            else{ /* si es una busqueda */
-
-                                                $sql2search="SELECT *  FROM works WHERE id = '$search'";
-                                                $query2search=mysqli_query($con,$sql2search);
-
-                                                $row2search=mysqli_fetch_array($query2search);
-
-                                            do{
-                                        ?>
-                                            <tr>
-                                                <?php $identificador= 'id' ?>
-                                                <th><?php  echo $row2search['id']?></th>
-                                                <th><?php  echo $row2search['name']?></th>
-                                                <th><?php  echo $row2search['obj']?></th>
-                                                <th><?php  echo $row2search['area']?></th>
-                                                <th><?php  echo $row2search['abstract']?></th>
-                                                <th><?php  echo $row2search['image']?></th>
-
-                                                
-                                                <th><a href="/backend/updateformworks.php?rut=<?php echo $row2search['rut'] ?>" class="btn btn-info">Editar</a></th>
-                                                <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                        
-                                            </tr>
-                                        <?php 
-                                            }while($row2search=mysqli_fetch_array($query2search));
-
-                                            };
-
-                                        ?>
-                                </tbody>
-                            </table>
+                        <div class="col-md-2">
+                            <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
                         </div>
-                    </div>  
+                        <div class="col-md-2">
+                            <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+             <div class="mt-5">
+                <div class="row">
+                    <div class="col-md-8">
+                        <table class="table" >
+                            <thead class="table-success table-striped" >
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombre</th>
+                                    <th>Objetivos</th>
+                                    <th>Area</th>
+                                    <th>Abstract</th>
+                                    <th>Imagen</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $counter = 0;
+                                    while($row = $res->fetch_assoc()){
+                                ?>
+                                <tr>
+                                    <th><?php  echo $row['id']?></th>
+                                    <th><?php  echo $row['name']?></th>
+                                    <th><?php  echo $row['obj']?></th>
+                                    <th><?php  echo $row['area']?></th>
+                                    <th><?php  echo $row['abstract']?></th>
+                                    <th><?php  echo $row['image']?></th>
+
+                                    <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</th>
+                                    <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>                                   
+                                </tr>
+                                <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="works.php" method="post">
+                                                        <div class="form-group">
+                                                            <label for="inputName">Nombre</label>
+                                                            <input type="text" id = "inputName" class="form-control mb-3" name="name" value = "<?php echo $row['name']?>" required>
+                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputObj">Objetivos</label>
+                                                            <input type="text" id = "inputObj" class="form-control mb-3" name="obj" value = "<?php echo $row['obj']?>">
+                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputArea">Área</label>
+                                                            <input type="text" id = "inputArea" class="form-control mb-3" name="area" value = "<?php echo $row['area']?>">
+                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputAbstract">Abstract</label>
+                                                            <input type="text" id = "inputAbstract" class="form-control mb-3" name="abstract" value = "<?php echo $row['abstract']?>">
+                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputImage">Imagen</label>
+                                                            <input type="text" id = "inputImage" class="form-control mb-3" name="image" value = "<?php echo $row['image']?>">
+                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                        </div>
+                                                        <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                                        <div class="container d-flex justify-content-end">
+                                                            <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Está seguro de que desea borrar a <?php echo '' . $row['name'] . ' ' . $row['surname']; ?>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <form action = "works.php" method = "post">
+                                                        <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                                        <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                                        <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+                                    $counter++;
+                                }
+                                ?>    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
+            </div>
+        <!-- Create User -->
+
+            <div class="container w-100 mt-5 p-5">
+                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createWorkModal">Añadir Usuario</button>
+            </div>
+            <div class="modal fade" id="createWorkModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="works.php" method="post">
+                                <div class="form-group">
+                                    <label for="inputName">Nombre</label>
+                                    <input type="text" id = "inputName" class="form-control mb-3" name="name" required/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputObj">Objetivos</label>
+                                    <input type="text" id = "inputObj" class="form-control mb-3" name="obj"/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputArea">Área</label>
+                                    <input type="text" id = "inputArea" class="form-control mb-3" name="area"/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputAbstract">Abstract</label>
+                                    <input type="text" id = "inputAbstract" class="form-control mb-3" name="abstract""/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputImage">Imagen</label>
+                                    <input type="text" id = "inputImage" class="form-control mb-3" name = "image"/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="container d-flex justify-content-end">
+                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- End Create User -->
 
-        
-        <div>
-            
-        </div>
+            <div class="container p-5">
+                <?php
+                    $worksAmount = $worksAmount->fetch_assoc();
+                    $pagesAmount = ceil($worksAmount['count'] / $showWorks);
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
+                        <a href="/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
+                <?php
+                    }
+                    $con->close();
+                ?>
+            </div>
         </main>
+        <?php include './comp/footer.php'; ?>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var dropdownUser = new bootstrap.Dropdown(document.getElementById('dropdownUser'));
+            });
+        </script>
     </body>
 </html>
