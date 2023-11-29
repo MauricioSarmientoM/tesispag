@@ -1,5 +1,5 @@
 <?php 
-    session_start();
+    session_start(); 
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();

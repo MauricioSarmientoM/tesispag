@@ -3,14 +3,6 @@
     $con = conectar();
 	/* if (isset($_POST['rut']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['description']) && isset($_POST['email']) && isset($_POST['phone']) && isset($_POST['password']) && isset($_POST['imageURL']) && isset($_POST['direction'])) {  */
         $rut = $_POST['rut'];
-		$name = $_POST['name'];
-		$surname = $_POST['surname'];
-		$description = $_POST['description'];
-		$email = $_POST['email'];
-        $phone = $_POST['phone'];
-		$password = $_POST['password'];
-		$imageURL = $_POST['imageurl'];
-		$direction = $_POST['direction'];
 
 /* 		$query = $connection->prepare("INSERT INTO users (name, surname, username, password, email, birthdate, sex, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		if (!$query) {
@@ -28,13 +20,13 @@
 			$_SESSION["warning"] = $connection->error;
 		}
 	} */
-	$sql="INSERT INTO users VALUES('$rut','$name','$surname','$description','$email','$phone', 'password','imageurl')";
+	$sql="INSERT INTO super VALUES('$rut')";
 $query= mysqli_query($con,$sql);
 
 if($query){
-    Header("Location: ../users.php");
+    Header("Location: ../super.php");
 }
 else{
-	Header("Location: ../users.php");
+	Header("Location: ../super.php");
 }
 ?>

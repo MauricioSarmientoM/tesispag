@@ -43,7 +43,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <a href="delete.php?id=<?php echo $row1['id'] ?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
+        <a href="/backend/deleteSuper.php?id=<?php echo $row1['id'] ?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
       </div>
     </div>
   </div>
@@ -131,7 +131,7 @@
                                                 <th><?php  echo $row1['imageurl']?></th>
                                                 <th><?php  echo $row1['direction']?></th>
                                                 
-                                                <th><a href="actualizar.php?rut=<?php echo $row1['rut'] ?>" class="btn btn-info">Editar</a></th>
+                                                <th><a href="/backend/updateSuper.php?rut=<?php echo $row1['rut'] ?>" class="btn btn-info">Editar</a></th>
                                                 <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                        
                                             </tr>
                                         <?php 
@@ -158,7 +158,7 @@
                                                 <th><?php  echo $row1search['imageurl']?></th>
                                                 <th><?php  echo $row1search['direction']?></th>
                                                 
-                                                <th><a href="actualizar.php?rut=<?php echo $row1search['rut'] ?>" class="btn btn-info">Editar</a></th>
+                                                <th><a href="/backend/updateSuper.php?rut=<?php echo $row1search['rut'] ?>" class="btn btn-info">Editar</a></th>
                                                 <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                        
                                             </tr>
                                         <?php 

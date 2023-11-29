@@ -1,6 +1,6 @@
 <?php /* session_start() */?>
 <?php 
-    include("conexion.php");
+    include("backend/connection.php");
     $con=conectar();
 
     /* datos de works */
@@ -41,7 +41,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <a href="delete.php?id=<?php echo $row2['id']?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
+        <a href="/backend/deleteWork.php?id=<?php echo $row2['id']?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@
                                                 <th><?php  echo $row2['abstract']?></th>
                                                 <th><?php  echo $row2['image']?></th>
                                                 
-                                                <th><a href="actualizar.php?rut=<?php echo $row2['rut'] ?>" class="btn btn-info">Editar</a></th>
+                                                <th><a href="/backend/updateformworks.php?rut=<?php echo $row2['rut'] ?>" class="btn btn-info">Editar</a></th>
                                                 <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                       
                                             </tr>
                                         <?php 
@@ -146,7 +146,7 @@
                                                 <th><?php  echo $row2search['image']?></th>
 
                                                 
-                                                <th><a href="actualizar.php?rut=<?php echo $row2search['rut'] ?>" class="btn btn-info">Editar</a></th>
+                                                <th><a href="/backend/updateformworks.php?rut=<?php echo $row2search['rut'] ?>" class="btn btn-info">Editar</a></th>
                                                 <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                        
                                             </tr>
                                         <?php 
