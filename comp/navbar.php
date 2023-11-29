@@ -24,7 +24,38 @@
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
             </div>
             <div class="col d-flex my-auto">
-                <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                <?php 
+                if (!empty($_SESSION('rut'))) {
+                    ?>
+                    <div class="dropdown mx-auto my-auto">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?php
+                                echo $_SESSION('surname');
+                            ?>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Perfil</a>
+                            <?php
+                                $rut = $_SESSION('rut');
+                                $sql = "SELECT * FROM super WHERE rut = $rut";
+                                $connection = new mysqli($server, $user, $pass, $db);
+                                $result = mysqli_query($connection, $sql);
+                                if($result) {
+                                    ?>
+                                    <a class="dropdown-item" href="#">Gestor</a>
+                                    <?php
+                                }
+                                ?>
+                            <a class="dropdown-item" href="#">Cerrar Session</a>
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -41,19 +72,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group pb-2">
-                    <label for="inputEmail">Correo institucional*</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese su correo institucional" required>
-                </div>
-                <div class="form-group py-2 mb-3">
-                    <label for="inputPassword">Contraseña*</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Ingrese su contraseña" required>
-                </div>
-                <div class="text-end">
-                    <hr class="my-1">
-                    <button type="submit" class="btn btn-primary mt-3">Iniciar Sesión</button>
-                </div>
-            </form>
+                <form action="./backend/login.php" method="POST">
+                    <div class="form-group pb-2">
+                        <label for="inputEmail">Rut*</label>
+                        <input type="text" class="form-control" name="rut" id="inputRut" placeholder="Ingrese su Rut" required>
+                    </div>
+                    <div class="form-group py-2 mb-3">
+                        <label for="inputPassword">Contraseña*</label>
+                        <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Ingrese su contraseña" required>
+                    </div>
+                    <div class="text-end">
+                        <hr class="my-1">
+                        <button type="submit" class="btn btn-primary mt-3">Iniciar Sesión</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

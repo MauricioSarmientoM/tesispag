@@ -23,19 +23,19 @@
         <div class="col text-center">
             <h2>Redes</h2>
             <a href="https://www.facebook.com/UDAinstitucional" target="_blank">
-                <img id="facebookLogo" src="logos\facebookLogo.png">
+                <img id="facebookLogo" src="src\logos\facebookLogo.png">
             </a>
             <a href="https://www.instagram.com/u_atacama/" target="_blank">
-                <img id="instagramLogo" src="logos\instagramLogo.png">
+                <img id="instagramLogo" src="src\logos\instagramLogo.png">
             </a>
             <a href="https://twitter.com/UAtacama" target="_blank">
-                <img id="xLogo" src="logos\xLogo.png">
+                <img id="xLogo" src="src\logos\xLogo.png">
             </a>
             <a href="https://www.youtube.com/channel/UCTTKoSvDWYwQS8HgG3pf-SA" target="_blank">
-                <img id="youtubeLogo" src="logos\youtubeLogo.png">
+                <img id="youtubeLogo" src="src\logos\youtubeLogo.png">
             </a>
             <a href="https://www.linkedin.com/company/uda-universidad-de-atacama" target="_blank">
-                <img id="linkedInLogo" src="logos\linkedInLogo.png">
+                <img id="linkedInLogo" src="src\logos\linkedInLogo.png">
             </a>
         </div>
     </div>
