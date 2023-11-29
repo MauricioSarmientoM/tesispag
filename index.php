@@ -59,7 +59,47 @@
             </div>
             <!-- end of Zona de tesis -->
             
-            
+            <!-- Zona de Calendario -->
+            <div class="container-fluid pt-4"style="background-color: #364c59; color: white"><h1 class="container">Calendario</h1></div>
+                <div class="container my-4">
+                    <div class="row my-4">
+                        <div class="col-md-4 my-2" style="border: 2px solid #364c59">
+                            <img src="..." alt="Evento_1">
+                        </div>
+                        <div class="col">
+                            <h2>Título</h2>
+                            <h3>Fecha del evento</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-md-4 my-2" style="border: 2px solid #364c59">
+                            <img src="..." alt="Evento_1">
+                        </div>
+                        <div class="col">
+                            <h2>Título</h2>
+                            <h3>Fecha del evento</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-md-4 my-2" style="border: 2px solid #364c59">
+                            <img src="..." alt="Evento_1">
+                        </div>
+                        <div class="col">
+                            <h2>Título</h2>
+                            <h3>Fecha del evento</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
+                        </div>
+                    </div>
+                        <div class="row text-center" style="border: 2px solid #364c59">
+                            <a href="https://about:blank" target="_blank">
+                                <button class="btn"><h1>Más</h1></button>
+                            </a>
+                        </div>
+                </div>
+            </div>
+            <!-- end of Zona de Calendario -->
 
             <?php include './comp/footer.php' ?>
         </main>

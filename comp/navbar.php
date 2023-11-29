@@ -42,12 +42,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group pb-2">
-                    <label for="inputEmail">Correo institucional*</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese su correo institucional" required>
-                </div>
-                <div class="form-group py-2 mb-3">
-                    <label for="inputPassword">Contraseña*</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Ingrese su contraseña" required>
+                    <label for="inputEmail">Rut*</label>
+                    <input type="text" class="form-control" id="inputRut" placeholder="Ingrese su Rut" required>
                 </div>
                 <div class="text-end">
                     <hr class="my-1">
