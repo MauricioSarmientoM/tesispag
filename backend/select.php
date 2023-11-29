@@ -22,4 +22,9 @@
         $result = $con->query($sql);
         return $result;
     }
+    function selectEvents($con, $limit) {
+        $sql = "SELECT * FROM events LIMIT $limit";
+        $result = $con->query($sql);
+        return $result;
+    }
 ?>

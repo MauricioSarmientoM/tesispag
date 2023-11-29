@@ -2,7 +2,7 @@
     <div class="container-fluid py-2">
         <div class="row px-4">
             <div class="col-md-8 d-flex mx-auto my-auto">
-                <a href="https://uda.cl" target="_blank">
+                <a href="/">
                     <img width="297px" id="udaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
                 </a>
             </div>
