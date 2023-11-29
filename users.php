@@ -46,7 +46,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <a href="delete.php?rut=<?php echo $row['rut'] ?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
+                            <a href="/backend/deleteUser.php?rut=<?php echo $row['rut'] ?>"><button type="button" class="btn btn-primary">Eliminar</button></a>
                         </div>
                     </div>
                 </div>
@@ -62,11 +62,16 @@
                             <label for="searchinput"><h2>Buscar</h2></label>
                             <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
                             <input type = "hidden" name = "page" value = "1"/>
-                            <button type="submit" class="btn">Enviar</button>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
                         </form>
                     </div>
                 </div>
+
             <div class="container w-100 mt-5">
+                
+               <div class="container d-flex justify-content-end">
+<a href="insertUser"><button type="submit" class="btn btn-primary btn-block ">Añadir Usuario</button></a>
+                </div>
              <!-- crud de usuario -->
                 <div class="col-md-8">
                     <table class="table" >
@@ -101,7 +106,7 @@
                                         <th><?php  echo $row['imageurl']?></th>
                                         <th><?php  echo $row['direction']?></th>
                                                 
-                                        <th><a href="actualizar.php?rut=<?php echo $row['rut'] ?>" class="btn btn-info">Editar</a></th>
+                                        <th><a href="updateformusers.php?rut=<?php echo $row['rut'] ?>" class="btn btn-info">Editar</a></th>
                                         <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Eliminar</th>                                       
                                     </tr>
                                 <?php 
