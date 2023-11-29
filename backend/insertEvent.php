@@ -1,10 +1,10 @@
 <?php
-    if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['image'] && isset($_POST['publicationDate']) && isset($_POST['realizationDate'])) {
-        $title = $_POST['title']
-        $description = $_POST['description']
-        $image = $_POST['image']
-        $publicationDate = $_POST['publicationDate']
-        $realizationDate = $_POST['realizationDate']
+    if (isset($_POST['title']) && isset($_POST['description']) && isset($_POST['image']) && isset($_POST['publicationDate']) && isset($_POST['realizationDate'])) {
+        $title = $_POST['title'];
+        $description = $_POST['description'];
+        $image = $_POST['image'];
+        $publicationDate = $_POST['publicationDate'];
+        $realizationDate = $_POST['realizationDate'];
 
         $query = $connection->prepare("INSERT INTO events (title, description, image, publicationDate, realizationDate) VALUES (?, ?, ?, ?, ?)");
 		if (!$query) {

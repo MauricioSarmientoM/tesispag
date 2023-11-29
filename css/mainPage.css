@@ -1,0 +1,11 @@
+.carousel {
+    height: var(--carouselHeight);
+    width: 100%;
+    overflow: hidden;
+}
+.carousel-img {
+    object-fit: cover;
+    height: var(--carouselHeight);
+    width: 100%;
+    filter: brightness(0.5) !important;
+}

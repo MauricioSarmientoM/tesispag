@@ -1,60 +1,63 @@
 <?php
 	session_start();
-	$server = "127.0.0.1";
-	$user = "root";
-	$pass = "";
-	$db = "chrabe";
-	$connection = new mysqli($server, $user, $pass, $db);
-	if ($connection->connect_error) {
-		die("Error: " . $connection->connect_error);
+	include './connection.php';
+    $con = conectar();
+	if ($con->connect_error) {
+		die("Error: " . $con->connect_error);
 	}
-	if (isset($_POST['username']) && isset($_POST['password'])) { 
-		$username = $_POST['username'];
+	if (isset($_POST['rut']) && isset($_POST['password'])) { 
+		$rut = $_POST['rut'];
 		$password = $_POST['password'];
 		// Use a prepared statement to prevent SQL injection
-        $query = $connection->prepare("SELECT password FROM users WHERE username = ?");
-        $query->bind_param("s", $username);
+        $query = $con->prepare("SELECT password FROM users WHERE rut = ?");
+        $query->bind_param("s", $rut);
         $query->execute();
 
         $result = $query->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             if (password_verify($password, $row['password'])) {
-                $query = $connection->prepare("SELECT * FROM users WHERE username = ?");
-                $query->bind_param("s", $username);
+                $query = $con->prepare("SELECT * FROM users WHERE rut = ?");
+                $query->bind_param("s", $rut);
                 $query->execute();
 
                 $result = $query->get_result();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
+                    $_SESSION["rut"] = $row['rut'];
                     $_SESSION["name"] = $row['name'];
                     $_SESSION["surname"] = $row['surname'];
-                    $_SESSION["username"] = $row['username'];
+                    $_SESSION["description"] = $row['description'];
                     $_SESSION["email"] = $row['email'];
-                    $_SESSION["birthdate"] = $row['birthdate'];
-                    $_SESSION["sex"] = $row['sex'];
-                    $_SESSION["interests"] = $row['interests'];
-                    header("Location: ../index.php");
-                    exit();
+                    $_SESSION["phone"] = $row['phone'];
+                    $_SESSION["imageURL"] = $row['imageURL'];
+                    $_SESSION["direction"] = $row['direction'];
+
+                    //Extra step to detect admin/super users
+                    $query = $con->prepare("SELECT * FROM super WHERE rut = ?");
+                    $query->bind_param("s", $rut);
+                    $query->execute();
+    
+                    $result = $query->get_result();
+                    if ($result->num_rows > 0) {
+                        $_SESSION["super"] = 'Super';
+                    }
                 }
                 else {
-                    header("Location: ../signin.php");
-                    exit();
+                    $_SESSION['error'] = "Couldn't enter to your session, try again.";
                 }
             }
             else {
-                header("Location: ../signin.php");
-                exit();
+                $_SESSION['warning'] = "Invalid password.";
             }
         }
         else {
-            header("Location: ../signin.php");
-            exit();
+            $_SESSION['error'] = "$rut is not an user.";
         }
     }
 	else {
-		header("Location: ../index.php/#");
-		exit();
+		$_SESSION['warning'] = "Must provide a RUT and a password.";
 	}
-	$connection->close();
+    $con->close();
+    header("Location: ../index.php");
 ?>
