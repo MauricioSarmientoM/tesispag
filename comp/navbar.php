@@ -24,7 +24,38 @@
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
             </div>
             <div class="col d-flex my-auto">
-                <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                <?php 
+                if (!empty($_SESSION('rut'))) {
+                    ?>
+                    <div class="dropdown mx-auto my-auto">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?php
+                                echo $_SESSION('surname');
+                            ?>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Perfil</a>
+                            <?php
+                                $rut = $_SESSION('rut');
+                                $sql = "SELECT * FROM super WHERE rut = $rut";
+                                $connection = new mysqli($server, $user, $pass, $db);
+                                $result = mysqli_query($connection, $sql);
+                                if($result) {
+                                    ?>
+                                    <a class="dropdown-item" href="#">Gestor</a>
+                                    <?php
+                                }
+                                ?>
+                            <a class="dropdown-item" href="#">Cerrar Session</a>
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>
