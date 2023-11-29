@@ -1,14 +1,13 @@
-<?php /* session_start() */?>
-
-
+<?php session_start(); ?>
 <!DOCTYPE html>
-<html lang="en-US" data-bs-theme="dark">
+<html lang="en-US">
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel = "stylesheet" href = "gestor/css/gestor.css" />
+        <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
         <script>
@@ -17,33 +16,33 @@
         </script>
     </head>
     <body>
-
-<!-- 	<main>
-        <?php
-/*         if (isset($_SESSION['success'])) {
-            echo '<div class="alert alert-success" role="alert">'.$_SESSION['success'].'</div>';
-            unset($_SESSION['success']);
-        }
-        if (isset($_SESSION['warning'])) {
-            echo '<div class="alert alert-warning" role="alert">'.$_SESSION['warning'].'</div>';
-            unset($_SESSION['warning']);
-        } */
-        ?> 
-        </main> -->
-
-        <?php  ?>
-
+        <main>
+            <?php 
+                include './comp/navbar.php';
+                include './comp/alerts.php';
+            ?>
             <!-- gestorbarra -->
-
-            <div class="container" style="background-color: white;">
-            <div  class="foption"> <span ><img class="icon" src="gestor/img/u.png" alt=""></span><a href="gestor/users/users.php"><span>Usuarios</span> </a></div>
-            <div class="foption"><span ><img class="icon" src="gestor/img/s.png" alt=""></span><a href="gestor/super/super.php"><span>Administracion</span></a></div>
-            <div  class="foption"><span ><img class="icon" src="gestor/img/w.png" alt=""></span><a href="gestor/works/works.php"><span>Trabajos</span> </a></div>
-
-</div>
-
-
-
- 
+            <div class="container p-5" style="background-color: white;">
+                <h1>Gestor de base de datos</h1>
+                <div class="foption">
+                    <span>
+                        <img class="icon" src="src/u.png" alt="">
+                    </span>
+                    <a href="users.php?page=1"><span>Usuarios</span> </a>
+                </div>
+                <div class="foption">
+                    <span>
+                        <img class="icon" src="src/s.png" alt="">
+                    </span>
+                    <a href="super.php"><span>Administracion</span></a>
+                </div>
+                <div class="foption">
+                    <span>
+                        <img class="icon" src="src/w.png" alt="">
+                    </span><a href="works.php"><span>Trabajos</span></a>
+                </div>
+            </div>
+            <?php include './comp/footer.php'; ?>
+        </main>
     </body>
 </html>
