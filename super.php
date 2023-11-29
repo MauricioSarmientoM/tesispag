@@ -1,5 +1,8 @@
-<?php /* session_start() */?>
-<?php 
+<?php
+    session_start();
+    if(!isset($_SESSION['super'])) {
+        header("Location: ../index.php");
+    }
     include("./backend/connection.php");
     $con=conectar();
 
@@ -12,7 +15,6 @@
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en-US">
     <head>

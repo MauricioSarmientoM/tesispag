@@ -1,14 +1,18 @@
-<?php ?>
-<?php 
+<?php
+    session_start();
+    if(!isset($_SESSION['super'])) {
+        header("Location: ../index.php");
+    }
+
     include("./backend/connection.php");
     $con=conectar();
 
-$rut=$_GET['rut'];
+    $rut=$_GET['rut'];
 
-$sql="SELECT * FROM users WHERE rut='$rut'";
-$query=mysqli_query($con,$sql);
+    $sql="SELECT * FROM users WHERE rut='$rut'";
+    $query=mysqli_query($con,$sql);
 
-$row=mysqli_fetch_array($query);
+    $row=mysqli_fetch_array($query);
 ?>
 
 <!DOCTYPE html>
@@ -67,46 +71,46 @@ $row=mysqli_fetch_array($query);
             <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
         </div>
 
-        <div class="form-group">
-            <label for="inputEmail">Correo</label>
-            <input type="email" class="form-control mb-3" name="email" placeholder="" value="<?php echo $row['email']  ?>" required>
-            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Correo</label>
+                            <input type="email" class="form-control mb-3" name="email" placeholder="" value="<?php echo $row['email']  ?>" required>
+                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                        </div>
 
-        <div class="form-group">
-            <label for="inputEmail">Teléfono</label>
-            <input type="text" class="form-control mb-3" name="phone" placeholder="" value="<?php echo $row['phone']  ?>" required>
-            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Teléfono</label>
+                            <input type="text" class="form-control mb-3" name="phone" placeholder="" value="<?php echo $row['phone']  ?>" required>
+                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                        </div>
 
-        <div class="form-group">
-            <label for="inputEmail">Contraseña</label>
-            <input type="password" class="form-control mb-3" name="password" placeholder="" value="<?php echo $row['password']  ?>" required>
-            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Contraseña</label>
+                            <input type="password" class="form-control mb-3" name="password" placeholder="" value="<?php echo $row['password']  ?>" required>
+                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                        </div>
 
-        <div class="form-group">
-            <label for="inputEmail">Imagen URL</label>
-            <input type="text" class="form-control mb-3" name="imageurl" placeholder="" value="<?php echo $row['imagenurl']  ?>" required>
-            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Imagen URL</label>
+                            <input type="text" class="form-control mb-3" name="imageurl" placeholder="" value="<?php echo $row['imagenurl']  ?>" required>
+                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                        </div>
 
-        <div class="form-group">
-            <label for="inputEmail">Dirección</label>
-            <input type="text" class="form-control mb-3" name="direction" placeholder="" value="<?php echo $row['direction']  ?>" required>
-            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-        </div>
-        
-                <div class="container d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary btn-block ">Confirmar</button>
-                </div>
-                        
+                        <div class="form-group">
+                            <label for="inputEmail">Dirección</label>
+                            <input type="text" class="form-control mb-3" name="direction" placeholder="" value="<?php echo $row['direction']  ?>" required>
+                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                        </div>
+
+                        <div class="container d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary btn-block ">Confirmar</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+               </div>
             <?php include './comp/footer.php'; ?>
         </main>
     </body>

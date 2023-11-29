@@ -1,5 +1,9 @@
-<?php 
-    session_start(); 
+<?php
+    session_start();
+    if(!isset($_SESSION['super'])) {
+        header("Location: ../index.php");
+    }
+
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
@@ -42,7 +46,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            ¿Está seguro de que desea borrar los datos seleccionado?
+                            ¿Está seguro de que desea borrar los datos del usuario seleccionado?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -51,6 +55,70 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="backend/insertUser.php" method="post">
+                                <div class="form-group">
+                                    <label for="inputRut">Rut</label>
+                                    <input type="text" id = "inputRut" class="form-control mb-3" name="rut" placeholder="" value="<?php echo $row['rut']  ?>" required>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputName">Nombre</label>
+                                    <input type="text" id = "inputName" class="form-control mb-3" name="name" placeholder="" value="<?php echo $row['name']  ?>" required>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputSurname">Apellidos</label>
+                                    <input type="text" id = "inputSurname" class="form-control mb-3" name="surname" placeholder="" value="<?php echo $row['surname']  ?>" required>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Descripción</label>
+                                    <input type="text" class="form-control mb-3" name="description" placeholder="" value="<?php echo $row['description']  ?>">
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Correo</label>
+                                    <input type="email" class="form-control mb-3" name="email" placeholder="" value="<?php echo $row['email']  ?>">
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Teléfono</label>
+                                    <input type="text" class="form-control mb-3" name="phone" placeholder="" value="<?php echo $row['phone']  ?>">
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Contraseña</label>
+                                    <input type="password" class="form-control mb-3" name="password" placeholder="" value="<?php echo $row['password']  ?>" required>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputImage">Imagen URL</label>
+                                    <input type="text" id = "inputImage" class="form-control mb-3" name="imageurl" placeholder="" value="<?php echo $row['imagenurl']  ?>">
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputDirection">Dirección</label>
+                                    <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" placeholder="" value="<?php echo $row['direction']  ?>">
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="container d-flex justify-content-end">
+                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="container w-100 mt-5">
                 <form action="users.php" method="get">
                     <div class="row"> 
@@ -118,7 +186,7 @@
                 </div>
             </div>
             <div class="container w-100 mt-5 p-5">
-                <a href="insertformusers.php"><button type="button" class="btn btn-primary btn-block ">Añadir Usuario</button></a>
+                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
             </div>
             <div class="container w-100 mt-5 p-5">
                 <?php

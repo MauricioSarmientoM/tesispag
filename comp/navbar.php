@@ -29,30 +29,16 @@
                     ?>
                     <div class="dropdown mx-auto my-auto">
                         <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?php
-                                echo $_SESSION['surname'];
-                            ?>
+                            <?php echo '' . $_SESSION['name']; ?>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                            <a class="dropdown-item" href="#">Perfil</a>
-                            <!--
-                            <?php /*
-                                $rut = $_SESSION['rut'];
-                                $sql = "SELECT * FROM super WHERE rut = $rut";
-                                $server = "127.0.0.1";
-                                $user = "root";
-                                $pass = "12345678";
-                                $db = "tesis";
-                                $connection = new mysqli($server, $user, $pass, $db);
-                                $result = mysqli_query($connection, $sql);
-                                if($result) {
-                                    ?>
-                                    <a class="dropdown-item" href="#">Gestor</a>
-                                    <?php
+                            <a style="color: black"  class="dropdown-item" href="#">Perfil</a>
+                            <?php
+                                if(isset($_SESSION['super'])) {
+                                    echo '<a style="color: black" class="dropdown-item" href="gestor.php">Gestor</a>';
                                 }
-                                */?>
-                                -->
-                            <a class="dropdown-item" href="#">Cerrar Session</a>
+                                ?>
+                            <a style="color: black"  class="dropdown-item" href="./backend/logout.php">Cerrar Session</a>
                         </div>
                     </div>
                     <?php

@@ -1,14 +1,18 @@
-<?php ?>
-<?php 
+<?php
+    session_start();
+    if(!isset($_SESSION['super'])) {
+        header("Location: ../index.php");
+    }
+
     include("./backend/connection.php");
     $con=conectar();
 
-$id=$_GET['id'];
-
-$sql="SELECT * FROM users WHERE rut='$rut'";
-$query=mysqli_query($con,$sql);
-
-$row=mysqli_fetch_array($query);
+    $id=$_GET['id'];
+    
+    $sql="SELECT * FROM users WHERE rut='$rut'";
+    $query=mysqli_query($con,$sql);
+    
+    $row=mysqli_fetch_array($query);
 ?>
 
 <!DOCTYPE html>
