@@ -32,10 +32,10 @@
                             <?php echo '' . $_SESSION['name']; ?>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                            <a style="color: black"  class="dropdown-item" href="#">Perfil</a>
+                            <a style="color: black"  class="dropdown-item" href="./profile.php/?rut=<?php echo $_SESSION['rut']; ?>">Perfil</a>
                             <?php
                                 if(isset($_SESSION['super'])) {
-                                    echo '<a style="color: black" class="dropdown-item" href="gestor.php">Gestor</a>';
+                                    echo '<a style="color: black" class="dropdown-item" href="./gestor.php">Gestor</a>';
                                 }
                                 ?>
                             <a style="color: black"  class="dropdown-item" href="./backend/logout.php">Cerrar Session</a>
