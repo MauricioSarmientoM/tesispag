@@ -38,12 +38,12 @@
                             <!--
                             <?php /*
                                 $rut = $_SESSION['rut'];
-                                $sql = "SELECT * FROM super WHERE rut = $rut";
                                 $server = "127.0.0.1";
                                 $user = "root";
                                 $pass = "12345678";
                                 $db = "tesis";
                                 $connection = new mysqli($server, $user, $pass, $db);
+                                $sql = "SELECT * FROM super WHERE rut = $rut";
                                 $result = mysqli_query($connection, $sql);
                                 if($result) {
                                     ?>

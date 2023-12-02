@@ -36,8 +36,16 @@ footer a {
     color: white;
 }
 
+.dropdown-toggle:hover {
+    color: #dbca11;
+}
+
+.dropdown-toggle:hover:active {
+    color: #dbca11;
+}
+
 a:hover {
-    color: black;
+    color: #dbca11;
 }
 
 .header-top button {
