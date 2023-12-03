@@ -1,0 +1,16 @@
+.icon{
+    margin: 20px;
+    max-height: 30px;
+};
+
+.foption{
+    font-family: 'Trebuchet MS';
+    color: white;
+    border: solid;
+    border-width: 2px;
+    border-color: black;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 5px;
+    background-color: #364c59;
+};
