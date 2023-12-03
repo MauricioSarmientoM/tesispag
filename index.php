@@ -48,10 +48,10 @@
                         <div class="my-2 fotos"></div>
                         <h2>Título - Área</h2>
                         </div>
-                        <div class="row text-center fotosCol">
-                            <a href="https://about:blank" target="_blank">
-                                <button class="btn"><h1>Más</h1></button>
-                            </a>
+                        <div class="row text-center">
+                        <button class="boton"><a class="link" href="https://about:blank" target="_blank">
+                                <h1 class="mb-1">Más</h1>
+                            </a></button>
                         </div>
                     </div>
                 </div>

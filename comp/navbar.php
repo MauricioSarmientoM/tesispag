@@ -23,8 +23,22 @@
             <div class="col d-flex">
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
             </div>
+            
+            
             <div class="col d-flex">
-                <?php 
+                <div class="dropdown mx-auto my-auto">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Personas
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownUser">
+                        <a style="color: black" class="dropdown-item" href="#">Tesistas</a>
+                        <a style="color: black" class="dropdown-item" href="#">Tutores</a>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="col d-flex">
+                <?php /*
                 if (isset($_SESSION['rut'])) {
                     ?>
                     <div class="dropdown mx-auto my-auto">
@@ -35,7 +49,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownUser">
                             <a class="dropdown-item" href="#">Perfil</a>
-                            <!--
+                            
                             <?php /*
                                 $rut = $_SESSION['rut'];
                                 $server = "127.0.0.1";
@@ -50,8 +64,8 @@
                                     <a class="dropdown-item" href="#">Gestor</a>
                                     <?php
                                 }
-                                */?>
-                                -->
+                                ?>
+                                
                             <a class="dropdown-item" href="#">Cerrar Session</a>
                         </div>
                     </div>
@@ -61,8 +75,9 @@
                     <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
                 <?php
                 }
-                ?>
+                */ ?>
             </div>
+            -->
         </div>
     </div>
 </div>
