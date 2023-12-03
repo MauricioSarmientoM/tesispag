@@ -7,14 +7,14 @@
                 </a>
             </div>
             <div class="col d-flex">
-                <div class="dropdown mx-auto my-auto">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownPersonas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="dropdown my-auto">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownPersonas" data-toggle="dropdown" aria-expanded="false">
                         Personas
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownPersonas">
-                        <a style="color: black" class="dropdown-item" href="#">Tesistas</a>
-                        <a style="color: black" class="dropdown-item" href="#">Tutores</a>
-                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownPersonas">
+                        <li><a class="dropdown-item" href="#">Tesistas</a></li>
+                        <li><a class="dropdown-item" href="#">Tutores</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="col d-flex">
@@ -23,61 +23,33 @@
             <div class="col d-flex">
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
             </div>
-            
-            
-            <div class="col d-flex">
-                <div class="dropdown mx-auto my-auto">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Personas
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                        <a style="color: black" class="dropdown-item" href="#">Tesistas</a>
-                        <a style="color: black" class="dropdown-item" href="#">Tutores</a>
-                    </div>
-                </div>
-            </div>
-            <!--
-            <div class="col d-flex">
-                <?php /*
+            <div class="col d-flex my-auto">
+                <?php 
                 if (isset($_SESSION['rut'])) {
                     ?>
                     <div class="dropdown mx-auto my-auto">
-                        <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?php
-                                echo $_SESSION['surname'];
-                            ?>
+                        <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-toggle="dropdown" aria-expanded="false">
+                            <?php echo '' . $_SESSION['name']; ?>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownUser">
-                            <a class="dropdown-item" href="#">Perfil</a>
-                            
-                            <?php /*
-                                $rut = $_SESSION['rut'];
-                                $server = "127.0.0.1";
-                                $user = "root";
-                                $pass = "12345678";
-                                $db = "tesis";
-                                $connection = new mysqli($server, $user, $pass, $db);
-                                $sql = "SELECT * FROM super WHERE rut = $rut";
-                                $result = mysqli_query($connection, $sql);
-                                if($result) {
-                                    ?>
-                                    <a class="dropdown-item" href="#">Gestor</a>
-                                    <?php
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <?php
+                                if(isset($_SESSION['super'])) {
+                                    echo '<li><a class="dropdown-item" href="gestor.php">Gestor</a></li>';
                                 }
                                 ?>
-                                
-                            <a class="dropdown-item" href="#">Cerrar Session</a>
-                        </div>
+                              <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="./backend/logout.php">Cerrar Sesión</a></li>
+                        </ul>
                     </div>
                     <?php
                 } else {
                     ?>
-                    <button class="btn btn-outline-light mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                    <button class="btn login-btn mx-auto" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
                 <?php
                 }
-                */ ?>
+                ?>
             </div>
-            -->
         </div>
     </div>
 </div>
@@ -87,7 +59,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Iniciar Sesión</h5>
+                <h5 class="modal-title">Inicio de Sesión</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -104,7 +76,7 @@
                     </div>
                     <div class="text-end">
                         <hr class="my-1">
-                        <button type="submit" class="btn btn-primary mt-3">Iniciar Sesión</button>
+                        <button type="submit" class="btn login-btn mt-3">Iniciar Sesión</button>
                     </div>
                 </form>
             </div>

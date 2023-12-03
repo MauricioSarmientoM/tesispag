@@ -20,7 +20,7 @@
             <a href="https://www.moodle.uda.cl" target="_blank">Moodle</a><br>
             <a href="https://www.portal.uda.cl" target="_blank">Portal</a>
         </div>
-        <div class="col text-center">
+        <div class="col text-start">
             <h2>Redes</h2>
             <a href="https://www.facebook.com/UDAinstitucional" target="_blank">
                 <img id="facebookLogo" src="src\logos\facebookLogo.png">

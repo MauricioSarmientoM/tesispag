@@ -61,6 +61,27 @@ a:hover {
     border: 2px solid #364c59;
 }
 
+.dropdown-menu {
+    background-color: #364c59;
+}
+
+.dropdown-item:hover {
+    background-color: #364c59;
+    color: #dbca11;
+}
+
+.login-btn {
+    color: white;
+}
+
+.login-btn:hover {
+    color: #dbca11;
+}
+
+.login-btn:hover:active {
+    color: #dbca11;
+}
+
 .link {
     text-decoration: none;
     color: black;
@@ -74,6 +95,23 @@ footer {
 .carousel-caption, h1 {
     height: 80%;
 }
-.carousel-caption {
+
+.carousel-caption, col {
     height: 80%;
+}
+
+.modal-content {
+    background-color: #364c59;
+    color: white;
+}
+
+.close {
+    background-color: #364c59;
+    color: white;
+    border: 1px solid white;
+}
+
+.close:hover {
+    border: 1px solid #dbca11;
+    color: #dbca11;
 }
