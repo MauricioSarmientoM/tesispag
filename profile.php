@@ -17,6 +17,12 @@
 		$password = $_POST['password'];
     	$imageURL = $_POST['imageURL'];
     	$direction = $_POST['direction'];
+
+        $stringToCheck = '$2y$10$';
+        if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
+            $password = password_hash($password, PASSWORD_BCRYPT);
+        }
+        
         if (isset($_POST['update'])) {
             $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
     		if (!$query) {
