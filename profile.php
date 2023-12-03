@@ -3,6 +3,37 @@
     if (!isset($_GET['rut'])){
         header("Location: ./index.php");
     }
+
+    include("./backend/connection.php");
+    include("./backend/select.php");
+    $con = conectar();
+    if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
+        $rut = $_GET['rut'];
+    	$name = $_POST['name'];
+    	$surname = $_POST['surname'];
+		$description = $_POST['description'];
+    	$email = $_POST['email'];
+        $phone = $_POST['phone'];
+		$password = $_POST['password'];
+    	$imageURL = $_POST['imageURL'];
+    	$direction = $_POST['direction'];
+        if (isset($_POST['update'])) {
+            $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
+    		if (!$query) {
+    			die("Preparation failed: " . $con->error);
+    		}
+    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, $password, $imageURL, $direction, $rut);
+    		if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+    		if ($query->execute()) {
+    			$_SESSION["success"] = "$name $surname was updated successfully!";
+    		}
+    		else {
+    			$_SESSION["warning"] = $query->error;
+    		}
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,6 +44,7 @@
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel = "stylesheet" href = "./css/profile.css"/>
         <link rel = "stylesheet" href = "./css/general.css"/>
+        <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
     <body>
@@ -20,9 +52,6 @@
         <main>
             <?php
                 include './comp/alerts.php';
-                include("./backend/connection.php");
-                include("./backend/select.php");
-                $con = conectar();
                 $res = SelectUsersWhereRut($con, 1, 1, $_GET['rut']);
                 $row = $res->fetch_assoc();
                 echo '<div class = "p-2">';
@@ -35,22 +64,22 @@
                 echo '<h1>' . $row['name'] . ' ' . $row['surname'] . '</h1>';
                 echo '<p>' . $row['description'] . '</p>';
                 if ($_SESSION['rut'] == $row['rut']) {
-                    echo '<button type="button" class="btn btn-outline-success btn-lg data-bs-toggle="modal" data-bs-target="#updateModal[">Editar Perfil</button>';
+                    echo '<button class="btn btn-outline-success btn-lg" data-bs-toggle="modal" data-bs-target="#updateModal">Editar Perfil</button>';
                 }
                 echo '</div>';
-                ?>
+            ?>
             <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Información</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="users.php" method="post">
+                            <form action="profile.php?rut=<?php echo $_GET['rut']?>" method="post">
                                 <div class="form-group">
                                     <label for="inputRut">Rut</label>
-                                    <input type="text" id = "inputRut" class="form-control mb-3" name="rut" value = "<?php echo $row['rut']?>" readonly/>
+                                    <input type="text" id = "inputRut" class="form-control mb-3" name="rut" value = "<?php echo $row['rut']?>" disabled readonly/>
                                     <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                 </div>
                                 <div class="form-group">
