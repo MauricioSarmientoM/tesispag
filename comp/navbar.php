@@ -31,7 +31,7 @@
                         <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-toggle="dropdown" aria-expanded="false">
                             <?php echo '' . $_SESSION['name']; ?>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownUser">
                             <li><a class="dropdown-item" href="#">Perfil</a></li>
                             <?php
                                 if(isset($_SESSION['super'])) {
