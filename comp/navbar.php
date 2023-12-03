@@ -21,7 +21,7 @@
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Trabajos</a>
             </div>
             <div class="col d-flex">
-                <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
+                <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contáctanos</a>
             </div>
             <div class="col d-flex my-auto">
                 <?php 

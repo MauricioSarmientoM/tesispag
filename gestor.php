@@ -56,26 +56,6 @@
                         <a href="works.php"><h2>Gestionar Trabajos</h2></a>
                     </div>
                 </div>
-            <!--
-                <div class="foption">
-                    <span>
-                        <img class="icon" src="src/u.png" alt="">
-                    </span>
-                    <a href="users.php"><span>Usuarios</span> </a>
-                </div>
-                <div class="foption">
-                    <span>
-                        <img class="icon" src="src/s.png" alt="">
-                    </span>
-                    <a href="super.php"><span>Administracion</span></a>
-                </div>
-                <div class="foption">
-                    <span>
-                        <img class="icon" src="src/w.png" alt="">
-                    </span>
-                    <a href="works.php"><span>Trabajos</span></a>
-                -->
-                </div>
             </div>
 
             <div class="fixed-bottom">
