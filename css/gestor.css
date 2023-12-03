@@ -6,22 +6,32 @@
 };
 */
 
+.boton {
+    background-color: #364c59;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.boton a {
+    color: white;
+}
+
+.boton a:hover {
+    color: #dbca11;
+}
+
 .zona {
     border: 2px solid #364c59;
 }
 
 .zona-imagen {
-    border-right: 2px solid #364c59
+    border-right: 2px solid #364c59;
 }
 
-.foption{
-    font-family: 'Trebuchet MS';
-    color: white;
-    border: solid;
-    border-width: 2px;
-    border-color: black;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    padding: 5px;
-    background-color: #364c59;
-};
+h2 {
+    margin-bottom: 0;
+}
+
+thead {
+    text-align: center;
+}

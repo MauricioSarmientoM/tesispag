@@ -11,17 +11,14 @@
         <title>UDA</title>
     </head>
     <body>
-            <!-- navbar -->
+            <!-- Navbar -->
             <?php include './comp/navbar.php'; ?>
-            <!-- end of navbar -->
         <main>
             <!-- Alerts -->
-            <?php include './comp/alerts.php' ?>
-            <!-- end alerts -->
+            <?php include './comp/alerts.php'; ?>
 
-            <!-- banner -->
+            <!-- Banner -->
             <?php include './comp/banner.php'; ?>
-            <!-- end of banner -->
 
             <!-- Zona de tesis -->
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
@@ -88,10 +85,12 @@
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
                         </div>
                     </div>
-                        <div class="row text-center fotosCol">
-                            <a href="https://about:blank" target="_blank">
-                                <button class="btn"><h1>Más</h1></button>
-                            </a>
+                        <div class="row text-center">
+                            <button class="boton">
+                                <a class="link" href="https://about:blank" target="_blank">
+                                    <h1 class="mb-1">Más</h1>
+                                </a>
+                            </button>
                         </div>
                 </div>
             </div>
