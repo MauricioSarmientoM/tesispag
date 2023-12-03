@@ -25,7 +25,9 @@
             <?php include './comp/alerts.php' ?>
             <!-- end alerts -->
 
-            
+            <div class="container">
+                
+            </div>
 
             <!-- footer -->
             <?php include './comp/footer.php' ?>

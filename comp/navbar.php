@@ -1,8 +1,8 @@
-<div class="header-top navbarData">
+<div class="header-top navbarData fixed-top">
     <div class="container-fluid py-2">
         <div class="row px-4">
             <div class="col-md-8 d-flex mx-auto my-auto">
-                <a href="https://uda.cl" target="_blank">
+                <a href="index.php" target="_blank">
                     <img width="297px" id="udaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
                 </a>
             </div>
@@ -23,7 +23,7 @@
             <div class="col d-flex">
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contactanos</a>
             </div>
-            <div class="col d-flex my-auto">
+            <div class="col d-flex">
                 <?php 
                 if (isset($_SESSION['rut'])) {
                     ?>

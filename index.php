@@ -16,11 +16,10 @@
         </script>
     </head>
     <body>
-        <main>
             <!-- navbar -->
             <?php include './comp/navbar.php'; ?>
             <!-- end of navbar -->
-            
+        <main>
             <!-- Alerts -->
             <?php include './comp/alerts.php' ?>
             <!-- end alerts -->
@@ -30,26 +29,26 @@
             <!-- end of banner -->
 
             <!-- Zona de tesis -->
-            <div class="container-fluid pt-4"style="background-color: #364c59; color: white"><h1 class="container">Tesis</h1></div>
+            <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
                 <div class="row">
-                    <div class="col-md-7 p-4" style="border: 2px solid #364c59;">
-                        <img src="..." alt="...">
-                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                    <div class="col-md-7 p-4 fotosCol">
+                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
+                        <div class="my-4 fotos"></div>
                         <h2>Título - Área</h2>
                     </div>
                     <div class="col-md-4 ms-auto">
-                        <div class="row mb-4" style="border: 2px solid #364c59">
-                        <img src="..." alt="...">
-                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <div class="row mb-4 pt-2 fotosCol ">
+                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
+                        <div class="my-2 fotos"></div>
                         <h2>Título - Área</h2>
                         </div>
-                        <div class="row mb-4" style="border: 2px solid #364c59">
-                        <img src="..." alt="...">
-                        <div class="my-2" style="border-bottom: 2px solid #364c59"></div>
+                        <div class="row mb-4 pt-2 fotosCol">
+                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
+                        <div class="my-2 fotos"></div>
                         <h2>Título - Área</h2>
                         </div>
-                        <div class="row text-center" style="border: 2px solid #364c59">
+                        <div class="row text-center fotosCol">
                             <a href="https://about:blank" target="_blank">
                                 <button class="btn"><h1>Más</h1></button>
                             </a>
@@ -60,11 +59,11 @@
             <!-- end of Zona de tesis -->
             
             <!-- Zona de Calendario -->
-            <div class="container-fluid pt-4"style="background-color: #364c59; color: white"><h1 class="container">Calendario</h1></div>
+            <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
                     <div class="row my-4">
-                        <div class="col-md-4 my-2" style="border: 2px solid #364c59">
-                            <img src="..." alt="Evento_1">
+                        <div class="col-md-4 my-2 py-2 fotosCol">
+                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_1">
                         </div>
                         <div class="col">
                             <h2>Título</h2>
@@ -73,8 +72,8 @@
                         </div>
                     </div>
                     <div class="row my-4">
-                        <div class="col-md-4 my-2" style="border: 2px solid #364c59">
-                            <img src="..." alt="Evento_1">
+                        <div class="col-md-4 my-2 py-2 fotosCol">
+                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_2">
                         </div>
                         <div class="col">
                             <h2>Título</h2>
@@ -83,8 +82,8 @@
                         </div>
                     </div>
                     <div class="row my-4">
-                        <div class="col-md-4 my-2" style="border: 2px solid #364c59">
-                            <img src="..." alt="Evento_1">
+                        <div class="col-md-4 my-2 py-2 fotosCol">
+                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_3">
                         </div>
                         <div class="col">
                             <h2>Título</h2>
@@ -92,7 +91,7 @@
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
                         </div>
                     </div>
-                        <div class="row text-center" style="border: 2px solid #364c59">
+                        <div class="row text-center fotosCol">
                             <a href="https://about:blank" target="_blank">
                                 <button class="btn"><h1>Más</h1></button>
                             </a>
