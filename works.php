@@ -83,16 +83,36 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
     <body>
+        <!-- navbar -->
+        <?php include './comp/navbar.php'; ?>
         <main>
-            <?php 
-                include './comp/navbar.php';
-                include './comp/alerts.php';
-            ?>
+            <!-- Alerts -->
+            <?php include './comp/alerts.php' ?>
 
+            <!-- BOTON VOLVER Y TITULO -->
+            <div class="container py-4">
+                <div class="row">
+                    <div class="col-md-3">    
+                        <button class="boton">
+                            <a href="gestor.php">
+                                <h3 class="mt-2 mx-2">&#9664; Volver</h3>
+                            </a>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <h1 class="text-center">Gestor de Trabajadores</h1>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+            <!-- FIN DE BOTON VOLVER Y TITULO -->
+
+            <!-- CONTENEDOR DE TABLA DE GESTION -->
             <div class="container w-100 mt-5">
                 <form action="works.php" method="get">
                     <label for="searchinput"><h2>Buscar</h2></label>

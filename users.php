@@ -119,7 +119,7 @@
             </div>
             <!-- FIN DE BOTON VOLVER Y TITULO -->
 
-            <!-- tablas de gestion -->
+            <!-- CONTENEDOR DE TABLA DE GESTION -->
             <div class="container">
                 <div class="row text-end">
                     <form action="users.php" method="get">
