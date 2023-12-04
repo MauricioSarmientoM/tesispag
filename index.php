@@ -21,6 +21,11 @@
             <?php include './comp/banner.php'; ?>
 
             <!-- Zona de tesis -->
+            <?php
+            include './backend/connection.php';
+            include './backend/select.php';
+            $con = conectar();
+            ?>
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
                 <div class="row">
@@ -53,6 +58,11 @@
             <!-- end of Zona de tesis -->
             
             <!-- Zona de Calendario -->
+            <?php
+            $amountNews = 3;
+            $news = SelectEventsWhereRealizationDateExist($con, $amountNews);
+            $row = $news->fetch_assoc();
+            ?>
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
                     <div class="row my-4">
@@ -60,30 +70,11 @@
                             <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_1">
                         </div>
                         <div class="col">
-                            <h2>Título</h2>
-                            <h3>Fecha del evento</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
+                            <h2><?php echo $row['title'] ?></h2>
+                            <h3><?php echo $row['realizationDate'] ?></h3>
+                            <p><?php echo $row['description'] ?></p>
                         </div>
                     </div>
-                    <div class="row my-4">
-                        <div class="col-md-4 my-2 py-2 fotosCol">
-                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_2">
-                        </div>
-                        <div class="col">
-                            <h2>Título</h2>
-                            <h3>Fecha del evento</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
-                        </div>
-                    </div>
-                    <div class="row my-4">
-                        <div class="col-md-4 my-2 py-2 fotosCol">
-                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_3">
-                        </div>
-                        <div class="col">
-                            <h2>Título</h2>
-                            <h3>Fecha del evento</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
-                        </div>
                     </div>
                         <div class="row text-center">
                             <button class="boton">

@@ -50,4 +50,9 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectEventsWhereRealizationDateExist($con, $limit) {
+        $sql = "SELECT * FROM events WHERE realizationDate IS NOT NULL LIMIT $limit";
+        $result = $con->query($sql);
+        return $result;
+    }
 ?>
