@@ -4,7 +4,7 @@
             include './backend/connection.php';
             include './backend/select.php';
             $con = conectar();
-            $amountNews = 2;
+            $amountNews = 3;
             $news = selectEvents($con, $amountNews);
             for ($counter = 0; $counter < $amountNews; $counter++) {
                 if ($counter === 0) {
@@ -35,14 +35,21 @@
         ?>
 			<div class="carousel-caption d-md-block">
 				<h1 class = "white"><?php echo $row['title']; ?></h1>
-				<p class = "white transBG"><?php echo $row['description']; ?></p>
+				<div class="row">
+					<div class="col text-start">
+					<p class = "white transBG"><?php echo $row['description']; ?></p>
+					</div>
+					<div class="col text-end">
+						<h2>Fecha publicar</h2>
+					</div>
+				</div>
 			</div>
 		</div>
         <?php
-                $counter++;
-                $con->close();
-            }
-                ?>
+			$counter++;
+			$con->close();
+		}
+		?>
 	</div>
 	<button class="carousel-control-prev" type="button" data-bs-target="#carouselCaptions" data-bs-slide="prev">
 		<span class="carousel-control-prev-icon" aria-hidden="true"></span>

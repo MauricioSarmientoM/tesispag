@@ -9,3 +9,27 @@
     width: 100%;
     filter: brightness(0.5) !important;
 }
+
+.col-md-7 img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.col-md-4 img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.zonasTitulo {
+    background-color: #364c59; color: white;
+}
+
+.fotosCol {
+    border: 2px solid #364c59;
+}
+
+.fotos {
+    border-bottom: 2px solid #364c59;
+}

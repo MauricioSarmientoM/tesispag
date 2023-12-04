@@ -6,13 +6,13 @@
             </a>
         </div>
         <div class="col">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim velit fugit, exercitationem reiciendis delectus aliquam deserunt vero iure adipisci sint rem dolor error accusamus animi neque nihil architecto nostrum aut!
+            Explora más sobre nuestra queridísima Universidad de Atacama, visitando nuestro sitio web y siguiéndonos en nuestras redes sociales. Mantente actualizado con las últimas noticias, eventos y logros.
         </div>
         <div class="col text-center">
             <h2>Acerca De</h2>
-            <a href="https://about:blank" target="_blank">Nosotros</a><br>
-            <a href="https://about:blank" target="_blank">Términos y Condiciones</a><br>
-            <a href="https://about:blank" target="_blank">Políticas de Privacidad</a>
+            <a href="aboutUs.php" target="_blank">Nosotros</a><br>
+            <a href="aboutUs.php" target="_blank">Términos y Condiciones</a><br>
+            <a href="aboutUs.php" target="_blank">Políticas de Privacidad</a>
         </div>
         <div class="col text-center">
             <h2>Otros</h2>
@@ -20,7 +20,7 @@
             <a href="https://www.moodle.uda.cl" target="_blank">Moodle</a><br>
             <a href="https://www.portal.uda.cl" target="_blank">Portal</a>
         </div>
-        <div class="col text-center">
+        <div class="col text-start">
             <h2>Redes</h2>
             <a href="https://www.facebook.com/UDAinstitucional" target="_blank">
                 <img id="facebookLogo" src="src\logos\facebookLogo.png">

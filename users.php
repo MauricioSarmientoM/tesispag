@@ -83,42 +83,53 @@
     }
 ?>
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="es">
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/general.css"/>
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
     <body>
+        <!-- Navbar -->
+        <?php include './comp/navbar.php'; ?>
         <main>
-            <?php 
-                include './comp/navbar.php';
-                include './comp/alerts.php';
-            ?>
+            <!-- Alerts -->
+            <?php include './comp/alerts.php'; ?>
 
-            <div class="container w-100 mt-5">
-                <form action="users.php" method="get">
-                    <label for="searchinput"><h2>Buscar</h2></label>
-                    <div class="row"> 
-                        <div class="col-md-2">
-                            <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
-                        </div>
-                        <div class="col-md-2">
-                            <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </div>
+            <!-- BOTON VOLVER Y TITULO -->
+            <div class="container py-4">
+                <div class="row">
+                    <div class="col-md-3">    
+                        <button class="boton">
+                            <a href="gestor.php">
+                                <h3 class="mt-2 mx-2">&#9664; Volver</h3>
+                            </a>
+                        </button>
                     </div>
-                </form>
+                    <div class="col">
+                        <h1 class="text-center">Gestor de Usuarios</h1>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
             </div>
-            <div class="w-100 mt-5">
-             <!-- crud de usuario -->
-                <div class="col-md-8">
+            <!-- FIN DE BOTON VOLVER Y TITULO -->
+
+            <!-- CONTENEDOR DE TABLA DE GESTION -->
+            <div class="container">
+                <div class="row text-end">
+                    <form action="users.php" method="get">
+                        <label for="searchinput"><h5>Buscar:</h5></label>
+                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
+                        <button type="submit" class="btn">Enviar</button>
+                    </form>
+                </div>
+                <div class="row mt-2">
+                    <!-- crud de usuario -->
                     <table class="table" >
                         <thead class="table-success table-striped" >
                             <tr>
@@ -147,7 +158,7 @@
                                         <th><?php  echo $row['description']?></th>
                                         <th><?php  echo $row['email']?></th>
                                         <th><?php  echo $row['phone']?></th>
-                                        <!--th><?php//  echo $row['password']?></th-->
+                                        <!--th><?php //  echo $row['password']?> </th> -->
                                         <th><?php  echo $row['imageURL']?></th>
                                         <th><?php  echo $row['direction']?></th>
                                         
@@ -249,7 +260,7 @@
 
             <!-- Create User -->
 
-            <div class="container w-100 mt-5 p-5">
+            <div class="container text-center my-4">
                 <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
             </div>
             <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -317,7 +328,7 @@
 
             <!-- End Create User -->
 
-            <div class="container p-5">
+            <div class="container text-center pb-4">
                 <?php
                     $usersAmount = $usersAmount->fetch_assoc();
                     $pagesAmount = ceil($usersAmount['count'] / $showUsers);
@@ -328,16 +339,13 @@
                     $con->close();
                 ?>
             </div>
+            <!--
+            <? /* include './comp/footer.php'; */?>
+            -->
         </main>
-        <?php include './comp/footer.php'; ?>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var dropdownUser = new bootstrap.Dropdown(document.getElementById('dropdownUser'));
-            });
-        </script>
     </body>
 </html>
