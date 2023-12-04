@@ -33,6 +33,6 @@
 
 .boton:hover:active {
     background-color: #364c59;
-    color: #dbca11;
-    border: 2px solid black;
+    color: white;
+    border: 2px solid #364c59;
 }
