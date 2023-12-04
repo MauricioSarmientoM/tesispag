@@ -30,7 +30,7 @@
                         <h2>Título - Área</h2>
                     </div>
                     <div class="col-md-4 ms-auto">
-                        <div class="row mb-4 pt-2 fotosCol ">
+                        <div class="row mb-4 pt-2 fotosCol">
                         <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
                         <div class="my-2 fotos"></div>
                         <h2>Título - Área</h2>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="https://about:blank" target="_blank">
+                                <a href="https://about:blank" target="_blank">
                                     <h1 class="mb-1">Más</h1>
                                 </a>
                             </button>
@@ -87,7 +87,7 @@
                     </div>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="https://about:blank" target="_blank">
+                                <a href="https://about:blank" target="_blank">
                                     <h1 class="mb-1">Más</h1>
                                 </a>
                             </button>
