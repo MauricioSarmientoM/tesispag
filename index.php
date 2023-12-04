@@ -28,8 +28,9 @@
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
                 <div class="row">
-                    <div class="col-md-7 mb-4 fotosCol">
-                        <?php $row = $works->fetch_assoc();
+                    <?php $row = $works->fetch_assoc();?>
+                    <a href = "works.php?id=<?php echo $row['id'] ?>" class="col-md-7 mb-4 fotosCol">
+                        <?php
                         if ($row['image'] === '' or $row['image'] == NULL) {
                         ?>
                         <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['name'] ?>">
@@ -40,10 +41,11 @@
                         <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
                         <?php } ?>
                         <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
-                    </div>
+                    </a>
                     <div class="col-md-4 ms-auto">
-                        <div class="row mb-4 fotosCol">
-                            <?php $row = $works->fetch_assoc();
+                        <?php $row = $works->fetch_assoc();?>
+                        <a href = "works.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
+                            <?php
                             if ($row['image'] === '' or $row['image'] == NULL) {
                             ?>
                             <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['name'] ?>">
@@ -54,9 +56,10 @@
                             <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
                             <?php } ?>
                             <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
-                        </div>
-                        <div class="row mb-4 fotosCol">
-                            <?php $row = $works->fetch_assoc();
+                        </a>
+                        <?php $row = $works->fetch_assoc();?>
+                        <a href = "works.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
+                            <?php
                             if ($row['image'] === '' or $row['image'] == NULL) {
                             ?>
                             <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['name'] ?>">
@@ -67,7 +70,7 @@
                             <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
                             <?php } ?>
                             <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
-                        </div>
+                        </a>
                         <div class="row text-center">
                             <button class="boton">
                                 <a class="link" href="works.php">
@@ -90,25 +93,27 @@
                     <?php 
                     for ($counter = 0, $row = $news->fetch_assoc(); $counter < $amountNews; $counter++, $row = $news->fetch_assoc()) {
                     ?>
-                    <div class="row my-4">
-                        <div class="col-md-4 my-2 fotosCol">
-                            <?php
-                            if ($row['image'] === '' or $row['image'] == NULL) {
-                            ?>
-                            <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['title'] ?>">
-                            <?php
-                            }
-                            else {
-                            ?>
-                            <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['title'] ?>">
-                            <?php } ?>
+                    <a href = "events.php?id=<?php echo $row['id'] ?>">
+                        <div class="row my-4">
+                            <div class="col-md-4 my-2 fotosCol">
+                                <?php
+                                if ($row['image'] === '' or $row['image'] == NULL) {
+                                ?>
+                                <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['title'] ?>">
+                                <?php
+                                }
+                                else {
+                                ?>
+                                <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['title'] ?>">
+                                <?php } ?>
+                            </div>
+                            <div class="col p-3">
+                                <h2 class = "shorterLine"><?php echo $row['title'] ?></h2>
+                                <h5>Fecha de Realización <?php echo $row['realizationDate'] ?></h5>
+                                <p><?php echo $row['description'] ?></p>
+                            </div>
                         </div>
-                        <div class="col p-3">
-                            <h2 class = "shorterLine"><?php echo $row['title'] ?></h2>
-                            <h5><?php echo $row['realizationDate'] ?></h5>
-                            <p><?php echo $row['description'] ?></p>
-                        </div>
-                    </div>
+                    </a>
                     <?php
                     }
                     ?>
