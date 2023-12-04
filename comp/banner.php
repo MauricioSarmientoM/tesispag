@@ -41,7 +41,7 @@
 					</div>
 					<div class="col text-end">
                         <h5>Fecha de Publicación</h5>
-						<h2><?php echo $row['publicationDate']; ?></h2>
+						<h2><?php echo date("d/m/Y", strtotime($row['publicationDate'])); ?></h2>
 					</div>
 				</div>
 			</div>

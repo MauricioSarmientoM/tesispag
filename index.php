@@ -23,7 +23,7 @@
             <!-- Zona de tesis -->
             <?php
             $amountWorks = 3;
-            $works = SelectWorks($con, 1, $amountWorks);
+            $works = SelectWorksOrderByDesc($con, $amountWorks);
             ?>
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col p-3">
                                 <h2 class = "shorterLine"><?php echo $row['title'] ?></h2>
-                                <h5>Fecha de Realización <?php echo $row['realizationDate'] ?></h5>
+                                <h5>Fecha de Realización: <?php echo date("d/m/Y", strtotime($row['realizationDate'])); ?></h5>
                                 <p><?php echo $row['description'] ?></p>
                             </div>
                         </div>
