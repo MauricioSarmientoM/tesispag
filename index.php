@@ -40,7 +40,9 @@
                         ?>
                         <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
                         <?php } ?>
-                        <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
+                        <h3 class = "px-2 py-1 shorterLine"><?php echo $row['name'] ?></h3>
+                        <h5 class = "px-2 py-1 shorterLine"><?php echo $row['area'] ?></h5>
+                        <p class = "px-4"><?php echo $row['abstract']?></p>
                     </a>
                     <div class="col-md-4 ms-auto">
                         <?php $row = $works->fetch_assoc();?>
@@ -93,7 +95,7 @@
                     <?php 
                     for ($counter = 0, $row = $news->fetch_assoc(); $counter < $amountNews; $counter++, $row = $news->fetch_assoc()) {
                     ?>
-                    <a href = "events.php?id=<?php echo $row['id'] ?>">
+                    <a href = "calendar.php?id=<?php echo $row['id'] ?>">
                         <div class="row my-4">
                             <div class="col-md-4 my-2 fotosCol">
                                 <?php
@@ -120,7 +122,7 @@
                     </div>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="events.php">
+                                <a class="link" href="calendar.php">
                                     <h1 class="mb-1">Más</h1>
                                 </a>
                             </button>
