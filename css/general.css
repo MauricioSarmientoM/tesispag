@@ -18,7 +18,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    margin-bottom: 0 !important; /* me jodia el titulo "Tesis", Por lo que me iba a joder el resto */
+    margin-bottom: 0 !important; /*Diego: me jodia el titulo "Tesis", Por lo que me iba a joder el resto */
 }
 
 p {
@@ -86,20 +86,12 @@ a:hover {
     color: #dbca11;
 }
 
-.link {
-    color: black;
-}
-
 footer {
     background-color: #364c59;
     color: white;
 }
 
 .carousel-caption, h1 {
-    height: 80%;
-}
-
-.carousel-caption, col {
     height: 80%;
 }
 

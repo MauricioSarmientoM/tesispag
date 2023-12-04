@@ -29,7 +29,7 @@
             <div class="container my-4">
                 <div class="row">
                     <?php $row = $works->fetch_assoc();?>
-                    <a href = "works.php?id=<?php echo $row['id'] ?>" class="col-md-7 mb-4 fotosCol">
+                    <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="col-md-7 mb-4 fotosCol">
                         <?php
                         if ($row['image'] === '' or $row['image'] == NULL) {
                         ?>
@@ -44,7 +44,7 @@
                     </a>
                     <div class="col-md-4 ms-auto">
                         <?php $row = $works->fetch_assoc();?>
-                        <a href = "works.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
+                        <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
                             <?php
                             if ($row['image'] === '' or $row['image'] == NULL) {
                             ?>
@@ -58,7 +58,7 @@
                             <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
                         </a>
                         <?php $row = $works->fetch_assoc();?>
-                        <a href = "works.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
+                        <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
                             <?php
                             if ($row['image'] === '' or $row['image'] == NULL) {
                             ?>
@@ -73,7 +73,7 @@
                         </a>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="works.php">
+                                <a class="link" href="thesis.php">
                                     <h1 class="mb-1">Más</h1>
                                 </a>
                             </button>
