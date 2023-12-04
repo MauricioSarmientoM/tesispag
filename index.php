@@ -11,8 +11,8 @@
         <title>UDA</title>
     </head>
     <body>
-            <!-- Navbar -->
-            <?php include './comp/navbar.php'; ?>
+        <!-- Navbar -->
+        <?php include './comp/navbar.php'; ?>
         <main>
             <!-- Alerts -->
             <?php include './comp/alerts.php'; ?>

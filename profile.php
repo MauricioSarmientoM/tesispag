@@ -1,4 +1,4 @@
-<?php
+po<?php
     session_start();
     if (!isset($_GET['rut'])){
         header("Location: ./index.php");
@@ -54,26 +54,55 @@
         <title>UDA</title>
     </head>
     <body>
+        <!-- Navbar -->
         <?php include './comp/navbar.php'; ?>
         <main>
             <?php
                 include './comp/alerts.php';
                 $res = SelectUsersWhereRut($con, 1, 1, $_GET['rut']);
                 $row = $res->fetch_assoc();
-                echo '<div class = "p-2">';
-                if ($row['imageURL'] === '') {
-                    echo '<image class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
-                }
-                else {
-                    echo '<image class = "profileIMG" src = "./src/u.png"/>';
-                }
-                echo '<h1>' . $row['name'] . ' ' . $row['surname'] . '</h1>';
-                echo '<p>' . $row['description'] . '</p>';
-                if ($_SESSION['rut'] == $row['rut']) {
-                    echo '<button class="btn btn-outline-success btn-lg" data-bs-toggle="modal" data-bs-target="#updateModal">Editar Perfil</button>';
-                }
+                echo '<div class = "container perfil my-4">';
+                    echo '<div class ="row">';
+                        echo '<div class="col lateral text-center">';
+                            echo '<div class ="row-md-1 my-4">';
+                                if ($row['imageURL'] != NULL || $row['imageURL'] !== '') {
+                                    echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
+                                }
+                                else{
+                                    echo '<img class = "profileIMG" src = "src\icons\iconPlaceholder.png"/>';
+                                }
+                            echo '</div>';
+                            echo '<div class ="row-md-1 my-4">';
+                                echo '<h2>' . $row['name'] . ' ' . $row['surname'] . '</h2>';
+                            echo '</div>';
+                            echo '<div class ="row-md-1 my-4">';
+                                if ($_SESSION['rut'] == $row['rut']) {
+                                    echo '<button class="btn boton text-center" data-bs-toggle="modal" data-bs-target="#updateModal">Editar Perfil</button>';
+                                }
+                            echo '</div>';
+                        echo '</div>';
+                        echo '<div class="col lateral py-4">';
+                            echo '<h4> Descripción </h4>'; 
+                            echo '<p>' . $row['description'] . '</p>';
+                        echo '</div>';
+                        echo '<div class="col">';
+                            echo '<div class ="row vertical my-4">';
+                                echo '<h4> Email: </h4>';
+                                echo '<p>' . $row['email'] . '</p>';
+                            echo '</div>';
+                            echo '<div class ="row vertical my-4">';
+                                echo '<h4> Número de teléfono: </h4>';
+                                echo '<p>' . $row['phone'] . '</p>';
+                            echo '</div>';
+                            echo '<div class ="row my-4">';
+                                echo '<h4> Dirección: </h4>';
+                                echo '<p>' . $row['direction'] . '</p>';
+                            echo '</div>';
+                        echo '</div>';
+                    echo '</div>';
                 echo '</div>';
             ?>
+
             <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -136,16 +165,13 @@
                     </div>
                 </div>
             </div>
+            <!--
             <?php include './comp/footer.php'; ?>
+                        -->
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var dropdownUser = new bootstrap.Dropdown(document.getElementById('dropdownUser'));
-            });
-        </script>
     </body>
 </html>

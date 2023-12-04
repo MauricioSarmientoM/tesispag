@@ -1,5 +1,38 @@
 .profileIMG {
-    height: 256px;
-    width: 256px;
+    border: 2px solid #364c59;
     border-radius: 50%;
+    height: 128px;
+    width: 128px;
+    background-color: white;
+}
+
+.perfil {
+    border: 2px solid #364c59;
+    border-radius: 15px;
+    background-color: lightgray;
+}
+
+.lateral {
+    border-right: 2px solid #364c59;
+}
+
+.vertical {
+    border-bottom: 2px solid #364c59;
+}
+
+.boton {
+    background-color: #364c59;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.boton:hover {
+    background-color: #364c59;
+    color: white;
+}
+
+.boton:hover:active {
+    background-color: #364c59;
+    color: #dbca11;
+    border: 2px solid black;
 }
