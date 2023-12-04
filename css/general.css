@@ -1,6 +1,5 @@
 :root {
     --udaColor: #364c59;
-    --carouselHeight: 35rem;
 }
 
 body {
@@ -11,6 +10,7 @@ body {
 
 main {
     margin-top: 106px !important;
+    width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
