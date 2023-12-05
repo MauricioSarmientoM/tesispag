@@ -115,7 +115,7 @@ class DB():
             print(e)
         return self
 def Main():
-    db = DB(database = 'tesis')
+    db = DB(password = '12345678')
     print(db.Select('users', fetch = -1))
     #db.DropDatabase('tesis')
 if __name__ == '__main__': Main()

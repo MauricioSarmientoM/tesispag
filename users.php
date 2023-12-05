@@ -124,7 +124,7 @@
                 <div class="row text-end">
                     <form action="users.php" method="get">
                         <label for="searchinput"><h5>Buscar:</h5></label>
-                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
+                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
                         <button type="submit" class="btn">Enviar</button>
                     </form>
                 </div>
@@ -133,6 +133,7 @@
                     <table class="table" >
                         <thead class="table-success table-striped" >
                             <tr>
+                                <th>Imagen</th>
                                 <th>Rut</th>
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
@@ -140,7 +141,6 @@
                                 <th>Email</th>
                                 <th>Telefono</th>
                                 <!--th>Contraseña</th-->
-                                <th>Imagen</th>
                                 <th>Direccion</th>
                                 <th></th>
                                 <th></th>
@@ -152,6 +152,7 @@
                                 while($row = $res->fetch_assoc()){
                                 ?>
                                     <tr>
+                                        <th><?php  echo $row['imageURL']?></th>
                                         <th><?php  echo $row['rut']?></th>
                                         <th><?php  echo $row['name']?></th>
                                         <th><?php  echo $row['surname']?></th>
@@ -159,7 +160,6 @@
                                         <th><?php  echo $row['email']?></th>
                                         <th><?php  echo $row['phone']?></th>
                                         <!--th><?php //  echo $row['password']?> </th> -->
-                                        <th><?php  echo $row['imageURL']?></th>
                                         <th><?php  echo $row['direction']?></th>
                                         
                                         <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</th>
@@ -339,9 +339,6 @@
                     $con->close();
                 ?>
             </div>
-            <!--
-            <? /* include './comp/footer.php'; */?>
-            -->
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

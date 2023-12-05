@@ -119,14 +119,14 @@
                     <?php
                     }
                     ?>
+                    <div class="row text-center">
+                        <button class="boton">
+                            <a class="link" href="calendar.php">
+                                <h1 class="mb-1">Más</h1>
+                            </a>
+                        </button>
                     </div>
-                        <div class="row text-center">
-                            <button class="boton">
-                                <a class="link" href="calendar.php">
-                                    <h1 class="mb-1">Más</h1>
-                                </a>
-                            </button>
-                        </div>
+                    </div>
                 </div>
             </div>
             <!-- end of Zona de Calendario -->
