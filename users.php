@@ -90,6 +90,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
@@ -118,10 +119,11 @@
             </div>
             <div class="w-100 mt-5">
              <!-- crud de usuario -->
-                <div class="col-md-8">
+                <div>
                     <table class="table" >
                         <thead class="table-success table-striped" >
                             <tr>
+
                                 <th>Rut</th>
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
@@ -142,15 +144,16 @@
                                 while($row = $res->fetch_assoc()){
                                 ?>
                                     <tr>
-                                        <th><?php  echo $row['rut']?></th>
-                                        <th><?php  echo $row['name']?></th>
-                                        <th><?php  echo $row['surname']?></th>
-                                        <th><?php  echo $row['description']?></th>
-                                        <th><?php  echo $row['email']?></th>
-                                        <th><?php  echo $row['phone']?></th>
-                                        <!--th><?php//  echo $row['password']?></th-->
-                                        <th><?php  echo $row['imageURL']?></th>
-                                        <th><?php  echo $row['direction']?></th>
+                    
+                                <td><?php  echo $row['rut']?></td>
+                                <td><?php  echo $row['name']?></td>
+                                <td><?php  echo $row['surname']?></td>
+                                <td><?php  echo $row['description']?></td>
+                                <td><?php  echo $row['email']?></td>
+                                <!--th><?php//  echo $row['password']?></th-->
+                                <td><?php  echo $row['phone']?></td>
+                                <td><?php  echo $row['imageURL']?></td>
+                                <td><?php  echo $row['direction']?></td>
 
 
                                     <th><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></th>
@@ -274,16 +277,11 @@
                                 <?php
                                     $counter++;
                                 }
-                                ?>        
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Create User -->
-
-            <div class="container w-100 mt-5 p-5">
-                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
+                                ?>  
+                                <tr><td colspan="11" class="container w-100">            
+                                    
+                                <div class="container w-100">
+                <button type="button" class="buttonadd" data-bs-toggle="modal" data-bs-target="#createUserModal"><h1>+</h1></button>
             </div>
             <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -347,6 +345,13 @@
                     </div>
                 </div>
             </div>
+        </td></tr>      
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Create User -->
 
             <!-- End Create User -->
 

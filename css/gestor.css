@@ -1,3 +1,152 @@
+:root {
+    --udaColor: #364c59;
+    --carouselHeight: 35rem;
+}
+
+th{
+    background-color: #364c59;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+td{
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+
+.buttonadd{
+
+    background-color: #364c59;
+            text-align: center;
+                /* Centrar horizontalmente */
+                vertical-align: middle;
+                /* Centrar verticalmente */
+                border: 1px solid #ddd;
+                /* Borde para visualización */
+                padding: 10px;
+                /* Espaciado interno */
+                width: 100%;
+                /* Ancho completo del contenedor */
+                padding: 10px;
+                /* Espaciado interno para el botón */
+}
+
+.buttonadd {
+    background: #364c59;
+    color: #fff;
+    border: none;
+    position: relative;
+    font-size: 1.6em;
+    padding: 0 2em;
+    cursor: pointer;
+    transition: 800ms ease all;
+    outline: none;
+}
+
+.buttonadd:hover {
+    background: #dbca11;
+    color: #000000;
+}
+
+
+
+
+body {
+    font-family: 'Montserrat semibold', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    font-family: 'Montserrat semibold', sans-serif;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat semibold', sans-serif;
+}
+
+p {
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.tableh{
+    background-color: #364c59;
+}
+
+.search-box {
+    background-color: #364c59;
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
+.input-search {
+    height: 50px;
+    width: 50px;
+    border-style: none;
+    padding: 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    outline: none;
+    border-radius: 25px;
+    transition: all .5s ease-in-out;
+    background-color: #364c59;
+    padding-right: 40px;
+    color: #fff;
+}
+
+.input-search::placeholder {
+    color: rgba(255, 255, 255, .5);
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 100;
+}
+
+.btn-search {
+    width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 0px;
+    color: rgb(255, 0, 0);
+    background-color: transparent;
+    pointer-events: painted;
+}
+
+
+
+.btn-search:focus~.input-search {
+    width: 300px;
+    border-radius: 0px;
+    background-color: rgb(0, 0, 0);
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.input-search:focus {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+
 .icon{
     margin: 20px;
     max-height: 30px;
@@ -14,3 +163,4 @@
     padding: 5px;
     background-color: #364c59;
 };
+

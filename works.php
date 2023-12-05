@@ -83,6 +83,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
@@ -92,6 +93,10 @@
                 include './comp/navbar.php';
                 include './comp/alerts.php';
             ?>
+
+            <table> 
+                <tr></tr>
+            </table>
 
             <div class="container w-100 mt-5">
                 <form action="works.php" method="get">
@@ -111,7 +116,7 @@
             </div>
              <div class="mt-5">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div >
                         <table class="table" >
                             <thead class="table-success table-striped" >
                                 <tr>
@@ -131,15 +136,15 @@
                                     while($row = $res->fetch_assoc()){
                                 ?>
                                 <tr>
-                                    <th><?php  echo $row['id']?></th>
-                                    <th><?php  echo $row['name']?></th>
-                                    <th><?php  echo $row['obj']?></th>
-                                    <th><?php  echo $row['area']?></th>
-                                    <th><?php  echo $row['abstract']?></th>
-                                    <th><?php  echo $row['image']?></th>
+                                    <td><?php  echo $row['id']?></td>
+                                    <td><?php  echo $row['name']?></td>
+                                    <td><?php  echo $row['obj']?></td>
+                                    <td><?php  echo $row['area']?></td>
+                                    <td><?php  echo $row['abstract']?></td>
+                                    <td><?php  echo $row['image']?></d>
 
-                                    <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</th>
-                                    <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>                                   
+                                    <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</td>
+                                    <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>                                   
                                 </tr>
                                 <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -209,15 +214,11 @@
                                     $counter++;
                                 }
                                 ?>    
-                            </tbody>
-                        </table>
-                    </div>
-                </div>  
-            </div>
-        <!-- Create User -->
 
-            <div class="container w-100 mt-5 p-5">
-                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createWorkModal">Añadir Usuario</button>
+                                <tr><td colspan="8" class="container w-100">            
+                                    
+                                <div class="container w-100">
+                <button type="button" class="buttonadd" data-bs-toggle="modal" data-bs-target="#createWorkModal"><h1>+</h1></button>
             </div>
             <div class="modal fade" id="createWorkModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -261,6 +262,15 @@
                     </div>
                 </div>
             </div>
+        </td></tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
+            </div>
+        <!-- Create User -->
+
 
             <!-- End Create User -->
 
