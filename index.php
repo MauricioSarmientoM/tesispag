@@ -1,4 +1,15 @@
-<?php session_start(); ?>
+<?php
+session_start();
+if (!file_exists("uploads/")) {
+    mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+}
+if (!file_exists("uploads/thesis/")) {
+    mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+}
+if (!file_exists("uploads/users/")) {
+    mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>

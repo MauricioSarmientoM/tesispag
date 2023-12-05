@@ -9,13 +9,10 @@
         //if ($result->num_rows > 0) {}  With this I can verify if the query got data
     }
     function SelectUsersWhereRut ($con, $pageNumber, $itemsPerPage, $rut) {
-        // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        // Query to retrieve data by pages
         $sql = "SELECT * FROM users WHERE rut = $rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
-        //if ($result->num_rows > 0) {}  With this I can verify if the query got data
     }
     function SelectUsersCount($con) {
         $sql = "SELECT COUNT(rut) as count FROM users";
@@ -23,28 +20,27 @@
         return $result;
     }
     function SelectWorks ($con, $pageNumber, $itemsPerPage) {
-        // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        // Query to retrieve data by pages
         $sql = "SELECT * FROM works LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
-        //if ($result->num_rows > 0) {}  With this I can verify if the query got data
     }
     function SelectWorksOrderByDesc ($con, $itemsPerPage) {
-        // Query to retrieve data by pages
         $sql = "SELECT * FROM works ORDER BY id DESC LIMIT $itemsPerPage";
         $result = $con->query($sql);
         return $result;
     }
     function SelectWorksWhereId ($con, $pageNumber, $itemsPerPage, $id) {
-        // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        // Query to retrieve data by pages
         $sql = "SELECT * FROM works WHERE id = $id LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
-        //if ($result->num_rows > 0) {}  With this I can verify if the query got data
+    }
+    function SelectWorksWhereRut($con, $pageNumber, $itemsPerPage, $rut) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT works.* FROM works JOIN workuser ON works.id = workuser.idWork WHERE workuser.rut = $rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
     }
     function SelectWorksCount($con) {
         $sql = "SELECT COUNT(id) as count FROM works";
