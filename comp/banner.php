@@ -47,7 +47,6 @@
 		</div>
         <?php
 			$counter++;
-			$con->close();
 		}
 		?>
 	</div>

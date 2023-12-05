@@ -1,21 +1,43 @@
-po<?php
+<?php
     session_start();
-    if (!isset($_GET['rut'])){
+    if (!isset($_POST['rut'])){
         header("Location: ./index.php");
     }
-
+    $rut = $_POST['rut'];
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
     if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
-        $rut = $_GET['rut'];
     	$name = $_POST['name'];
     	$surname = $_POST['surname'];
 		$description = $_POST['description'];
     	$email = $_POST['email'];
         $phone = $_POST['phone'];
 		$password = $_POST['password'];
-    	$imageURL = $_POST['imageURL'];
+        if (isset($_FILES["imageURL"]) && $_FILES["imageURL"]["error"] == UPLOAD_ERR_OK) {
+            $targetDirectory = "uploads/users/";  // Set your target directory
+            if (!file_exists($targetDirectory)) {
+                mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+            }
+            $uploadedFileName = basename($_FILES["imageURL"]["name"]);
+            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
+                // Now, you can use $targetFilePath to store in the database
+                $imageURL = $targetFilePath;
+            } else {
+                // File upload failed
+                $_SESSION["error"] = "Error uploading the file.";
+            }
+        }
+        else {
+            if ($_POST['img'] === '' || $_POST['img'] == NULL) {
+                $imageURL = '';
+            }
+            else {
+                $imageURL = $_POST['img'];
+            }
+        }
     	$direction = $_POST['direction'];
 
         $stringToCheck = '$2y$10$';
@@ -33,7 +55,7 @@ po<?php
                 die("Binding parameters failed: " . $query->error);
             }
     		if ($query->execute()) {
-    			$_SESSION["success"] = "$name $surname was updated successfully!";
+    			$_SESSION["success"] = "¡Has actualizado correctamente tu perfil!";
     		}
     		else {
     			$_SESSION["warning"] = $query->error;
@@ -58,49 +80,58 @@ po<?php
         <?php include './comp/navbar.php'; ?>
         <main>
             <?php
-                include './comp/alerts.php';
-                $res = SelectUsersWhereRut($con, 1, 1, $_GET['rut']);
+                $res = SelectUsersWhereRut($con, 1, 1, $rut);
                 $row = $res->fetch_assoc();
-                echo '<div class = "container perfil my-4">';
-                    echo '<div class ="row">';
-                        echo '<div class="col lateral text-center">';
-                            echo '<div class ="row-md-1 my-4">';
-                                if ($row['imageURL'] != NULL || $row['imageURL'] !== '') {
-                                    echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
-                                }
-                                else{
-                                    echo '<img class = "profileIMG" src = "src\icons\iconPlaceholder.png"/>';
-                                }
-                            echo '</div>';
-                            echo '<div class ="row-md-1 my-4">';
-                                echo '<h2>' . $row['name'] . ' ' . $row['surname'] . '</h2>';
-                            echo '</div>';
-                            echo '<div class ="row-md-1 my-4">';
-                                if ($_SESSION['rut'] == $row['rut']) {
-                                    echo '<button class="btn boton text-center" data-bs-toggle="modal" data-bs-target="#updateModal">Editar Perfil</button>';
-                                }
-                            echo '</div>';
-                        echo '</div>';
-                        echo '<div class="col lateral py-4">';
-                            echo '<h4> Descripción </h4>'; 
-                            echo '<p>' . $row['description'] . '</p>';
-                        echo '</div>';
-                        echo '<div class="col">';
-                            echo '<div class ="row vertical my-4">';
-                                echo '<h4> Email: </h4>';
-                                echo '<p>' . $row['email'] . '</p>';
-                            echo '</div>';
-                            echo '<div class ="row vertical my-4">';
-                                echo '<h4> Número de teléfono: </h4>';
-                                echo '<p>' . $row['phone'] . '</p>';
-                            echo '</div>';
-                            echo '<div class ="row my-4">';
-                                echo '<h4> Dirección: </h4>';
-                                echo '<p>' . $row['direction'] . '</p>';
-                            echo '</div>';
-                        echo '</div>';
-                    echo '</div>';
-                echo '</div>';
+            ?>
+            <div class = "container perfil my-4">
+                <div class ="row">
+                    <div class="col lateral text-center">
+                        <div class ="row-md-1 my-4">
+                        <?php
+                            if ($row['imageURL'] != NULL || $row['imageURL'] !== '') {
+                                echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
+                            }
+                            else{
+                                echo '<img class = "profileIMG" src = "src\icons\iconPlaceholder.png"/>';
+                            }
+                        ?>
+                        </div>
+                        <div class ="row-md-1 my-4">
+                            <h2><?php echo $row['name']; ?>  <?php echo $row['surname']; ?></h2>
+                        </div>
+                        <div class ="row-md-1 my-4">
+                        <?php
+                            if ($_SESSION['rut'] == $row['rut']) {
+                                echo '<button class="btn boton text-center" data-bs-toggle="modal" data-bs-target="#updateModal">Editar Perfil</button>';
+                            }
+                        ?>
+                        </div>
+                    </div>
+                    <div class="col lateral py-4">
+                        <h4> Descripción </h4>
+                        <p><?php echo $row['description']; ?></p>
+                    </div>
+                    <div class="col">
+                        <div class ="row vertical my-4">
+                            <h4> Email: </h4>
+                            <p><?php echo $row['email']; ?></p>
+                        </div>
+                        <div class ="row vertical my-4">
+                            <h4> Número de teléfono: </h4>
+                            <p><?php echo $row['phone']; ?></p>
+                        </div>
+                        <div class ="row my-4">
+                            <h4> Dirección: </h4>
+                            <p><?php echo $row['direction']; ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                
+            </div>
+            <?php
+                include './comp/alerts.php';
             ?>
 
             <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -111,12 +142,9 @@ po<?php
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="profile.php?rut=<?php echo $_GET['rut']?>" method="post">
-                                <div class="form-group">
-                                    <label for="inputRut">Rut</label>
-                                    <input type="text" id = "inputRut" class="form-control mb-3" name="rut" value = "<?php echo $row['rut']?>" disabled readonly/>
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
+                            <form action="profile.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="rut" value = "<?php echo $row['rut']?>" readonly/>
+                                <input type="hidden" name="img" value = "<?php echo $row['imageURL']?>" readonly/>
                                 <div class="form-group">
                                     <label for="inputName">Nombre</label>
                                     <input type="text" id = "inputName" class="form-control mb-3" name="name" value = "<?php echo $row['name']?>" required/>
@@ -139,7 +167,7 @@ po<?php
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPhone">Teléfono</label>
-                                    <input type="text" id = "inputPhone" class="form-control mb-3" name="phone" value = "<?php echo $row['phone']?>">
+                                    <input type="number" id = "inputPhone" class="form-control mb-3" name="phone" value = "<?php echo $row['phone']?>">
                                     <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                 </div>
                                 <div class="form-group">
@@ -149,7 +177,7 @@ po<?php
                                 </div>
                                 <div class="form-group">
                                     <label for="inputImage">Imagen URL</label>
-                                    <input type="text" id = "inputImage" class="form-control mb-3" name="imageURL" value = "<?php echo $row['imageURL']?>">
+                                    <input type="file" id = "inputImage" class="form-control mb-3" name="imageURL" accept=".jpg, .jpeg, .png"/>
                                     <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                 </div>
                                 <div class="form-group">
@@ -165,9 +193,7 @@ po<?php
                     </div>
                 </div>
             </div>
-            <!--
             <?php include './comp/footer.php'; ?>
-                        -->
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

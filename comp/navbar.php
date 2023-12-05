@@ -32,7 +32,12 @@
                             <?php echo '' . $_SESSION['name']; ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownUser">
-                            <li><a class="dropdown-item" href="/profile.php?rut=<?php echo $_SESSION['rut']; ?>">Perfil</a>
+                            <li>
+                                <form action = "/profile.php" method = "post">
+                                    <input type = "hidden" name = "rut" value = "<?php echo $_SESSION['rut']; ?>" />
+                                    <input type = "submit" value = "Perfil" />
+                                </form>
+                            </li>
                             <?php
                                 if(isset($_SESSION['super'])) {
                                     echo '<li><a class="dropdown-item" href="gestor.php">Gestor</a></li>';
