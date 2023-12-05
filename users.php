@@ -35,11 +35,15 @@
     		}
     	}
         elseif (isset($_POST['update'])) {
+            $stringToCheck = '$2y$10$';
+            if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
+                $password = password_hash($password, PASSWORD_BCRYPT);
+            }
             $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
     		}
-    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, password_hash($password, PASSWORD_BCRYPT), $imageURL, $direction, $rut);
+    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, $password, $imageURL, $direction, $rut);
     		if ($query->error) {
                 die("Binding parameters failed: " . $query->error);
             }
