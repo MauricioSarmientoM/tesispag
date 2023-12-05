@@ -341,3 +341,35 @@
         </script>
     </body>
 </html>
+
+                            Informacion
+
+            <div class="container w-100 mt-5 p-5">
+                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createWorkModal">Inf</button>
+            </div>
+            <div class="modal fade" id="createWorkModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        Rut: <?php echo         $rut = $_POST['rut'];?>
+                        Nombre: <?php echo $name = $_POST['name'];  ?>
+                        Apellidos: <?php echo $surname = $_POST['surname'];  ?>
+                        Descripción: <?php echo $description = $_POST['description'];  ?>
+                        Email: <?php echo $email = $_POST['email'];  ?>
+                        Telefono: <?php echo $phone = $_POST['phone'];  ?>
+                        Contraseña: <?php echo $password = $_POST['password'];  ?>
+                        Imagen: <?php echo $imageURL = $_POST['imageURL'];  ?>
+                        Direccion: <?php echo $direction = $_POST['direction'];  ?>
+                        <?php echo   ?>
+                        <?php echo   ?>
+
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
