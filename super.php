@@ -1,14 +1,14 @@
 <?php
-    session_start();
+/*     session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    }
+    } */
 
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
 
-    if (isset($_POST['rut']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
+    if (isset($_POST['rut'])) {
         $rut = $_POST['rut'];
     	$name = $_POST['name'];
     	$surname = $_POST['surname'];
@@ -19,7 +19,7 @@
     	$imageURL = $_POST['imageURL'];
     	$direction = $_POST['direction'];
     	if (isset($_POST['insert'])) {
-     		$query = $con->prepare("INSERT INTO super (rut) VALUES (?)");
+     		$query = $con->prepare("INSERT INTO super rut VALUES (?)");
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
     		}
@@ -61,7 +61,7 @@
     $usersAmount = SelectSupersCount($con);
     /* datos de Supers */
     if (isset($_GET['search']) == false){  /* si no es una busqueda */
-        $res = SelectSupers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
+        $res = SelectSupers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showSupers);
     }
     else {
         $res = SelectSupersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showSupers, $_GET['search']);
@@ -206,7 +206,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="users.php" method="post">
+                            <form action="super.php" method="post">
                                 <div class="form-group">
                                     <label for="inputRut">Rut</label>
                                     <input type="text" id = "inputRut" class="form-control mb-3" name="rut" placeholder="123456789-0" required>
@@ -223,17 +223,7 @@
 
             <!-- End Create Super -->
 
-            <div class="container p-5">
-                <?php
-                    $usersAmount = $usersAmount->fetch_assoc();
-                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
-                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <a href="/super.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
-                <?php
-                    }
-                    $con->close();
-                ?>
-            </div>
+
         </main>
         <?php include './comp/footer.php'; ?>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

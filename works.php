@@ -1,8 +1,8 @@
 <?php
-    session_start();
+/*     session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    }
+    } */
 
     include("./backend/connection.php");
     include("./backend/select.php");

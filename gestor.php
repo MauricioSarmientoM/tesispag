@@ -1,8 +1,8 @@
 <?php
-    session_start();
+   /*  session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    }
+    } */
 ?>
 <!DOCTYPE html>
 <html lang="en-US">

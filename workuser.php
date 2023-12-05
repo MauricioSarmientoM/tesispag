@@ -1,8 +1,8 @@
 <?php
-    session_start();
+/*     session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    }
+    } */
 
     include("./backend/connection.php");
     include("./backend/select.php");
@@ -69,7 +69,7 @@
     $showWorks = 10;
     $worksAmount = SelectWorksCount($con);
     if (isset($_GET['search']) == false){  /* si no es una busqueda */
-        $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
+        $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
     }
     else {
         $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
@@ -123,6 +123,7 @@
                                     <th>Imagen</th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -138,8 +139,97 @@
                                     <th><?php  echo $row['abstract']?></th>
                                     <th><?php  echo $row['image']?></th>
 
+
+                                    <th><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></th>
+                
+
+            <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <table>
+                                            <table class="table" >
+                        <thead class="table-success table-striped" >
+                            <tr>
+                                <th>Rut</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th></th>
+                                </tr>
+                                    </thead>
+                                    <tbody>
+                                       <?php 
+                $resu = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
+                                    while($row = $resu->fetch_assoc()){
+                                        ?> 
+                                        <tr>
+                                        <th><?php echo $row['name'];  ?></th>
+                                        <th><?php echo $row['surname'];  ?></th>
+                                        <th><?php echo $row['rut'];?></th>
+                                        <th><?php echo $row['name'];  ?></th>
+                                        <th><?php echo $row['surname'];  ?></th>
+                                        <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal<?php echo $counter;?>">Eliminar</th>
+
+
+                                   <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Está seguro de que desea borrar a <?php echo '' . $row['name'] . ' ' . $row['surname']; ?>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <form action = "workuser.php" method = "post">
+                                                        <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                                        <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                                        <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                        </tr>
+
+                                <?php
+                                }
+                                ?>       
+
+                        <div>Rut: <?php echo $row['rut'];?></div>
+                        <div>Nombre: <?php echo $row['name'];  ?></div>
+                        <div>Apellidos: <?php echo $row['surname'];  ?></div>
+                        <div>Descripción: <?php echo $row['description'];  ?></div>
+                        <div>Email: <?php echo $row['email'];  ?></div>
+                        <div>Telefono: <?php echo $row['phone'];  ?></div>
+                        <div>Contraseña: <?php echo $row['password'];  ?></div>
+                        <div>Imagen: <?php echo $row['imageURL'];  ?></div>
+                        <div>Direccion: <?php echo $row['direction'];  ?></div>
+
+                        <?php ?>
+                        <?php ?>
+                                        </tbody>
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                                        </table>
+                                        
                                     <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</th>
                                     <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>                                   
+
+
+
                                 </tr>
                                 <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
