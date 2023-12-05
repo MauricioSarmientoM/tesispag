@@ -93,7 +93,7 @@
             <div class="container-fluid zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
                     <?php 
-                    for ($counter = 0, $row = $news->fetch_assoc(); $counter < $amountNews; $counter++, $row = $news->fetch_assoc()) {
+                    while ($row = $news->fetch_assoc()) {
                     ?>
                     <a href = "calendar.php?id=<?php echo $row['id'] ?>">
                         <div class="row my-4">
