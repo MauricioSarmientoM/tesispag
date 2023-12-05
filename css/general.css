@@ -34,6 +34,13 @@ a {
     color: white;
 }
 
+
+.zonasTitulo {
+    background-color: #364c59; color: white;
+    text-align: center;
+    padding: 1% 1%;
+}
+
 .navbarData {
     background-color: var(--udaColor);
     z-index: 10;

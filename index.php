@@ -25,7 +25,7 @@
             $amountWorks = 3;
             $works = SelectWorksOrderByDesc($con, $amountWorks);
             ?>
-            <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
+            <div class="container-fluid zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
                 <div class="row">
                     <?php $row = $works->fetch_assoc();?>
@@ -90,7 +90,7 @@
             $amountNews = 3;
             $news = SelectEventsWhereRealizationDateExist($con, $amountNews);
             ?>
-            <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Calendario</h1></div>
+            <div class="container-fluid zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
                     <?php 
                     for ($counter = 0, $row = $news->fetch_assoc(); $counter < $amountNews; $counter++, $row = $news->fetch_assoc()) {
