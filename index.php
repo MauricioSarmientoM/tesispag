@@ -1,13 +1,13 @@
 <?php
 session_start();
 if (!file_exists("uploads/")) {
-    mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
 }
 if (!file_exists("uploads/thesis/")) {
-    mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/thesis/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
 }
 if (!file_exists("uploads/users/")) {
-    mkdir($targetDirectory, 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/users/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
 }
 ?>
 <!DOCTYPE html>
