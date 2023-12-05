@@ -21,28 +21,61 @@
             <?php include './comp/banner.php'; ?>
 
             <!-- Zona de tesis -->
+            <?php
+            $amountWorks = 3;
+            $works = SelectWorksOrderByDesc($con, $amountWorks);
+            ?>
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
                 <div class="row">
-                    <div class="col-md-7 p-4 fotosCol">
-                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
-                        <div class="my-4 fotos"></div>
-                        <h2>Título - Área</h2>
-                    </div>
+                    <?php $row = $works->fetch_assoc();?>
+                    <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="col-md-7 mb-4 fotosCol">
+                        <?php
+                        if ($row['image'] === '' or $row['image'] == NULL) {
+                        ?>
+                        <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['name'] ?>">
+                        <?php
+                        }
+                        else {
+                        ?>
+                        <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
+                        <?php } ?>
+                        <h3 class = "px-2 py-1 shorterLine"><?php echo $row['name'] ?></h3>
+                        <h5 class = "px-2 py-1 shorterLine"><?php echo $row['area'] ?></h5>
+                        <p class = "px-4"><?php echo $row['abstract']?></p>
+                    </a>
                     <div class="col-md-4 ms-auto">
-                        <div class="row mb-4 pt-2 fotosCol ">
-                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
-                        <div class="my-2 fotos"></div>
-                        <h2>Título - Área</h2>
-                        </div>
-                        <div class="row mb-4 pt-2 fotosCol">
-                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="...">
-                        <div class="my-2 fotos"></div>
-                        <h2>Título - Área</h2>
-                        </div>
+                        <?php $row = $works->fetch_assoc();?>
+                        <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
+                            <?php
+                            if ($row['image'] === '' or $row['image'] == NULL) {
+                            ?>
+                            <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['name'] ?>">
+                            <?php
+                            }
+                            else {
+                            ?>
+                            <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
+                            <?php } ?>
+                            <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
+                        </a>
+                        <?php $row = $works->fetch_assoc();?>
+                        <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="row mb-4 fotosCol">
+                            <?php
+                            if ($row['image'] === '' or $row['image'] == NULL) {
+                            ?>
+                            <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['name'] ?>">
+                            <?php
+                            }
+                            else {
+                            ?>
+                            <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
+                            <?php } ?>
+                            <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
+                        </a>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="https://about:blank" target="_blank">
+                                <a class="link" href="thesis.php">
                                     <h1 class="mb-1">Más</h1>
                                 </a>
                             </button>
@@ -53,41 +86,43 @@
             <!-- end of Zona de tesis -->
             
             <!-- Zona de Calendario -->
+            <?php
+            $amountNews = 3;
+            $news = SelectEventsWhereRealizationDateExist($con, $amountNews);
+            ?>
             <div class="container-fluid pt-4 zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
-                    <div class="row my-4">
-                        <div class="col-md-4 my-2 py-2 fotosCol">
-                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_1">
+                    <?php 
+                    for ($counter = 0, $row = $news->fetch_assoc(); $counter < $amountNews; $counter++, $row = $news->fetch_assoc()) {
+                    ?>
+                    <a href = "calendar.php?id=<?php echo $row['id'] ?>">
+                        <div class="row my-4">
+                            <div class="col-md-4 my-2 fotosCol">
+                                <?php
+                                if ($row['image'] === '' or $row['image'] == NULL) {
+                                ?>
+                                <img class = "fotoCal" src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_<?php echo $row['title'] ?>">
+                                <?php
+                                }
+                                else {
+                                ?>
+                                <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['title'] ?>">
+                                <?php } ?>
+                            </div>
+                            <div class="col p-3">
+                                <h2 class = "shorterLine"><?php echo $row['title'] ?></h2>
+                                <h5>Fecha de Realización: <?php echo date("d/m/Y", strtotime($row['realizationDate'])); ?></h5>
+                                <p><?php echo $row['description'] ?></p>
+                            </div>
                         </div>
-                        <div class="col">
-                            <h2>Título</h2>
-                            <h3>Fecha del evento</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
-                        </div>
-                    </div>
-                    <div class="row my-4">
-                        <div class="col-md-4 my-2 py-2 fotosCol">
-                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_2">
-                        </div>
-                        <div class="col">
-                            <h2>Título</h2>
-                            <h3>Fecha del evento</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
-                        </div>
-                    </div>
-                    <div class="row my-4">
-                        <div class="col-md-4 my-2 py-2 fotosCol">
-                            <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_3">
-                        </div>
-                        <div class="col">
-                            <h2>Título</h2>
-                            <h3>Fecha del evento</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
-                        </div>
+                    </a>
+                    <?php
+                    }
+                    ?>
                     </div>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="https://about:blank" target="_blank">
+                                <a class="link" href="calendar.php">
                                     <h1 class="mb-1">Más</h1>
                                 </a>
                             </button>

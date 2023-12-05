@@ -1,4 +1,4 @@
-<div id="carouselCaptions" class="carousel slide boxShadow content" data-bs-ride="carousel">
+<div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel">
 	<div class="carousel-indicators">
         <?php
             include './backend/connection.php';
@@ -40,7 +40,8 @@
 					<p class = "white transBG"><?php echo $row['description']; ?></p>
 					</div>
 					<div class="col text-end">
-						<h2>Fecha publicar</h2>
+                        <h5>Fecha de Publicación</h5>
+						<h2><?php echo date("d/m/Y", strtotime($row['publicationDate'])); ?></h2>
 					</div>
 				</div>
 			</div>

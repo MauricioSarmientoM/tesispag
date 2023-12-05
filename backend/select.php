@@ -31,6 +31,12 @@
         return $result;
         //if ($result->num_rows > 0) {}  With this I can verify if the query got data
     }
+    function SelectWorksOrderByDesc ($con, $itemsPerPage) {
+        // Query to retrieve data by pages
+        $sql = "SELECT * FROM works ORDER BY id DESC LIMIT $itemsPerPage";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectWorksWhereId ($con, $pageNumber, $itemsPerPage, $id) {
         // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
@@ -47,6 +53,11 @@
     }
     function selectEvents($con, $limit) {
         $sql = "SELECT * FROM events LIMIT $limit";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsWhereRealizationDateExist($con, $limit) {
+        $sql = "SELECT * FROM events WHERE realizationDate <> '' ORDER BY realizationDate DESC LIMIT $limit";
         $result = $con->query($sql);
         return $result;
     }

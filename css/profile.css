@@ -1,5 +1,5 @@
 .profileIMG {
-    border: 2px solid #364c59;
+    border: 2px solid var(--udaColor);
     border-radius: 50%;
     height: 128px;
     width: 128px;
@@ -7,32 +7,37 @@
 }
 
 .perfil {
-    border: 2px solid #364c59;
+    border: 2px solid var(--udaColor);
     border-radius: 15px;
     background-color: lightgray;
 }
 
 .lateral {
-    border-right: 2px solid #364c59;
+    border-right: 2px solid var(--udaColor);
 }
 
 .vertical {
-    border-bottom: 2px solid #364c59;
+    border-bottom: 2px solid var(--udaColor);
 }
 
 .boton {
-    background-color: #364c59;
+    background-color: var(--udaColor);
     border: 2px solid black;
     border-radius: 10px;
 }
 
 .boton:hover {
-    background-color: #364c59;
+    background-color: var(--udaColor);
     color: white;
 }
 
 .boton:hover:active {
-    background-color: #364c59;
+    background-color: var(--udaColor);
     color: white;
-    border: 2px solid #364c59;
+    border: 2px solid var(--udaColor);
+}
+
+.thesisSpace {
+    background-color: var(--udaColor);
+    color: white;
 }

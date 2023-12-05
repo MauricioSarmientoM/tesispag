@@ -127,8 +127,18 @@
                     </div>
                 </div>
             </div>
-            <div>
-                
+            <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
+            <div class="container my-4">
+                <div class="row my-4">
+                    <div class="col-md-4 my-2 py-2 fotosCol">
+                        <img src="./src/FotosDIICC/_ALX9336.JPG" alt="Evento_1">
+                    </div>
+                    <div class="col">
+                        <h2>Título</h2>
+                        <h3>Fecha del evento</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio impedit optio libero, delectus, voluptatum quibusdam ipsa sapiente maxime sed sint vitae at officiis natus nihil fugit ea cupiditate ex! Provident?</p>
+                    </div>
+                </div>
             </div>
             <?php
                 include './comp/alerts.php';
