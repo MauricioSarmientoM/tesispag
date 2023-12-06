@@ -29,6 +29,13 @@ thead {
 }
 
 .img {
-    width: 128px;
-    height: 128px;
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 2px solid var(--udaColor);
+    border-radius: 50%;
+    background-color: white;
+    margin: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }

@@ -21,9 +21,20 @@
                 $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
                 // Move the uploaded file to the target directory
                 if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
-                    // Now, you can use $targetFilePath to store in the database
-                    $imageURL = $targetFilePath;
-                } else {
+                // Now, you can use $targetFilePath to store in the database
+                $imageURL = $targetFilePath;
+
+                $sql = "SELECT imageURL FROM users WHERE rut = $rut";
+                $resultImg = $con->query($sql);
+        
+                $imgurl = $resultImg->fetch_assoc();
+                // Check if the file exists
+                if (file_exists($imgurl['imageURL'])) {
+                    unlink($imgurl['imageURL']);
+                }
+                $resultImg->free();
+                
+            } else {
                     // File upload failed
                     $imageURL = '';
                     $_SESSION["error"] = "Error uploading the file.";

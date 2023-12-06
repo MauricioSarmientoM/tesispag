@@ -1,9 +1,8 @@
 <?php
-/*     session_start();
+    session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
     }
- */
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
@@ -15,9 +14,49 @@
 		$description = $_POST['description'];
     	$email = $_POST['email'];
         $phone = $_POST['phone'];
+        
 		$password = $_POST['password'];
-    	$imageURL = $_POST['imageURL'];
+        $stringToCheck = '$2y$10$';
+        if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
+            $password = password_hash($password, PASSWORD_BCRYPT);
+        }
+    	
+        if (isset($_FILES["imageURL"]) && $_FILES["imageURL"]["error"] == UPLOAD_ERR_OK) {
+            $targetDirectory = "uploads/users/";  // Set your target directory
+            $uploadedFileName = basename($_FILES["imageURL"]["name"]);
+            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
+                // Now, you can use $targetFilePath to store in the database
+                $imageURL = $targetFilePath;
+
+                $sql = "SELECT imageURL FROM users WHERE rut = $rut";
+                $resultImg = $con->query($sql);
+        
+                $imgurl = $resultImg->fetch_assoc();
+                // Check if the file exists
+                if (file_exists($imgurl['imageURL'])) {
+                    unlink($imgurl['imageURL']);
+                }
+                $resultImg->free();
+                
+            } else {
+                // File upload failed
+                $imageURL = '';
+                $_SESSION["error"] = "Error uploading the file.";
+            }
+        }
+        else {
+            if ($_POST['img'] === '' || $_POST['img'] == NULL) {
+                $imageURL = '';
+            }
+            else {
+                $imageURL = $_POST['img'];
+            }
+        }
+        
     	$direction = $_POST['direction'];
+        
     	if (isset($_POST['insert'])) {
      		$query = $con->prepare("INSERT INTO users (rut, name, surname, description, email, phone, password, imageURL, direction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     		if (!$query) {
@@ -35,10 +74,6 @@
     		}
     	}
         elseif (isset($_POST['update'])) {
-            $stringToCheck = '$2y$10$';
-            if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
-                $password = password_hash($password, PASSWORD_BCRYPT);
-            }
             $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
@@ -154,241 +189,251 @@
                 <div class="row mt-2">
                     <!-- crud de usuario -->
                     <table class="table" >
-                        <thead class="table-success table-striped" >
-                            <tr>
-                                <th>Imagen</th>
-                                <th>Rut</th>
-                                <th>Nombre</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <?php
                             $counter = 0;
                             while($row = $res->fetch_assoc()){
                             ?>
                             <tr>
-                                <td><image class = "img" src = "<?php  echo $row['imageURL']?>"</td>
+                                <?php
+                                if ($row['imageURL'] != NULL) {
+                                    echo '<td><image class = "img" src = "' . $row['imageURL'] . '"/></td>';
+                                }
+                                else{
+                                    echo '<td><image class = "img" src = "src/icons/iconPlaceholder.png"/></td>';
+                                }
+                                ?>
                                 <td><?php  echo $row['rut']?></td>
                                 <td><?php  echo $row['name'] . " " . $row['surname']?>
+                                <td>
+                                    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                                        <button class="btn Small btn-primary" data-bs-toggle="modal" data-bs-target="#InfoUserModal<?php echo $counter;?>">Información</button>
+                                        <button class="btn Small btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</button>
+                                        <button class="btn Small btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
+                                    </div>
+                                </td>
+
+                                <!-- Show Info -->
+
+                                <div class="modal fade" id="InfoUserModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div>Rut: <?php echo $row['rut'];?></div>
+                                                <div>Nombre: <?php echo $row['name'];  ?></div>
+                                                <div>Apellidos: <?php echo $row['surname'];  ?></div>
+                                                <div>Descripción: <?php echo $row['description'];  ?></div>
+                                                <div>Email: <?php echo $row['email'];  ?></div>
+                                                <div>Telefono: <?php echo $row['phone'];  ?></div>
+                                                <div>Contraseña: <?php echo $row['password'];  ?></div>
+                                                <div>Imagen: <?php echo $row['imageURL'];  ?></div>
+                                                <div>Direccion: <?php echo $row['direction'];  ?></div>
+
+                                                <?php ?>
+                                                <?php ?>
 
 
-                                    <th><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></th>
-                
-
-            <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                        <div>Rut: <?php echo $row['rut'];?></div>
-                        <div>Nombre: <?php echo $row['name'];  ?></div>
-                        <div>Apellidos: <?php echo $row['surname'];  ?></div>
-                        <div>Descripción: <?php echo $row['description'];  ?></div>
-                        <div>Email: <?php echo $row['email'];  ?></div>
-                        <div>Telefono: <?php echo $row['phone'];  ?></div>
-                        <div>Contraseña: <?php echo $row['password'];  ?></div>
-                        <div>Imagen: <?php echo $row['imageURL'];  ?></div>
-                        <div>Direccion: <?php echo $row['direction'];  ?></div>
-
-                        <?php ?>
-                        <?php ?>
-
-    	
-                        </div>
-                    </div>
-                </div>
-            </div>
-                                        
-                                        <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</th>
-                                        <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>
-                                    </tr>
-                                    <div class="modal fade" id="updateUserModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
-                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="users.php" method="post">
-                                                        <div class="form-group">
-                                                            <label for="inputRut">Rut</label>
-                                                            <input type="text" id = "inputRut" class="form-control mb-3" name="rut" value = "<?php echo $row['rut']?>" readonly>
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputName">Nombre</label>
-                                                            <input type="text" id = "inputName" class="form-control mb-3" name="name" value = "<?php echo $row['name']?>" required>
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputSurname">Apellidos</label>
-                                                            <input type="text" id = "inputSurname" class="form-control mb-3" name="surname" value = "<?php echo $row['surname']?>" required>
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputDesc">Descripción</label>
-                                                            <input type="text" id = "inputDesc" class="form-control mb-3" name="description" value = "<?php echo $row['description']?>">
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputEmail">Correo</label>
-                                                            <input type="email" id = "inputEmail" class="form-control mb-3" name="email" value = "<?php echo $row['email']?>">
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputPhone">Teléfono</label>
-                                                            <input type="text" id = "inputPhone" class="form-control mb-3" name="phone" value = "<?php echo $row['phone']?>">
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputPassword">Contraseña</label>
-                                                            <input type="password" id = "inputPassword" class="form-control mb-3" name="password" value = "<?php echo $row['password']?>" required>
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputImage">Imagen URL</label>
-                                                            <input type="text" id = "inputImage" class="form-control mb-3" name="imageURL" value = "<?php echo $row['imageURL']?>">
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputDirection">Dirección</label>
-                                                            <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" value = "<?php echo $row['direction']?>">
-                                                            <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                        </div>
-                                                        <div class="container d-flex justify-content-end">
-                                                            <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
-                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    ¿Está seguro de que desea borrar a <?php echo '' . $row['name'] . ' ' . $row['surname']; ?>?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <form action = "users.php" method = "post">
-                                                        <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
-                                                        <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                                        <input type = "hidden" name = "surname" value = "<?php echo $row['surname']; ?>"/>
-                                                        <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
-                                                    </form>
-                                                </div>
+                                </div>
+
+                                <!-- Update -->
+
+                                <div class="modal fade" id="updateUserModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="users.php" method="post"  enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label for="inputRut">Rut</label>
+                                                        <input type="text" id = "inputRut" class="form-control mb-3" name="rut" value = "<?php echo $row['rut']?>" readonly/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputName">Nombre</label>
+                                                        <input type="text" id = "inputName" class="form-control mb-3" name="name" value = "<?php echo $row['name']?>" required/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputSurname">Apellidos</label>
+                                                        <input type="text" id = "inputSurname" class="form-control mb-3" name="surname" value = "<?php echo $row['surname']?>" required/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputDesc">Descripción</label>
+                                                        <input type="text" id = "inputDesc" class="form-control mb-3" name="description" value = "<?php echo $row['description']?>"/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputEmail">Correo</label>
+                                                        <input type="email" id = "inputEmail" class="form-control mb-3" name="email" value = "<?php echo $row['email']?>"/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputPhone">Teléfono</label>
+                                                        <input type="text" id = "inputPhone" class="form-control mb-3" name="phone" value = "<?php echo $row['phone']?>"/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputPassword">Contraseña</label>
+                                                        <input type="password" id = "inputPassword" class="form-control mb-3" name="password" value = "<?php echo $row['password']?>" required/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputImage">Imagen</label>
+                                                        <input type="file" id = "inputImage" class="form-control mb-3" name="imageURL" accept=".jpg, .jpeg, .png"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputDirection">Dirección</label>
+                                                        <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" value = "<?php echo $row['direction']?>"/>
+                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                    </div>
+                                                    <div class="container d-flex justify-content-end">
+                                                        <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                <?php
-                                    $counter++;
-                                }
-                                ?>  
-                                <tr><td colspan="11" class="container w-100">
-            <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="users.php" method="post">
-                                <div class="form-group">
-                                    <label for="inputRut">Rut</label>
-                                    <input type="text" id = "inputRut" class="form-control mb-3" name="rut" placeholder="123456789-0" required>
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputName">Nombre</label>
-                                    <input type="text" id = "inputName" class="form-control mb-3" name="name" placeholder="Nombre" required>
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+
+                                <!-- DELETE -->
+
+                                <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Está seguro de que desea borrar a <?php echo '' . $row['name'] . ' ' . $row['surname']; ?>?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <form action = "users.php" method = "post">
+                                                    <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
+                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                                    <input type = "hidden" name = "surname" value = "<?php echo $row['surname']; ?>"/>
+                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputSurname">Apellidos</label>
-                                    <input type="text" id = "inputSurname" class="form-control mb-3" name="surname" placeholder="Apellido" required>
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                            </tr>
+                            <?php
+                                $counter++;
+                            }
+                            ?>
+                            
+                            <!-- Create user -->
+                            
+                            <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="users.php" method="post" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label for="inputRut">Rut</label>
+                                                    <input type="text" id = "inputRut" class="form-control mb-3" name="rut" placeholder="123456789-0" required/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputName">Nombre</label>
+                                                    <input type="text" id = "inputName" class="form-control mb-3" name="name" placeholder="Nombre" required/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputSurname">Apellidos</label>
+                                                    <input type="text" id = "inputSurname" class="form-control mb-3" name="surname" placeholder="Apellido" required/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDesc">Descripción</label>
+                                                    <input type="text" id = "inputDesc" class="form-control mb-3" name="description" placeholder="Descripción"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputEmail">Correo</label>
+                                                    <input type="email" id = "inputEmail" class="form-control mb-3" name="email" placeholder="alumno.universidad.20@alumnos.uda.cl"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputPhone">Teléfono</label>
+                                                    <input type="text" id = "inputPhone" class="form-control mb-3" name="phone" placeholder = "12345678"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputPassword">Contraseña</label>
+                                                    <input type="password" id = "inputPassword" class="form-control mb-3" name="password" placeholder="Contraseña" required/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputImage">Imagen</label>
+                                                    <input type="file" id = "inputImage" class="form-control mb-3" name="imageURL" accept=".jpg, .jpeg, .png"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDirection">Dirección</label>
+                                                    <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" placeholder="Dirección"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="container d-flex justify-content-end">
+                                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputDesc">Descripción</label>
-                                    <input type="text" id = "inputDesc" class="form-control mb-3" name="description" placeholder="Descripción">
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputEmail">Correo</label>
-                                    <input type="email" id = "inputEmail" class="form-control mb-3" name="email" placeholder="alumno.universidad.20@alumnos.uda.cl">
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPhone">Teléfono</label>
-                                    <input type="text" id = "inputPhone" class="form-control mb-3" name="phone" placeholder = "12345678">
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPassword">Contraseña</label>
-                                    <input type="password" id = "inputPassword" class="form-control mb-3" name="password" placeholder="Contraseña" required>
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputImage">Imagen URL</label>
-                                    <input type="text" id = "inputImage" class="form-control mb-3" name="imageURL" placeholder="URL?">
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDirection">Dirección</label>
-                                    <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" placeholder="Dirección">
-                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                </div>
-                                <div class="container d-flex justify-content-end">
-                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </td></tr>      
+                            </div>
                         </tbody>
                     </table>
-                </div>
-                <div class="container text-center my-4">
-                    <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
+                    <div class="row text-center m-4">
+                        <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Create User -->
 
             <!-- End Create User -->
-
-            <div class="container text-center pb-4">
-                <?php
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    <?php
                     $usersAmount = $usersAmount->fetch_assoc();
                     $pagesAmount = ceil($usersAmount['count'] / $showUsers);
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <a href="/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
-                <?php
-                    }
-                    $con->close();
-                ?>
+                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
+                    <?php } $con->close();?>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="container text-center pb-4">
             </div>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
