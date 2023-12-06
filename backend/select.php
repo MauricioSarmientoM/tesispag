@@ -20,6 +20,15 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersNotInIdWork($con, $pageNumber, $itemsPerPage, $idWork) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM users WHERE rut NOT IN (SELECT rut FROM workuser WHERE idWork = ?) LIMIT ? OFFSET ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("iii", $idWork, $itemsPerPage, $offset);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
     function SelectUsersCount($con) {
         $sql = "SELECT COUNT(rut) as count FROM users";
         $result = $con->query($sql);

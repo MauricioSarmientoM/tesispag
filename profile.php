@@ -103,7 +103,27 @@
         }
     }
     elseif (isset($_POST['insert'])) {
-        if (isset($_POST['name'])) {
+        if (isset($_POST['collabRut'])) {
+            $name = $_POST['name'];
+            $collabRut = $_POST['collabRut'];
+            $id = $_POST['id'];
+            
+            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
+    		if (!$query) {
+    			die("Preparation failed: " . $con->error);
+    		}
+    		$query->bind_param("ii", $collabRut, $id);
+    		if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+    		if ($query->execute()) {
+    			$_SESSION["success"] = '¡Se ha creado correctamente!';
+    		}
+    		else {
+    			$_SESSION["warning"] = $query->error;
+    		}
+        }
+        elseif (isset($_POST['name'])) {
         	$name = $_POST['name'];
         	$obj = $_POST['obj'];
     		$area = $_POST['area'];
@@ -221,7 +241,58 @@
     </head>
     <body>
         <!-- Navbar -->
-        <?php include './comp/navbar.php'; ?>
+        <?php
+        include './comp/navbar.php'; 
+        if (isset($_POST['addCollab'])) {
+            $id = $_POST['id'];
+            $name = $_POST['name'];
+            $collab = SelectUsersNotInIdWork($con, 1, 10, $id, $rut);
+            ?>
+            <main>
+                <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
+                <div class = "thesisMenu py-4">
+                    <div class="container">
+            <?php
+            while ($data = $collab->fetch_assoc()) {
+                ?>
+                <div class="container row my-4">
+                    <div class="col my-2">
+                        <?php
+                        if ($data['imageURL'] != NULL) {
+                            echo '<img class = "collabPhoto" src = "' . $data['imageURL'] . '"/>';
+                        }
+                        else{
+                            echo '<img class = "collabPhoto" src = "src/icons/iconPlaceholder.png"/>';
+                        }
+                        ?>
+                    </div>
+                    <div class="col p-3">
+                        <h4>RUT</h4>
+                        <p><?php echo $data['rut']; ?></p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Nombre</h4>
+                        <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
+                    </div>
+                    <div class="col p-3">
+                        <form action = "profile.php" method = "post">
+                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                            <input type = "hidden" name = "id" value = "<?php echo $id; ?>"/>
+                            <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
+                            <input type = "hidden" name = "name" value = "<?php echo $name; ?>"/>
+                            <input type = "submit" name = "insert" class="btn btn-success" value = "Añadir"/>
+                        </form>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+                    </div>
+                </div>
+        <?php
+        }
+        else {
+        ?>
         <main>
             <?php
                 $res = SelectUsersWhereRut($con, 1, 1, $rut);
@@ -232,7 +303,7 @@
                     <div class="col lateral text-center">
                         <div class ="row-md-1 my-4">
                         <?php
-                            if ($row['imageURL'] != NULL || $row['imageURL'] !== '') {
+                            if ($row['imageURL'] != NULL) {
                                 echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
                             }
                             else{
@@ -245,6 +316,7 @@
                         </div>
                         <div class ="row-md-1 my-4">
                         <?php
+                            if (isset($_SESSION['rut']))
                             if ($_SESSION['rut'] == $rut) {
                                 echo '<button class="btn boton text-center" data-bs-toggle="modal" data-bs-target="#updateModal">Editar Perfil</button>';
                             }
@@ -347,7 +419,7 @@
                         <div class="row my-4">
                             <div class="col-md-2 my-2 thesisContainer">
                             <?php
-                                if ($row['image'] != NULL || $row['image'] !== '') {
+                                if ($row['image'] != NULL) {
                                     echo '<img class = "thesisPhoto" src = "' . $row['image'] . '"/>';
                                 }
                                 else{
@@ -361,8 +433,17 @@
                             </div>
                             <div class="col-md-2">
                                 <h4>Colaboradores</h4>
+                                <?php
+                                $collab = SelectUsersWhereIdWorkButNoRut($con, 1, 10, $row['id'], $rut);
+
+                                while ($data = $collab->fetch_assoc()) {
+                                    echo '<form action="profile.php" method="post"><input type="hidden" name="rut" value = ' . $data["rut"] . ' readonly/>';
+                                    echo '<input type = "submit" value = "' . $data['name'] . ' ' . $data['surname'] .'"/></form>';
+                                }
+                                ?>
                             </div>
                             <?php
+                            if (isset($_SESSION['rut']))
                             if ($_SESSION['rut'] == $rut) {
                             ?>
                             <div class="col-md-1">
@@ -436,7 +517,7 @@
                                         <div class="row my-4">
                                             <div class="col my-2">
                                             <?php
-                                                if ($data['imageURL'] != NULL || $data['imageURL'] !== '') {
+                                                if ($data['imageURL'] != NULL) {
                                                     echo '<img class = "collabPhoto" src = "' . $data['imageURL'] . '"/>';
                                                 }
                                                 else{
@@ -459,7 +540,12 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>>Añadir Colaborador</button>
+                                        <form action = "profile.php" method = "post">
+                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                            <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                            <input type = "submit" name = "addCollab" class="btn btn-success" value = "Añadir Colaborador"/>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -489,6 +575,7 @@
                     <?php
                         $counter++;
                     }
+                    if (isset($_SESSION['rut']))
                     if ($_SESSION['rut'] == $rut) {
                         echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
                     }
@@ -542,8 +629,11 @@
                     </div>
                 </div>
             </div>
-            
-            <?php include './comp/footer.php'; ?>
+        </div>
+        <?php
+        }
+        include './comp/footer.php';
+        ?>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
