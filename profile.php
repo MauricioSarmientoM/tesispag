@@ -117,7 +117,7 @@
                 die("Binding parameters failed: " . $query->error);
             }
     		if ($query->execute()) {
-    			$_SESSION["success"] = '¡Se ha creado correctamente!';
+    			$_SESSION["success"] = "¡Se ha añadido colaborador a $name!";
     		}
     		else {
     			$_SESSION["warning"] = $query->error;
@@ -184,46 +184,67 @@
         }
     }
     elseif (isset($_POST['delete'])) {
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $id);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "$name was deleted successfully!";
+        if (isset($_POST['collabRut'])) {
+            $name = $_POST['name'];
+            $collabRut = $_POST['collabRut'];
+            $id = $_POST['id'];
+            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ? AND rut = ?");
+            if (!$query) {
+                die("Preparation failed: " . $con->error);
+            }
+            $query->bind_param("ii", $id, $collabRut);
+            if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+            if ($query->execute()) {
+                $_SESSION["success"] = "Se ha quitado colaborador de $name.";
+            }
+            else {
+                $_SESSION["warning"] = $query->error;
+            }
         }
         else {
-            $_SESSION["warning"] = $query->error;
-        }
-
-        $sql = "SELECT image FROM works WHERE id = $id";
-        $result = $con->query($sql);
+            $id = $_POST['id'];
+            $name = $_POST['name'];
+            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
+            if (!$query) {
+                die("Preparation failed: " . $con->error);
+            }
+            $query->bind_param("i", $id);
+            if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+            if ($query->execute()) {
+                $_SESSION["success"] = "$name was deleted successfully!";
+            }
+            else {
+                $_SESSION["warning"] = $query->error;
+            }
     
-        $row = $result->fetch_assoc();
-        // Check if the file exists
-        if (file_exists($row['image'])) {
-            unlink($row['image']);
-        }
-        $result->free();
+            $sql = "SELECT image FROM works WHERE id = $id";
+            $result = $con->query($sql);
         
-        $query = $con->prepare("DELETE FROM works WHERE id = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $id);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "$name was deleted successfully!";
-        }
-        else {
-            $_SESSION["warning"] = $query->error;
+            $row = $result->fetch_assoc();
+            // Check if the file exists
+            if (file_exists($row['image'])) {
+                unlink($row['image']);
+            }
+            $result->free();
+            
+            $query = $con->prepare("DELETE FROM works WHERE id = ?");
+            if (!$query) {
+                die("Preparation failed: " . $con->error);
+            }
+            $query->bind_param("i", $id);
+            if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+            if ($query->execute()) {
+                $_SESSION["success"] = "$name was deleted successfully!";
+            }
+            else {
+                $_SESSION["warning"] = $query->error;
+            }
         }
     }
 ?>
@@ -252,6 +273,10 @@
                 <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
                 <div class = "thesisMenu py-4">
                     <div class="container">
+                    <form action = "profile.php" method = "post">
+                        <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                        <input type = "submit" class="btn btn-danger" value = "Volver"/>
+                    </form>
             <?php
             while ($data = $collab->fetch_assoc()) {
                 ?>
@@ -532,6 +557,15 @@
                                             <div class="col p-3">
                                                 <h4>Nombre</h4>
                                                 <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
+                                            </div>
+                                            <div class="col p-3">
+                                                <form action = "profile.php" method = "post">
+                                                    <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                                    <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                                    <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
+                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Quitar"/>
+                                                </form>
                                             </div>
                                         </div>
                                         <?php
