@@ -240,22 +240,24 @@
                                 <td><?php  echo $row['rut']?></td>
                                 <td><?php  echo $row['name'] . " " . $row['surname']?>
                                 <td>
+                                    <div class="btn-group" role="group" aria-label="Vertical button group">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoUserModal<?php echo $counter;?>">Información</button>
+                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</button>
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
+                                    </div>
+                                </td>
+                                <td>
                                     <form action = "users.php" method = "post">
                                         <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
-                                        <div class="btn-group" role="group" aria-label="Vertical button group">
-                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoUserModal<?php echo $counter;?>">Información</button>
-                                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</button>
-                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
-                                            <?php
-                                            $super = SelectSupersWhereRut($con, 1, 1, $row['rut']);
-                                            if ($super->num_rows > 0) {
-                                                echo '<input type = "submit" name = "deleteS" class="btn btn-warning" value = "Quitar Privilegios"/>';
-                                            }
-                                            else {
-                                                echo '<input type = "submit" name = "insertS" class="btn btn-success" value = "Dar Privilegios"/>';
-                                            }
-                                            ?>
-                                        </div>
+                                        <?php
+                                        $super = SelectSupersWhereRut($con, 1, 1, $row['rut']);
+                                        if ($super->num_rows > 0) {
+                                            echo '<input type = "submit" name = "deleteS" class="btn btn-warning" value = "Quitar Privilegios"/>';
+                                        }
+                                        else {
+                                            echo '<input type = "submit" name = "insertS" class="btn btn-success" value = "Dar Privilegios"/>';
+                                        }
+                                        ?>
                                     </form>
                                 </td>
 

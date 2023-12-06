@@ -1,8 +1,8 @@
 <?php
-   /*  session_start();
+    session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    } */
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -53,14 +53,6 @@
                         <a href="users.php"><h2>Gestionar Usuarios</h2></a>
                     </div>
                 </div>
-                <!--div class="row mt-4 d-flex zona">
-                    <div class="col-md-1 zona-imagen">
-                        <img class="d-flex mx-auto my-4" src="src\icons\adminLogo.png" alt="">
-                    </div>
-                    <div class="col my-auto">
-                        <a href="super.php"><h2>Gestionar Administración</h2></a>
-                    </div>
-                </div-->
                 <div class="row mt-4 d-flex zona">
                     <div class="col-md-1 zona-imagen">
                         <img class="d-flex mx-auto my-4" src="src\icons\workLogo.png" alt="">

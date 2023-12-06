@@ -1,8 +1,8 @@
 <?php
-/*     session_start();
+    session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    } */
+    }
 
     include("./backend/connection.php");
     include("./backend/select.php");
@@ -13,7 +13,27 @@
     	$obj = $_POST['obj'];
 		$area = $_POST['area'];
     	$abstract = $_POST['abstract'];
-        $image = $_POST['image'];
+
+        if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
+            $targetDirectory = "uploads/thesis/";  // Set your target directory
+            $uploadedFileName = basename($_FILES["image"]["name"]);
+            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+                $image = $targetFilePath;
+            } else {
+                $image = '';
+                $_SESSION["error"] = "Error uploading the file.";
+            }
+        }
+        else {
+            if ($_POST['img'] === '' || $_POST['img'] == NULL) {
+                $image = '';
+            }
+            else {
+                $image = $_POST['img'];
+            }
+        }
+        
     	if (isset($_POST['insert'])) {
      		$query = $con->prepare("INSERT INTO works (name, obj, area, abstract, image) VALUES (?, ?, ?, ?, ?)");
     		if (!$query) {
@@ -50,6 +70,33 @@
     }
     elseif (isset($_POST['delete'])) {
         $id = $_POST['id'];
+        
+        $name = $_POST['name'];
+        $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $id);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "$name was deleted successfully!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
+        }
+
+        $sql = "SELECT image FROM works WHERE id = $id";
+        $result = $con->query($sql);
+
+        $row = $result->fetch_assoc();
+        // Check if the file exists
+        if (file_exists($row['image'])) {
+            unlink($row['image']);
+        }
+        $result->free();
+
         $query = $con->prepare("DELETE FROM works WHERE id = ?");
         if (!$query) {
             die("Preparation failed: " . $con->error);
@@ -129,15 +176,23 @@
                                 while($row = $res->fetch_assoc()){
                             ?>
                             <tr>
-                                <th><?php  echo $row['image']?></th>
-                                <th><?php  echo $row['id']?></th>
-                                <th><?php  echo $row['name']?></th>
-                                <th><?php  echo $row['obj']?></th>
-                                <th><?php  echo $row['area']?></th>
-                                <th><?php  echo $row['abstract']?></th>
+                                <td>
+                                <?php
+                                if ($row['image'] != NULL) {
+                                    echo '<img class = "thesisPhoto" src = "' . $row['image'] . '"/>';
+                                }
+                                else{
+                                    echo '<img class = "thesisPhoto" src = "src/FotosDIICC/_ALX9336.JPG"/>';
+                                }
+                                ?>
+                                </td>
+                                <td><?php  echo $row['name']?></td>
+                                <td><?php  echo $row['obj']?></td>
+                                <td><?php  echo $row['area']?></td>
+                                <td><?php  echo $row['abstract']?></td>
 
-                                <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</th>
-                                <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>                                   
+                                <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</td>
+                                <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>                                   
                             </tr>
                             <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -190,7 +245,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                ¿Está seguro de que desea borrar a <?php echo '' . $row['name'] . ' ' . $row['surname']; ?>?
+                                                ¿Está seguro de que desea borrar a <?php echo $row['name']; ?>?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -224,16 +279,7 @@
                         $worksAmount = $worksAmount->fetch_assoc();
                         $pagesAmount = ceil($worksAmount['count'] / $showWorks);
                         for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                            <a href="/works.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
-                    <?php
-                        }
-                        $con->close();
-                    ?>
-                    <?php
-                    $usersAmount = $usersAmount->fetch_assoc();
-                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
-                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
+                            <li class="page-item"><a href="/works.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
                     <?php } $con->close();?>
                     <li class="page-item disabled">
                         <a class="page-link" href="#">Next</a>

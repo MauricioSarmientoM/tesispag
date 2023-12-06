@@ -39,3 +39,14 @@ thead {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
+.thesisPhoto {
+    object-fit: cover;
+    width: 186px;
+    height: 124px;
+    margin: 0;
+    border-radius: 2rem;
+    border: 2px solid var(--udaColor);
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
