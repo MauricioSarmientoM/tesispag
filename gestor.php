@@ -53,14 +53,14 @@
                         <a href="users.php"><h2>Gestionar Usuarios</h2></a>
                     </div>
                 </div>
-                <div class="row mt-4 d-flex zona">
+                <!--div class="row mt-4 d-flex zona">
                     <div class="col-md-1 zona-imagen">
                         <img class="d-flex mx-auto my-4" src="src\icons\adminLogo.png" alt="">
                     </div>
                     <div class="col my-auto">
                         <a href="super.php"><h2>Gestionar Administración</h2></a>
                     </div>
-                </div>
+                </div-->
                 <div class="row mt-4 d-flex zona">
                     <div class="col-md-1 zona-imagen">
                         <img class="d-flex mx-auto my-4" src="src\icons\workLogo.png" alt="">

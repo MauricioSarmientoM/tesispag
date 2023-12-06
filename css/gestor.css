@@ -29,8 +29,8 @@ thead {
 }
 
 .img {
-    width: 96px;
-    height: 96px;
+    width: 64px;
+    height: 64px;
     object-fit: cover;
     border: 2px solid var(--udaColor);
     border-radius: 50%;

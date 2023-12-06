@@ -130,6 +130,40 @@
 			$_SESSION["warning"] = $query->error;
     	}
     }
+    elseif (isset($_POST['insertS'])) {
+        $rut = $_POST['rut'];
+        $query = $con->prepare("INSERT INTO super (rut) VALUES (?)");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $rut);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "¡Otorgados privilegios!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
+        }
+    }
+    elseif (isset($_POST['deleteS'])) {
+        $rut = $_POST['rut'];
+        $query = $con->prepare("DELETE FROM super WHERE rut = ?");
+    	if (!$query) {
+    		die("Preparation failed: " . $con->error);
+		}
+    	$query->bind_param("i", $rut);
+    	if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+    	if ($query->execute()) {
+			$_SESSION["success"] = "Eliminando derechos.";
+    	}
+    	else {
+			$_SESSION["warning"] = $query->error;
+    	}
+    }
 
     $showUsers = 10;
     $usersAmount = SelectUsersCount($con);
@@ -206,11 +240,23 @@
                                 <td><?php  echo $row['rut']?></td>
                                 <td><?php  echo $row['name'] . " " . $row['surname']?>
                                 <td>
-                                    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                                        <button class="btn Small btn-primary" data-bs-toggle="modal" data-bs-target="#InfoUserModal<?php echo $counter;?>">Información</button>
-                                        <button class="btn Small btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</button>
-                                        <button class="btn Small btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
-                                    </div>
+                                    <form action = "users.php" method = "post">
+                                        <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
+                                        <div class="btn-group" role="group" aria-label="Vertical button group">
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoUserModal<?php echo $counter;?>">Información</button>
+                                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</button>
+                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
+                                            <?php
+                                            $super = SelectSupersWhereRut($con, 1, 1, $row['rut']);
+                                            if ($super->num_rows > 0) {
+                                                echo '<input type = "submit" name = "deleteS" class="btn btn-warning" value = "Quitar Privilegios"/>';
+                                            }
+                                            else {
+                                                echo '<input type = "submit" name = "insertS" class="btn btn-success" value = "Dar Privilegios"/>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </form>
                                 </td>
 
                                 <!-- Show Info -->
@@ -223,7 +269,6 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-
                                                 <div>Rut: <?php echo $row['rut'];?></div>
                                                 <div>Nombre: <?php echo $row['name'];  ?></div>
                                                 <div>Apellidos: <?php echo $row['surname'];  ?></div>
@@ -233,11 +278,6 @@
                                                 <div>Contraseña: <?php echo $row['password'];  ?></div>
                                                 <div>Imagen: <?php echo $row['imageURL'];  ?></div>
                                                 <div>Direccion: <?php echo $row['direction'];  ?></div>
-
-                                                <?php ?>
-                                                <?php ?>
-
-
                                             </div>
                                         </div>
                                     </div>
