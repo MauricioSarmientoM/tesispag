@@ -57,3 +57,15 @@ main {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
+.collabPhoto {
+    object-fit: cover;
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--udaColor);
+    border-radius: 50%;
+    background-color: white;
+    margin: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

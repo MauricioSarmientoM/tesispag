@@ -158,10 +158,52 @@
     		else {
     			$_SESSION["warning"] = $query->error;
     		}
-
         }
     	else {
     		$_SESSION["warning"] = "Los datos necesarios no fueron entregados.";
+        }
+    }
+    elseif (isset($_POST['delete'])) {
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $id);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "$name was deleted successfully!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
+        }
+
+        $sql = "SELECT image FROM works WHERE id = $id";
+        $result = $con->query($sql);
+    
+        $row = $result->fetch_assoc();
+        // Check if the file exists
+        if (file_exists($row['image'])) {
+            unlink($row['image']);
+        }
+        $result->free();
+        
+        $query = $con->prepare("DELETE FROM works WHERE id = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $id);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "$name was deleted successfully!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
         }
     }
 ?>
@@ -292,6 +334,7 @@
             </div>
             <?php
             $res = SelectWorksWhereRut($con, 1, 10, $rut);
+
             if ($res->num_rows > 0 || $_SESSION['rut'] == $rut) {
             ?>
             <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
@@ -325,8 +368,8 @@
                             <div class="col-md-1">
                                 <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
                                     <button class="btn boton" data-bs-toggle="modal" data-bs-target="#updateThesisModal<?php echo $counter; ?>">Editar</button>
-                                    <button class="btn boton" data-bs-toggle="modal" data-bs-target="#createThesisModal">Colaborar</button>
-                                    <button class="btn boton" data-bs-toggle="modal" data-bs-target="#createThesisModal">Eliminar</button>
+                                    <button class="btn boton" data-bs-toggle="modal" data-bs-target="#collabModal<?php echo $counter;?>">Colaborar</button>
+                                    <button class="btn boton" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
                                 </div>
                             </div>
                         </div>
@@ -372,6 +415,72 @@
                                             <div class="container d-flex justify-content-end">
                                                 <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
                                             </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="collabModal<?php echo $counter;?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Colaborar</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
+                                        $collab = SelectUsersWhereIdWorkButNoRut($con, 1, 10, $row['id'], $rut);
+
+                                        while ($data = $collab->fetch_assoc()) {
+                                        ?>
+                                        <div class="row my-4">
+                                            <div class="col my-2">
+                                            <?php
+                                                if ($data['imageURL'] != NULL || $data['imageURL'] !== '') {
+                                                    echo '<img class = "collabPhoto" src = "' . $data['imageURL'] . '"/>';
+                                                }
+                                                else{
+                                                    echo '<img class = "collabPhoto" src = "src/icons/iconPlaceholder.png"/>';
+                                                }
+                                            ?>
+                                            </div>
+                                            <div class="col p-3">
+                                                <h4>RUT</h4>
+                                                <p><?php echo $data['rut']; ?></p>
+                                            </div>
+                                            <div class="col p-3">
+                                                <h4>Nombre</h4>
+                                                <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>>Añadir Colaborador</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Está seguro de que desea borrar <?php echo $row['name']; ?>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <form action = "profile.php" method = "post">
+                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                            <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                            <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
                                         </form>
                                     </div>
                                 </div>
