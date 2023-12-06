@@ -86,13 +86,14 @@
                 include './comp/alerts.php';
             ?>
 
-            <div class="container w-100 mt-5">
-                <form action="users.php" method="get">
 
- <div class="search-box">
-    <button class="btn-search"><i class="bi bi-search"></i></button>
-    <input type="text" class="input-search" placeholder="Inserte busqueda">
-  </div>
+            <div class="container w-100 mt-5 se">
+                <form action="super.php" method="get" class="search-bar">
+	<input type="search" name="search" required>
+	<button class="search-btn" type="submit">
+		<span>Search</span>
+	</button>
+</form> </div>
 
  <!--                    <label for="searchinput"><h3>Buscar</h3></label>
 
@@ -129,6 +130,7 @@
                                 <th>Imagen</th>
                                 <th>Direccion</th> -->
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -148,6 +150,39 @@
                                         <th><?php//  echo $row['direction']?></th> -->
                                         
 <!--                                         <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php// echo $counter;?>">Editar</th> -->
+
+
+                                    <th><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></th>
+                
+
+            <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <div>Rut: <?php echo $row['rut'];?></div>
+                        <div>Nombre: <?php echo $row['name'];  ?></div>
+                        <div>Apellidos: <?php echo $row['surname'];  ?></div>
+                        <div>Descripción: <?php echo $row['description'];  ?></div>
+                        <div>Email: <?php echo $row['email'];  ?></div>
+                        <div>Telefono: <?php echo $row['phone'];  ?></div>
+                        <div>Contraseña: <?php echo $row['password'];  ?></div>
+                        <div>Imagen: <?php echo $row['imageURL'];  ?></div>
+                        <div>Direccion: <?php echo $row['direction'];  ?></div>
+
+                        <?php ?>
+                        <?php ?>
+
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
+
                                          <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php //echo $counter;?>">Eliminar</th>
                                     </tr>
                                     <!--
@@ -198,7 +233,7 @@
                                     $counter++;
                                 }
                                 ?>   
-                                <tr><td colspan="4" class="container w-100">            
+                                <tr><td colspan="5" class="container w-100">            
                                     
                                 <div class="container w-100">
                 <button type="button" class="buttonadd" data-bs-toggle="modal" data-bs-target="#createSuperModal"><h1>+</h1></button>

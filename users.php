@@ -101,8 +101,20 @@
                 include './comp/alerts.php';
             ?>
 
+
+
+
             <div class="container w-100 mt-5">
-                <form action="users.php" method="get">
+
+            <div class="container w-100 mt-5 se">
+                <form action="works.php" method="get" class="search-bar">
+	<input type="search" name="search" required>
+	<button class="search-btn" type="submit">
+		<span>Search</span>
+	</button>
+</form> </div>
+            
+<!--                 <form action="users.php" method="get">
                     <label for="searchinput"><h2>Buscar</h2></label>
                     <div class="row"> 
                         <div class="col-md-2">
@@ -115,7 +127,7 @@
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
             <div class="w-100 mt-5">
              <!-- crud de usuario -->

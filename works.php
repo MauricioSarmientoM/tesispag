@@ -94,26 +94,18 @@
                 include './comp/alerts.php';
             ?>
 
-            <table> 
-                <tr></tr>
-            </table>
 
-            <div class="container w-100 mt-5">
-                <form action="works.php" method="get">
-                    <label for="searchinput"><h2>Buscar</h2></label>
-                    <div class="row"> 
-                        <div class="col-md-2">
-                            <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
-                        </div>
-                        <div class="col-md-2">
-                            <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+
+            <div class="container w-100 mt-5 se">
+                <form action="works.php" method="get" class="search-bar">
+	<input type="search" name="search" required>
+	<button class="search-btn" type="submit">
+		<span>Search</span>
+	</button>
+</form> </div>
+                   
+              
+
              <div class="mt-5">
                 <div class="row">
                     <div >
@@ -126,6 +118,7 @@
                                     <th>Area</th>
                                     <th>Abstract</th>
                                     <th>Imagen</th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -143,10 +136,38 @@
                                     <td><?php  echo $row['abstract']?></td>
                                     <td><?php  echo $row['image']?></d>
 
+
+                                    <td><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></td>
+
+                                                <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <div>Id: <?php echo $row['id'];?></div>
+                        <div>Título: <?php echo $row['name'];  ?></div>
+                        <div>Objetivos: <?php echo $row['obj'];  ?></div>
+                        <div>Area: <?php echo $row['area'];  ?></div>
+                        <div>Abstract: <?php echo $row['abstract'];  ?></div>
+                        <div>Imamgen URL: <?php echo $row['image'];  ?></div>
+
+                        <?php ?>
+                        <?php ?>
+
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
+
                                     <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</td>
-                                    <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>                                   
-                                </tr>
-                                <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+<div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -189,6 +210,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>
+
                                     <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -210,12 +235,20 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                </tr>
+                                
+
+
+
+
                                 <?php
                                     $counter++;
                                 }
                                 ?>    
 
-                                <tr><td colspan="8" class="container w-100">            
+                                <tr><td colspan="9" class="container w-100">            
                                     
                                 <div class="container w-100">
                 <button type="button" class="buttonadd" data-bs-toggle="modal" data-bs-target="#createWorkModal"><h1>+</h1></button>
@@ -279,7 +312,7 @@
                     $worksAmount = $worksAmount->fetch_assoc();
                     $pagesAmount = ceil($worksAmount['count'] / $showWorks);
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <a href="/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
+                        <a href="/works.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
                 <?php
                     }
                     $con->close();

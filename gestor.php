@@ -28,8 +28,24 @@
             ?>
             <!-- gestorbarra -->
             <div class="container p-5" style="background-color: white;">
-                <h1>Gestor de base de datos</h1>
-                <div class="foption">
+                <div  class="container mb-5"><h1>Gestor de base de datos</h1></div> 
+
+                                <div class="container mb-2 w-100">
+                                    <a href="users.php"><button type="button" class="buttonadd" ><h3>Usuarios</h3></button></a>
+                
+            </div>
+
+                                <div class="container mb-2 w-100">
+                <a href="super.php"><button type="button" class="buttonadd" ><h3>Administracion</h3></button></a>
+            </div>
+
+                                <div class="container mb-2 w-100">
+                                    
+                                    <a href="works.php"><button type="button" class="buttonadd" ><h3>Trabajos</h3></button></a>
+                
+            </div>
+
+<!--                 <div class="foption">
                     <span>
                         <img class="icon" src="src/u.png" alt="">
                     </span>
@@ -46,8 +62,8 @@
                         <img class="icon" src="src/w.png" alt="">
                     </span>
                     <a href="works.php"><span>Trabajos</span></a>
-                </div>
-            </div>
+                </div>-->
+            </div> 
             <?php include './comp/footer.php'; ?>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
