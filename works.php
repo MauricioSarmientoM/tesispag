@@ -1,8 +1,8 @@
 <?php
-    session_start();
+/*     session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    }
+    } */
 
     include("./backend/connection.php");
     include("./backend/select.php");
@@ -83,6 +83,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
@@ -93,25 +94,21 @@
                 include './comp/alerts.php';
             ?>
 
-            <div class="container w-100 mt-5">
-                <form action="works.php" method="get">
-                    <label for="searchinput"><h2>Buscar</h2></label>
-                    <div class="row"> 
-                        <div class="col-md-2">
-                            <a href="gestor.php"><button type="button" class="btn btn-danger">Volver</button></a>
-                        </div>
-                        <div class="col-md-2">
-                            <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda"/>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+
+
+            <div class="container w-100 mt-5 se">
+                <form action="works.php" method="get" class="search-bar">
+	<input type="search" name="search" required>
+	<button class="search-btn" type="submit">
+		<span>Search</span>
+	</button>
+</form> </div>
+                   
+              
+
              <div class="mt-5">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div >
                         <table class="table" >
                             <thead class="table-success table-striped" >
                                 <tr>
@@ -123,6 +120,7 @@
                                     <th>Imagen</th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,17 +129,45 @@
                                     while($row = $res->fetch_assoc()){
                                 ?>
                                 <tr>
-                                    <th><?php  echo $row['id']?></th>
-                                    <th><?php  echo $row['name']?></th>
-                                    <th><?php  echo $row['obj']?></th>
-                                    <th><?php  echo $row['area']?></th>
-                                    <th><?php  echo $row['abstract']?></th>
-                                    <th><?php  echo $row['image']?></th>
+                                    <td><?php  echo $row['id']?></td>
+                                    <td><?php  echo $row['name']?></td>
+                                    <td><?php  echo $row['obj']?></td>
+                                    <td><?php  echo $row['area']?></td>
+                                    <td><?php  echo $row['abstract']?></td>
+                                    <td><?php  echo $row['image']?></d>
 
-                                    <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</th>
-                                    <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>                                   
-                                </tr>
-                                <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                                    <td><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></td>
+
+                                                <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <div>Id: <?php echo $row['id'];?></div>
+                        <div>Título: <?php echo $row['name'];  ?></div>
+                        <div>Objetivos: <?php echo $row['obj'];  ?></div>
+                        <div>Area: <?php echo $row['area'];  ?></div>
+                        <div>Abstract: <?php echo $row['abstract'];  ?></div>
+                        <div>Imamgen URL: <?php echo $row['image'];  ?></div>
+
+                        <?php ?>
+                        <?php ?>
+
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                                    <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</td>
+
+
+<div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -184,6 +210,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>
+
                                     <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -205,19 +235,23 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                </tr>
+                                
+
+
+
+
                                 <?php
                                     $counter++;
                                 }
                                 ?>    
-                            </tbody>
-                        </table>
-                    </div>
-                </div>  
-            </div>
-        <!-- Create User -->
 
-            <div class="container w-100 mt-5 p-5">
-                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createWorkModal">Añadir Usuario</button>
+                                <tr><td colspan="9" class="container w-100">            
+                                    
+                                <div class="container w-100">
+                <button type="button" class="buttonadd" data-bs-toggle="modal" data-bs-target="#createWorkModal"><h1>+</h1></button>
             </div>
             <div class="modal fade" id="createWorkModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -261,6 +295,15 @@
                     </div>
                 </div>
             </div>
+        </td></tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
+            </div>
+        <!-- Create User -->
+
 
             <!-- End Create User -->
 
@@ -269,7 +312,7 @@
                     $worksAmount = $worksAmount->fetch_assoc();
                     $pagesAmount = ceil($worksAmount['count'] / $showWorks);
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <a href="/users.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
+                        <a href="/works.php?page=<?php echo $counter . "\n"; ?>" class="btn btn-info"><?php echo $counter . "\n"; ?></a>
                 <?php
                     }
                     $con->close();

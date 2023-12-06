@@ -1,7 +1,7 @@
 <?php
 
 
-    //Supers
+    //User
 
     function SelectUsers ($con, $pageNumber, $itemsPerPage) {
         // Calculate the offset
@@ -66,7 +66,7 @@
         // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
         // Query to retrieve data by pages
-        $sql = "SELECT users.* FROM super INNER JOIN super ON users.rut = super.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users INNER JOIN super ON users.rut = super.rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
         //if ($result->num_rows > 0) {}  With this I can verify if the query got data
@@ -75,7 +75,7 @@
         // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
         // Query to retrieve data by pages
-        $sql = "SELECT users.* FROM super INNER JOIN super ON users.rut = super.rut WHERE super.rut = $rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users INNER JOIN super ON users.rut = super.rut WHERE super.rut = $rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
         //if ($result->num_rows > 0) {}  With this I can verify if the query got data

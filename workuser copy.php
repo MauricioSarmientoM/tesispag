@@ -168,8 +168,6 @@
                                     while($row = $resu->fetch_assoc()){
                                         ?> 
                                         <tr>
-                                        <th><?php echo $row['name'];  ?></th>
-                                        <th><?php echo $row['surname'];  ?></th>
                                         <th><?php echo $row['rut'];?></th>
                                         <th><?php echo $row['name'];  ?></th>
                                         <th><?php echo $row['surname'];  ?></th>

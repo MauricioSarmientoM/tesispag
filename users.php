@@ -1,9 +1,9 @@
 <?php
-    session_start();
+/*     session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
     }
-
+ */
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
@@ -23,7 +23,7 @@
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
     		}
-    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, password_hash($password, PASSWORD_BCRYPT), $imageURL, $direction);
+    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, $password, $imageURL, $direction);
     		if ($query->error) {
                 die("Binding parameters failed: " . $query->error);
             }
@@ -94,6 +94,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css" />
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
@@ -104,8 +105,20 @@
                 include './comp/alerts.php';
             ?>
 
+
+
+
             <div class="container w-100 mt-5">
-                <form action="users.php" method="get">
+
+            <div class="container w-100 mt-5 se">
+                <form action="works.php" method="get" class="search-bar">
+	<input type="search" name="search" required>
+	<button class="search-btn" type="submit">
+		<span>Search</span>
+	</button>
+</form> </div>
+            
+<!--                 <form action="users.php" method="get">
                     <label for="searchinput"><h2>Buscar</h2></label>
                     <div class="row"> 
                         <div class="col-md-2">
@@ -118,14 +131,15 @@
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
             <div class="w-100 mt-5">
              <!-- crud de usuario -->
-                <div class="col-md-8">
+                <div>
                     <table class="table" >
                         <thead class="table-success table-striped" >
                             <tr>
+
                                 <th>Rut</th>
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
@@ -137,6 +151,7 @@
                                 <th>Direccion</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,15 +160,48 @@
                                 while($row = $res->fetch_assoc()){
                                 ?>
                                     <tr>
-                                        <th><?php  echo $row['rut']?></th>
-                                        <th><?php  echo $row['name']?></th>
-                                        <th><?php  echo $row['surname']?></th>
-                                        <th><?php  echo $row['description']?></th>
-                                        <th><?php  echo $row['email']?></th>
-                                        <th><?php  echo $row['phone']?></th>
-                                        <!--th><?php//  echo $row['password']?></th-->
-                                        <th><?php  echo $row['imageURL']?></th>
-                                        <th><?php  echo $row['direction']?></th>
+                    
+                                <td><?php  echo $row['rut']?></td>
+                                <td><?php  echo $row['name']?></td>
+                                <td><?php  echo $row['surname']?></td>
+                                <td><?php  echo $row['description']?></td>
+                                <td><?php  echo $row['email']?></td>
+                                <!--th><?php//  echo $row['password']?></th-->
+                                <td><?php  echo $row['phone']?></td>
+                                <td><?php  echo $row['imageURL']?></td>
+                                <td><?php  echo $row['direction']?></td>
+
+
+                                    <th><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></th>
+                
+
+            <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <div>Rut: <?php echo $row['rut'];?></div>
+                        <div>Nombre: <?php echo $row['name'];  ?></div>
+                        <div>Apellidos: <?php echo $row['surname'];  ?></div>
+                        <div>Descripción: <?php echo $row['description'];  ?></div>
+                        <div>Email: <?php echo $row['email'];  ?></div>
+                        <div>Telefono: <?php echo $row['phone'];  ?></div>
+                        <div>Contraseña: <?php echo $row['password'];  ?></div>
+                        <div>Imagen: <?php echo $row['imageURL'];  ?></div>
+                        <div>Direccion: <?php echo $row['direction'];  ?></div>
+
+                        <?php ?>
+                        <?php ?>
+
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
                                         
                                         <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</th>
                                         <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>
@@ -245,16 +293,11 @@
                                 <?php
                                     $counter++;
                                 }
-                                ?>        
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Create User -->
-
-            <div class="container w-100 mt-5 p-5">
-                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
+                                ?>  
+                                <tr><td colspan="11" class="container w-100">            
+                                    
+                                <div class="container w-100">
+                <button type="button" class="buttonadd" data-bs-toggle="modal" data-bs-target="#createUserModal"><h1>+</h1></button>
             </div>
             <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -318,6 +361,13 @@
                     </div>
                 </div>
             </div>
+        </td></tr>      
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Create User -->
 
             <!-- End Create User -->
 
@@ -346,34 +396,3 @@
     </body>
 </html>
 
-                            Informacion
-
-            <div class="container w-100 mt-5 p-5">
-                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createWorkModal">Inf</button>
-            </div>
-            <div class="modal fade" id="createWorkModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                        Rut: <?php echo         $rut = $_POST['rut'];?>
-                        Nombre: <?php echo $name = $_POST['name'];  ?>
-                        Apellidos: <?php echo $surname = $_POST['surname'];  ?>
-                        Descripción: <?php echo $description = $_POST['description'];  ?>
-                        Email: <?php echo $email = $_POST['email'];  ?>
-                        Telefono: <?php echo $phone = $_POST['phone'];  ?>
-                        Contraseña: <?php echo $password = $_POST['password'];  ?>
-                        Imagen: <?php echo $imageURL = $_POST['imageURL'];  ?>
-                        Direccion: <?php echo $direction = $_POST['direction'];  ?>
-                        <?php echo   ?>
-                        <?php echo   ?>
-
-    	
-                        </div>
-                    </div>
-                </div>
-            </div>
