@@ -23,7 +23,7 @@
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
     		}
-    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, password_hash($password, PASSWORD_BCRYPT), $imageURL, $direction);
+    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, $password, $imageURL, $direction);
     		if ($query->error) {
                 die("Binding parameters failed: " . $query->error);
             }
