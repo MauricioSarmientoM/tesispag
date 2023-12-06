@@ -1,3 +1,4 @@
+/***** CLASES OBLIGATORIAS *****/
 :root {
     --udaColor: #364c59;
 }
@@ -18,80 +19,88 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    margin-bottom: 0 !important; /*Diego: me jodia el titulo "Tesis", Por lo que me iba a joder el resto */
+    margin-bottom: 0 !important;
 }
 
 p {
     font-family: 'Trebuchet MS', sans-serif;
 }
+/***** FIN DE CLASES OBLIGATORIAS *****/
 
-a {
-    text-decoration: none;
-    color: black;
-}
-
-.header-top a {
-    color: white;
-}
-
-
+/***** CLASE QUE DEFINE EL TÍTULO DE UNA SECCIÓN DE LA PÁGINA *****/
 .zonasTitulo {
     background-color: #364c59; color: white;
     text-align: center;
     padding: 1% 1%;
 }
 
-.navbarData {
-    background-color: var(--udaColor);
-    z-index: 10;
-}
+/***** TODAS LAS CLASES QUE RELACIONAN A UN LINK, LINKS O RELACIONADOS (botones, dropdowns) <a> *****/
+    a {
+        text-decoration: none;
+        color: black;
+    }
 
-footer a {
-    color: white;
-}
+    a:hover {
+        color: #dbca11;
+    }
 
-.dropdown-toggle:hover {
-    color: #dbca11;
-}
+    .header-top a {
+        color: white;
+    }
 
-.dropdown-toggle:hover:active {
-    color: #dbca11;
-}
+    .navbarData {
+        background-color: var(--udaColor);
+        z-index: 10;
+    }
 
-a:hover {
-    color: #dbca11;
-}
+    .navbarData a:hover {
+        color: #dbca11;
 
-.header-top button {
-    color: white;
-}
+    }
 
-.boton {
-    background-color: white;
-    border: 2px solid #364c59;
-    border-radius: 10px;
-}
+    .header-top button {
+        color: white;
+    }
 
-.dropdown-menu {
-    background-color: #364c59;
-}
+    footer a {
+        color: white;
+    }
 
-.dropdown-item:hover {
-    background-color: #364c59;
-    color: #dbca11;
-}
+    .dropdown-menu {
+        background-color: #364c59;
+    }
 
-.login-btn {
-    color: white;
-}
+    .dropdown-item:hover {
+        background-color: #364c59;
+        color: #dbca11;
+    }
 
-.login-btn:hover {
-    color: #dbca11;
-}
+    .dropdown-toggle:hover {
+        color: #dbca11;
+    }
 
-.login-btn:hover:active {
-    color: #dbca11;
-}
+    .dropdown-toggle:hover:active {
+        color: #dbca11;
+    }
+
+    .boton {
+        background-color: white;
+        border: 2px solid #364c59;
+        border-radius: 10px;
+    }
+
+    .login-btn {
+        color: white;
+    }
+
+    .login-btn:hover {
+        color: #dbca11;
+    }
+
+    .login-btn:hover:active {
+        color: #dbca11;
+    }
+/***** FIN DE *****/
 
 footer {
     background-color: #364c59;
@@ -102,18 +111,20 @@ footer {
     height: 80%;
 }
 
-.modal-content {
-    background-color: #364c59;
-    color: white;
-}
-
-.close {
-    background-color: #364c59;
-    color: white;
-    border: 1px solid white;
-}
-
-.close:hover {
-    border: 1px solid #dbca11;
-    color: #dbca11;
-}
+/***** MODAL *****/
+    .modal-content {
+        background-color: #364c59;
+        color: white;
+    }
+    /***** BOTON QUE CIERRA UN MODAL *****/
+        .close {
+            background-color: #364c59;
+            color: white;
+            border: 1px solid white;
+        }
+        .close:hover {
+            border: 1px solid #dbca11;
+            color: #dbca11;
+        }
+    /***** FIN DE *****/
+/***** FIN DE *****/

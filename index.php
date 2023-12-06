@@ -29,7 +29,7 @@
             <div class="container my-4">
                 <div class="row">
                     <?php $row = $works->fetch_assoc();?>
-                    <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="col-md-7 mb-4 fotosCol">
+                    <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="col-md-7 fotosCol">
                         <?php
                         if ($row['image'] === '' or $row['image'] == NULL) {
                         ?>
@@ -75,9 +75,7 @@
                         </a>
                         <div class="row text-center">
                             <button class="boton">
-                                <a class="link" href="thesis.php">
-                                    <h1 class="mb-1">Más</h1>
-                                </a>
+                                <a href="thesis.php"><h1 class="mb-1">Más</h1></a>
                             </button>
                         </div>
                     </div>
@@ -121,11 +119,8 @@
                     ?>
                     <div class="row text-center">
                         <button class="boton">
-                            <a class="link" href="calendar.php">
-                                <h1 class="mb-1">Más</h1>
-                            </a>
+                            <a href="calendar.php"><h1 class="mb-1">Más</h1></a>
                         </button>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -133,7 +128,6 @@
             
             <!-- footer -->
             <?php include './comp/footer.php' ?>
-            <!-- end of footer -->
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
