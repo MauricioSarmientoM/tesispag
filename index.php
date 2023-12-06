@@ -11,12 +11,12 @@
         <title>UDA</title>
     </head>
     <body>
-            <!-- Navbar -->
-            <?php include './comp/navbar.php'; ?>
-        <main>
-            <!-- Alerts -->
-            <?php include './comp/alerts.php'; ?>
+        <!-- Navbar -->
+        <?php include './comp/navbar.php'; ?>
 
+        <!-- Alerts -->
+        <?php include './comp/alerts.php'; ?>
+        <main>
             <!-- Banner -->
             <?php include './comp/banner.php'; ?>
 

@@ -12,7 +12,7 @@
                         Personas
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownPersonas">
-                        <li><a class="dropdown-item" href="#">Tesistas</a></li>
+                        <li><a class="dropdown-item" href="tesistas.php">Tesistas</a></li>
                         <li><a class="dropdown-item" href="#">Tutores</a></li>
                     </ul>
                 </div>
