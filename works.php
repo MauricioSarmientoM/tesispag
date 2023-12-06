@@ -8,7 +8,52 @@
     include("./backend/select.php");
     $con = conectar();
 
-    if (isset($_POST['name'])) {
+    
+    if (isset($_POST['delete'])) {
+        $id = $_POST['id'];
+        
+        $name = $_POST['name'];
+        $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $id);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "$name was deleted successfully!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
+        }
+
+        $sql = "SELECT image FROM works WHERE id = $id";
+        $result = $con->query($sql);
+
+        $row = $result->fetch_assoc();
+        // Check if the file exists
+        if (file_exists($row['image'])) {
+            unlink($row['image']);
+        }
+        $result->free();
+
+        $query = $con->prepare("DELETE FROM works WHERE id = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("id", $id);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) {
+            $_SESSION["success"] = "$name was deleted successfully!";
+        }
+        else {
+            $_SESSION["warning"] = $query->error;
+        }
+    }
+    elseif (isset($_POST['name'])) {
     	$name = $_POST['name'];
     	$obj = $_POST['obj'];
 		$area = $_POST['area'];
@@ -66,50 +111,6 @@
     		else {
     			$_SESSION["warning"] = $query->error;
     		}
-        }
-    }
-    elseif (isset($_POST['delete'])) {
-        $id = $_POST['id'];
-        
-        $name = $_POST['name'];
-        $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $id);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "$name was deleted successfully!";
-        }
-        else {
-            $_SESSION["warning"] = $query->error;
-        }
-
-        $sql = "SELECT image FROM works WHERE id = $id";
-        $result = $con->query($sql);
-
-        $row = $result->fetch_assoc();
-        // Check if the file exists
-        if (file_exists($row['image'])) {
-            unlink($row['image']);
-        }
-        $result->free();
-
-        $query = $con->prepare("DELETE FROM works WHERE id = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("id", $id);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "$name was deleted successfully!";
-        }
-        else {
-            $_SESSION["warning"] = $query->error;
         }
     }
 
@@ -195,69 +196,70 @@
                                 <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>                                   
                             </tr>
                             <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="works.php" method="post">
-                                                    <div class="form-group">
-                                                        <label for="inputName">Nombre</label>
-                                                        <input type="text" id = "inputName" class="form-control mb-3" name="name" value = "<?php echo $row['name']?>" required>
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputObj">Objetivos</label>
-                                                        <input type="text" id = "inputObj" class="form-control mb-3" name="obj" value = "<?php echo $row['obj']?>">
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputArea">Área</label>
-                                                        <input type="text" id = "inputArea" class="form-control mb-3" name="area" value = "<?php echo $row['area']?>">
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputAbstract">Abstract</label>
-                                                        <input type="text" id = "inputAbstract" class="form-control mb-3" name="abstract" value = "<?php echo $row['abstract']?>">
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputImage">Imagen</label>
-                                                        <input type="text" id = "inputImage" class="form-control mb-3" name="image" value = "<?php echo $row['image']?>">
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                                    <div class="container d-flex justify-content-end">
-                                                        <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Información</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ¿Está seguro de que desea borrar a <?php echo $row['name']; ?>?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                <form action = "works.php" method = "post">
-                                                    <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
-                                                </form>
-                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="works.php" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
+                                                <input type="hidden" name="img" value = "<?php echo $row['image']; ?>" readonly/>
+                                                <input type="hidden" name="id" value = "<?php echo $row['id']; ?>" readonly/>
+                                                <div class="form-group">
+                                                    <label for="inputName">Nombre</label>
+                                                    <input type="text" id = "inputName" class="form-control mb-3" name="name" value = "<?php echo $row['name'] ?>" required/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputObj">Objetivos</label>
+                                                    <input type="textarea" id = "inputObj" class="form-control mb-3" name="obj" value = "<?php echo $row['obj'] ?>"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputArea">Área</label>
+                                                    <input type="text" id = "inputArea" class="form-control mb-3" name="area" value = "<?php echo $row['area'] ?>"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputAbstract">Abstract</label>
+                                                    <input type="textarea" id = "inputAbstract" class="form-control mb-3" name="abstract" value = "<?php echo $row['abstract'] ?>"/>
+                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputImage">Imagen</label>
+                                                    <input type="file" id = "inputImage" class="form-control mb-3" name = "image" accept=".jpg, .jpeg, .png"/>
+                                                </div>
+                                                <div class="container d-flex justify-content-end">
+                                                    <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro de que desea borrar a <?php echo $row['name']; ?>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <form action = "works.php" method = "post">
+                                                <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                                <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                                <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <?php
                                 $counter++;
                             }
@@ -265,11 +267,55 @@
                         </tbody>
                     </table>
                     <div class="row text-center m-4">
-                        <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
+                        <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createModal">Añadir Tesis</button>
                     </div>
                 </div>  
             </div>
 
+            <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createThesisModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Tesis</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="works.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
+                                <div class="form-group">
+                                    <label for="inputName">Nombre</label>
+                                    <input type="text" id = "inputName" class="form-control mb-3" name="name" required/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputObj">Objetivos</label>
+                                    <input type="textarea" id = "inputObj" class="form-control mb-3" name="obj"/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputArea">Área</label>
+                                    <input type="text" id = "inputArea" class="form-control mb-3" name="area"/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputAbstract">Abstract</label>
+                                    <input type="textarea" id = "inputAbstract" class="form-control mb-3" name="abstract"/>
+                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputImage">Imagen</label>
+                                    <input type="file" id = "inputImage" class="form-control mb-3" name = "image" accept=".jpg, .jpeg, .png"/>
+                                </div>
+                                <div class="container d-flex justify-content-end">
+                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                    
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item disabled">
