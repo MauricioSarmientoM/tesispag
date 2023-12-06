@@ -1,4 +1,8 @@
 <?php
+
+
+    //User
+
     function SelectUsers ($con, $pageNumber, $itemsPerPage) {
         // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
@@ -34,6 +38,11 @@
         $result = $con->query($sql);
         return $result;
     }
+
+
+    //Works
+
+
     function SelectWorks ($con, $pageNumber, $itemsPerPage) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM works LIMIT $itemsPerPage OFFSET $offset";
@@ -62,6 +71,9 @@
         $result = $con->query($sql);
         return $result;
     }
+
+    //Events
+
     function selectEvents($con, $limit) {
         $sql = "SELECT * FROM events LIMIT $limit";
         $result = $con->query($sql);
@@ -69,6 +81,32 @@
     }
     function SelectEventsWhereRealizationDateExist($con, $limit) {
         $sql = "SELECT * FROM events WHERE realizationDate IS NOT NULL ORDER BY realizationDate DESC LIMIT $limit";
+        $result = $con->query($sql);
+        return $result;
+    }
+
+    //Supers
+
+    function SelectSupers ($con, $pageNumber, $itemsPerPage) {
+        // Calculate the offset
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        // Query to retrieve data by pages
+        $sql = "SELECT users.* FROM users INNER JOIN super ON users.rut = super.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+        //if ($result->num_rows > 0) {}  With this I can verify if the query got data
+    }
+    function SelectSupersWhereRut ($con, $pageNumber, $itemsPerPage, $rut) {
+        // Calculate the offset
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        // Query to retrieve data by pages
+        $sql = "SELECT users.* FROM users INNER JOIN super ON users.rut = super.rut WHERE super.rut = $rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+        //if ($result->num_rows > 0) {}  With this I can verify if the query got data
+    }
+    function SelectSupersCount($con) {
+        $sql = "SELECT COUNT(users.rut) as count FROM users INNER JOIN super ON users.rut = super.rut";
         $result = $con->query($sql);
         return $result;
     }

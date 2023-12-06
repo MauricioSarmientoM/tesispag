@@ -1,9 +1,9 @@
 <?php
-    session_start();
+/*     session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
     }
-
+ */
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
@@ -23,7 +23,7 @@
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
     		}
-    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, password_hash($password, PASSWORD_BCRYPT), $imageURL, $direction);
+    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, $password, $imageURL, $direction);
     		if ($query->error) {
                 die("Binding parameters failed: " . $query->error);
             }
@@ -35,11 +35,15 @@
     		}
     	}
         elseif (isset($_POST['update'])) {
+            $stringToCheck = '$2y$10$';
+            if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
+                $password = password_hash($password, PASSWORD_BCRYPT);
+            }
             $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
     		}
-    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, password_hash($password, PASSWORD_BCRYPT), $imageURL, $direction, $rut);
+    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, $password, $imageURL, $direction, $rut);
     		if ($query->error) {
                 die("Binding parameters failed: " . $query->error);
             }
@@ -55,6 +59,26 @@
         $rut = $_POST['rut'];
     	$name = $_POST['name'];
     	$surname = $_POST['surname'];
+        
+        $query = $con->prepare("DELETE FROM workuser WHERE rut = ?");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $rut);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        $query->execute();
+
+        $sql = "SELECT imageURL FROM users WHERE rut = $rut";
+        $result = $con->query($sql);
+
+        $row = $result->fetch_assoc();
+        // Check if the file exists
+        if (file_exists($row['imageURL'])) {
+            unlink($row['imageURL']);
+        }
+        $result->free();
 
         $query = $con->prepare("DELETE FROM users WHERE rut = ?");
     	if (!$query) {
@@ -90,7 +114,7 @@
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css"/>
-        <link rel = "stylesheet" href = "./css/gestor.css" />
+        <link rel = "stylesheet" href = "./css/gestor.css"/>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <title>UDA</title>
     </head>
@@ -100,7 +124,6 @@
         <main>
             <!-- Alerts -->
             <?php include './comp/alerts.php'; ?>
-
             <!-- BOTON VOLVER Y TITULO -->
             <div class="container py-4">
                 <div class="row">
@@ -135,32 +158,53 @@
                             <tr>
                                 <th>Imagen</th>
                                 <th>Rut</th>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
-                                <th>Descripción</th>
-                                <th>Email</th>
-                                <th>Telefono</th>
-                                <!--th>Contraseña</th-->
-                                <th>Direccion</th>
+                                <th>Nombre</th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                                <?php
-                                $counter = 0;
-                                while($row = $res->fetch_assoc()){
-                                ?>
-                                    <tr>
-                                        <th><?php  echo $row['imageURL']?></th>
-                                        <th><?php  echo $row['rut']?></th>
-                                        <th><?php  echo $row['name']?></th>
-                                        <th><?php  echo $row['surname']?></th>
-                                        <th><?php  echo $row['description']?></th>
-                                        <th><?php  echo $row['email']?></th>
-                                        <th><?php  echo $row['phone']?></th>
-                                        <!--th><?php //  echo $row['password']?> </th> -->
-                                        <th><?php  echo $row['direction']?></th>
+                            <?php
+                            $counter = 0;
+                            while($row = $res->fetch_assoc()){
+                            ?>
+                            <tr>
+                                <td><image class = "img" src = "<?php  echo $row['imageURL']?>"</td>
+                                <td><?php  echo $row['rut']?></td>
+                                <td><?php  echo $row['name'] . " " . $row['surname']?>
+
+
+                                    <th><button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#InfoUserModal">Inf</button></th>
+                
+
+            <div class="modal fade" id="InfoUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                        <div>Rut: <?php echo $row['rut'];?></div>
+                        <div>Nombre: <?php echo $row['name'];  ?></div>
+                        <div>Apellidos: <?php echo $row['surname'];  ?></div>
+                        <div>Descripción: <?php echo $row['description'];  ?></div>
+                        <div>Email: <?php echo $row['email'];  ?></div>
+                        <div>Telefono: <?php echo $row['phone'];  ?></div>
+                        <div>Contraseña: <?php echo $row['password'];  ?></div>
+                        <div>Imagen: <?php echo $row['imageURL'];  ?></div>
+                        <div>Direccion: <?php echo $row['direction'];  ?></div>
+
+                        <?php ?>
+                        <?php ?>
+
+    	
+                        </div>
+                    </div>
+                </div>
+            </div>
                                         
                                         <th><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</th>
                                         <th><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</th>
@@ -256,17 +300,8 @@
                                 <?php
                                     $counter++;
                                 }
-                                ?>        
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Create User -->
-
-            <div class="container text-center my-4">
-                <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
-            </div>
+                                ?>  
+                                <tr><td colspan="11" class="container w-100">
             <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -331,6 +366,16 @@
                     </div>
                 </div>
             </div>
+        </td></tr>      
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container text-center my-4">
+                    <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Usuario</button>
+                </div>
+            </div>
+
+            <!-- Create User -->
 
             <!-- End Create User -->
 
@@ -352,3 +397,4 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
 </html>
+

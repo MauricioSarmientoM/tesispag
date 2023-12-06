@@ -1,8 +1,8 @@
 <?php
-    session_start();
+   /*  session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    }
+    } */
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -21,12 +21,11 @@
         </script>
     </head>
     <body>
-            <!-- navbar -->
-            <?php include './comp/navbar.php'; ?>
+        <!-- navbar -->
+        <?php include './comp/navbar.php'; ?>
         <main>
             <!-- Alerts -->
             <?php include './comp/alerts.php' ?>
-
             <!-- CONTENEDOR DE BARRA DE GESTORES -->
             <div class="container py-4">
                 <!-- BOTON VOLVER Y TITULO -->
