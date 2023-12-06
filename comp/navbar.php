@@ -1,18 +1,18 @@
 <div class="header-top navbarData fixed-top">
     <div class="container-fluid py-2">
         <div class="row px-4">
-            <div class="col-md-8 d-flex mx-auto my-auto">
+            <div class="col-md-6 col-lg-6 d-flex mx-auto my-auto">
                 <a href="index.php">
                     <img width="297px" id="udaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
                 </a>
             </div>
             <div class="col d-flex">
-                <div class="dropdown my-auto">
+                <div class="dropdown mx-auto my-auto">
                     <button class="btn dropdown-toggle" type="button" id="dropdownPersonas" data-toggle="dropdown" aria-expanded="false">
                         Personas
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownPersonas">
-                        <li><a class="dropdown-item" href="#">Tesistas</a></li>
+                        <li><a class="dropdown-item" href="tesistas.php">Tesistas</a></li>
                         <li><a class="dropdown-item" href="#">Tutores</a></li>
                     </ul>
                 </div>

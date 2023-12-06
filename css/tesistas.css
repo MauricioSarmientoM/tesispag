@@ -1,0 +1,12 @@
+.usuario {
+    background-color: white;
+    border-radius: 50%;
+    border: 2px solid #364c59;
+    width: 128px;
+    height: 128px;
+}
+
+.tesistas {
+    border: 2px solid #364c59;
+    border-radius: 15px;
+}
