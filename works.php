@@ -68,16 +68,17 @@
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
                 // Now, you can use $targetFilePath to store in the database
                 $image = $targetFilePath;
-
-                $sql = "SELECT image FROM works WHERE id = $id";
-                $resultImg = $con->query($sql);
-                if ($resultImg->num_rows > 0) {
-                    $imgurl = $resultImg->fetch_assoc();
-                    // Check if the file exists
-                    if (file_exists($imgurl['image'])) {
-                        unlink($imgurl['image']);
+                if (!isset($_POST['insert'])) {
+                    $sql = "SELECT image FROM works WHERE id = $id";
+                    $resultImg = $con->query($sql);
+                    if ($resultImg->num_rows > 0) {
+                        $imgurl = $resultImg->fetch_assoc();
+                        // Check if the file exists
+                        if (file_exists($imgurl['image'])) {
+                            unlink($imgurl['image']);
+                        }
+                        $resultImg->free();
                     }
-                    $resultImg->free();
                 }
 
             } else {
