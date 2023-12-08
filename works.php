@@ -54,6 +54,7 @@
         }
     }
     elseif (isset($_POST['name'])) {
+        $id = $_POST['id'];
     	$name = $_POST['name'];
     	$obj = $_POST['obj'];
 		$area = $_POST['area'];
@@ -63,15 +64,28 @@
             $targetDirectory = "uploads/thesis/";  // Set your target directory
             $uploadedFileName = basename($_FILES["image"]["name"]);
             $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+            // Move the uploaded file to the target directory
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+                // Now, you can use $targetFilePath to store in the database
                 $image = $targetFilePath;
+
+                $sql = "SELECT image FROM works WHERE id = $id";
+                $resultImg = $con->query($sql);
+                if ($resultImg->num_rows > 0) {
+                    $imgurl = $resultImg->fetch_assoc();
+                    // Check if the file exists
+                    if (file_exists($imgurl['image'])) {
+                        unlink($imgurl['image']);
+                    }
+                    $resultImg->free();
+                }
+
             } else {
                 $image = '';
                 $_SESSION["error"] = "Error uploading the file.";
             }
-        }
-        else {
-            if ($_POST['img'] === '' || $_POST['img'] == NULL) {
+        } else {
+            if ($_POST['img'] === '') {
                 $image = '';
             }
             else {
@@ -96,42 +110,6 @@
     		}
     	}
         elseif (isset($_POST['update'])) {
-            $id = $_POST['id'];
-
-            if (isset($_FILES["imageURL"]) && $_FILES["imageURL"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/users/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["imageURL"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
-                // Now, you can use $targetFilePath to store in the database
-                $imageURL = $targetFilePath;
-
-                $sql = "SELECT imageURL FROM users WHERE rut = $rut";
-                $resultImg = $con->query($sql);
-        
-                $imgurl = $resultImg->fetch_assoc();
-                // Check if the file exists
-                if (file_exists($imgurl['imageURL'])) {
-                    unlink($imgurl['imageURL']);
-                }
-                $resultImg->free();
-                
-            } else {
-                    // File upload failed
-                    $imageURL = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            }
-            else {
-                if ($_POST['img'] === '' || $_POST['img'] == NULL) {
-                    $imageURL = '';
-                }
-                else {
-                    $imageURL = $_POST['img'];
-                }
-            }
-            
             $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
