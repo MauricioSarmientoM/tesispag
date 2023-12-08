@@ -42,7 +42,7 @@
         if (!$query) {
             die("Preparation failed: " . $con->error);
         }
-        $query->bind_param("id", $id);
+        $query->bind_param("i", $id);
         if ($query->error) {
             die("Binding parameters failed: " . $query->error);
         }
@@ -97,6 +97,41 @@
     	}
         elseif (isset($_POST['update'])) {
             $id = $_POST['id'];
+
+            if (isset($_FILES["imageURL"]) && $_FILES["imageURL"]["error"] == UPLOAD_ERR_OK) {
+                $targetDirectory = "uploads/users/";  // Set your target directory
+                $uploadedFileName = basename($_FILES["imageURL"]["name"]);
+                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+                // Move the uploaded file to the target directory
+                if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
+                // Now, you can use $targetFilePath to store in the database
+                $imageURL = $targetFilePath;
+
+                $sql = "SELECT imageURL FROM users WHERE rut = $rut";
+                $resultImg = $con->query($sql);
+        
+                $imgurl = $resultImg->fetch_assoc();
+                // Check if the file exists
+                if (file_exists($imgurl['imageURL'])) {
+                    unlink($imgurl['imageURL']);
+                }
+                $resultImg->free();
+                
+            } else {
+                    // File upload failed
+                    $imageURL = '';
+                    $_SESSION["error"] = "Error uploading the file.";
+                }
+            }
+            else {
+                if ($_POST['img'] === '' || $_POST['img'] == NULL) {
+                    $imageURL = '';
+                }
+                else {
+                    $imageURL = $_POST['img'];
+                }
+            }
+            
             $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
     		if (!$query) {
     			die("Preparation failed: " . $con->error);
@@ -204,7 +239,6 @@
                                         </div>
                                         <div class="modal-body">
                                             <form action="works.php" method="post" enctype="multipart/form-data">
-                                                <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
                                                 <input type="hidden" name="img" value = "<?php echo $row['image']; ?>" readonly/>
                                                 <input type="hidden" name="id" value = "<?php echo $row['id']; ?>" readonly/>
                                                 <div class="form-group">
@@ -281,7 +315,6 @@
                         </div>
                         <div class="modal-body">
                             <form action="works.php" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
                                 <div class="form-group">
                                     <label for="inputName">Nombre</label>
                                     <input type="text" id = "inputName" class="form-control mb-3" name="name" required/>
