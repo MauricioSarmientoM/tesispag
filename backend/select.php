@@ -18,6 +18,12 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersWhereIdWork($con, $pageNumber, $itemsPerPage, $idWork) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users JOIN workuser ON users.rut = workuser.rut WHERE workuser.idWork = $idWork LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersWhereIdWorkButNoRut($con, $pageNumber, $itemsPerPage, $idWork, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT users.* FROM users JOIN workuser ON users.rut = workuser.rut WHERE workuser.idWork = $idWork AND users.rut != $rut LIMIT $itemsPerPage OFFSET $offset";

@@ -9,6 +9,44 @@
     $con = conectar();
 
     
+    if (isset($_POST['collabRut'])) {
+        $name = $_POST['name'];
+        $collabRut = $_POST['collabRut'];
+        $id = $_POST['id'];
+
+        if (isset($_POST['insert'])) {
+            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
+            if (!$query) {
+                die("Preparation failed: " . $con->error);
+            }
+            $query->bind_param("ii", $collabRut, $id);
+            if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+            if ($query->execute()) {
+                $_SESSION["success"] = "¡Se ha añadido colaborador a $name!";
+            }
+            else {
+                $_SESSION["warning"] = $query->error;
+            }
+        } elseif (isset($_POST['delete'])) {
+            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ? AND rut = ?");
+            if (!$query) {
+                die("Preparation failed: " . $con->error);
+            }
+            $query->bind_param("ii", $id, $collabRut);
+            if ($query->error) {
+                die("Binding parameters failed: " . $query->error);
+            }
+            if ($query->execute()) {
+                $_SESSION["success"] = "Se ha quitado colaborador de $name.";
+            }
+            else {
+                $_SESSION["warning"] = $query->error;
+            }
+        }
+    }
+
     if (isset($_POST['delete'])) {
         $id = $_POST['id'];
         
@@ -167,7 +205,7 @@
                         </button>
                     </div>
                     <div class="col">
-                        <h1 class="text-center">Gestor de Trabajadores</h1>
+                        <h1 class="text-center">Gestor de Trabajos</h1>
                     </div>
                     <div class="col-md-3"></div>
                 </div>
@@ -206,8 +244,13 @@
                                 <td><?php  echo $row['area']?></td>
                                 <td><?php  echo $row['abstract']?></td>
 
-                                <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</td>
-                                <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</td>                                   
+                                <td>
+                                    <div class = "btn-group-vertical">
+                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateWorksModal<?php echo $counter;?>">Editar</button>
+                                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#collabModal<?php echo $counter;?>">Colaborar</button>
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
+                                    </div>
+                                </td>
                             </tr>
                             <div class="modal fade" id="updateWorksModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -252,6 +295,64 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal fade" id="collabModal<?php echo $counter;?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Colaborar</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
+                                        $collab = SelectUsersWhereIdWork($con, 1, 10, $row['id']);
+
+                                        while ($data = $collab->fetch_assoc()) {
+                                        ?>
+                                        <div class="row my-4">
+                                            <div class="col my-2">
+                                            <?php
+                                                if ($data['imageURL'] != NULL) {
+                                                    echo '<img class = "collabPhoto" src = "' . $data['imageURL'] . '"/>';
+                                                }
+                                                else{
+                                                    echo '<img class = "collabPhoto" src = "src/icons/iconPlaceholder.png"/>';
+                                                }
+                                            ?>
+                                            </div>
+                                            <div class="col p-3">
+                                                <h4>RUT</h4>
+                                                <p><?php echo $data['rut']; ?></p>
+                                            </div>
+                                            <div class="col p-3">
+                                                <h4>Nombre</h4>
+                                                <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
+                                            </div>
+                                            <div class="col p-3">
+                                                <form action = "profile.php" method = "post">
+                                                    <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                                    <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                                    <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
+                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Quitar"/>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <form action = "profile.php" method = "post">
+                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                            <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                            <input type = "submit" name = "addCollab" class="btn btn-success" value = "Añadir Colaborador"/>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <div class="modal fade" id="deleteModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
