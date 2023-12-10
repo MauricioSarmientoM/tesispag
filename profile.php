@@ -297,6 +297,7 @@
             ?>
             <main>
                 <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
+                <?php include './comp/alerts.php'; ?>
                 <div class = "thesisMenu py-4">
                     <div class="container">
                     <form action = "profile.php" method = "post">
@@ -600,6 +601,13 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <form action = "profile.php" method = "post">
+                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                            <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                            <input type = "hidden" name = "collabRut" value = "<?php echo $rut; ?>"/>
+                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                            <input type = "submit" name = "delete" class="btn btn-danger" value = "Dejar de Colaborar"/>
+                                        </form>
                                         <form action = "profile.php" method = "post">
                                             <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>

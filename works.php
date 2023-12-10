@@ -189,7 +189,63 @@
     </head>
     <body>
         <!-- navbar -->
-        <?php include './comp/navbar.php'; ?>
+        <?php
+        include './comp/navbar.php'; 
+        if (isset($_POST['addCollab'])) {
+            $id = $_POST['id'];
+            $name = $_POST['name'];
+            $collab = SelectUsersNotInIdWork($con, 1, 10, $id, $rut);
+            ?>
+            <main>
+                <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
+                <?php include './comp/alerts.php'; ?>
+                <div class = "thesisMenu py-4">
+                    <div class="container">
+                    <form action = "profile.php" method = "post">
+                        <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                        <input type = "submit" class="btn btn-danger" value = "Volver"/>
+                    </form>
+            <?php
+            while ($data = $collab->fetch_assoc()) {
+                ?>
+                <div class="container row my-4">
+                    <div class="col my-2">
+                        <?php
+                        if ($data['imageURL'] != NULL) {
+                            echo '<img class = "collabPhoto" src = "' . $data['imageURL'] . '"/>';
+                        }
+                        else{
+                            echo '<img class = "collabPhoto" src = "src/icons/iconPlaceholder.png"/>';
+                        }
+                        ?>
+                    </div>
+                    <div class="col p-3">
+                        <h4>RUT</h4>
+                        <p><?php echo $data['rut']; ?></p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Nombre</h4>
+                        <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
+                    </div>
+                    <div class="col p-3">
+                        <form action = "works.php" method = "post">
+                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                            <input type = "hidden" name = "id" value = "<?php echo $id; ?>"/>
+                            <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
+                            <input type = "hidden" name = "name" value = "<?php echo $name; ?>"/>
+                            <input type = "submit" name = "insert" class="btn btn-success" value = "Añadir"/>
+                        </form>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+                    </div>
+                </div>
+        <?php
+        }
+        else {
+        ?>
         <main>
             <!-- Alerts -->
             <?php include './comp/alerts.php' ?>
@@ -328,8 +384,7 @@
                                                 <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
                                             </div>
                                             <div class="col p-3">
-                                                <form action = "profile.php" method = "post">
-                                                    <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                                <form action = "works.php" method = "post">
                                                     <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                                     <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
                                                     <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
@@ -343,8 +398,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <form action = "profile.php" method = "post">
-                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                        <form action = "works.php" method = "post">
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                             <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
                                             <input type = "submit" name = "addCollab" class="btn btn-success" value = "Añadir Colaborador"/>
@@ -445,6 +499,9 @@
                     </li>
                 </ul>
             </nav>
+            <?php
+            }
+            ?>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
