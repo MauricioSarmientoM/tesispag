@@ -80,13 +80,20 @@
 
     //Events
 
-    function selectEvents($con, $limit) {
-        $sql = "SELECT * FROM events LIMIT $limit";
+    function SelectEvents($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
-    function SelectEventsWhereRealizationDateExist($con, $limit) {
-        $sql = "SELECT * FROM events WHERE realizationDate IS NOT NULL ORDER BY realizationDate DESC LIMIT $limit";
+    function SelectEventsWhereRealizationDateExist($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE realizationDate IS NOT NULL ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventCount($con) {
+        $sql = "SELECT COUNT(id) as count FROM events";
         $result = $con->query($sql);
         return $result;
     }

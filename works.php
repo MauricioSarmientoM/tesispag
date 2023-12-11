@@ -167,7 +167,6 @@
     }
 
     $showWorks = 10;
-    $worksAmount = SelectWorksCount($con);
     if (isset($_GET['search']) == false){  /* si no es una busqueda */
         $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
     }
@@ -489,6 +488,7 @@
                         <a class="page-link">Previous</a>
                     </li>
                     <?php
+                        $worksAmount = SelectWorksCount($con);
                         $worksAmount = $worksAmount->fetch_assoc();
                         $pagesAmount = ceil($worksAmount['count'] / $showWorks);
                         for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>

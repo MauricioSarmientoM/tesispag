@@ -5,7 +5,7 @@
             include './backend/select.php';
             $con = conectar();
             $amountNews = 3;
-            $news = selectEvents($con, $amountNews);
+            $news = SelectEvents($con, 1, $amountNews); //Only select the first page of news
             for ($counter = 0; $counter < $amountNews; $counter++) {
                 if ($counter === 0) {
                     echo '<button type="button" data-bs-target="#carouselCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
