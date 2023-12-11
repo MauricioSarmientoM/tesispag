@@ -8,78 +8,16 @@
     include("./backend/select.php");
     $con = conectar();
     if (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
-    elseif (isset($_POST['updateT'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
-    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
     elseif (isset($_POST['insertT'])) {
         InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
         $work = SelectWorksOrderByDesc ($con, 1);
         $work = $work->fetch_assoc();
-        InsertCollab($con, $rut, $id);
+        InsertCollab($con, $rut, $work['id']);
     }
-    elseif (isset($_POST['delete'])) {
-        if (isset($_POST['collabRut'])) {
-            $name = $_POST['name'];
-            $collabRut = $_POST['collabRut'];
-            $id = $_POST['id'];
-            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ? AND rut = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("ii", $id, $collabRut);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "Se ha quitado colaborador de $name.";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-        }
-        else {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("i", $id);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "$name was deleted successfully!";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-    
-            $sql = "SELECT image FROM works WHERE id = $id";
-            $result = $con->query($sql);
-        
-            $row = $result->fetch_assoc();
-            // Check if the file exists
-            if (file_exists($row['image'])) {
-                unlink($row['image']);
-            }
-            $result->free();
-            
-            $query = $con->prepare("DELETE FROM works WHERE id = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("i", $id);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "$name was deleted successfully!";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-        }
-    }
+    elseif (isset($_POST['updateT'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
+    elseif (isset($_POST['deleteT'])) DeleteWork($con, $_POST['id']);
+    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
+    elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -138,8 +76,7 @@
                             <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                             <input type = "hidden" name = "id" value = "<?php echo $id; ?>"/>
                             <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
-                            <input type = "hidden" name = "name" value = "<?php echo $name; ?>"/>
-                            <input type = "submit" name = "insert" class="btn btn-success" value = "Añadir"/>
+                            <input type = "submit" name = "insertC" class="btn btn-success" value = "Añadir"/>
                         </form>
                     </div>
                 </div>
@@ -397,8 +334,7 @@
                                                     <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                                                     <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                                     <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
-                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Quitar"/>
+                                                    <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Quitar"/>
                                                 </form>
                                             </div>
                                         </div>
@@ -412,13 +348,11 @@
                                             <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                             <input type = "hidden" name = "collabRut" value = "<?php echo $rut; ?>"/>
-                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                            <input type = "submit" name = "delete" class="btn btn-danger" value = "Dejar de Colaborar"/>
+                                            <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Dejar de Colaborar"/>
                                         </form>
                                         <form action = "profile.php" method = "post">
                                             <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
                                             <input type = "submit" name = "addCollab" class="btn btn-success" value = "Añadir Colaborador"/>
                                         </form>
                                     </div>
@@ -440,8 +374,7 @@
                                         <form action = "profile.php" method = "post">
                                             <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                            <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
+                                            <input type = "submit" name = "deleteT" class="btn btn-danger" value = "Eliminar"/>
                                         </form>
                                     </div>
                                 </div>
@@ -497,7 +430,7 @@
                                     <input type="file" id = "inputImage" class="form-control mb-3" name = "image" accept=".jpg, .jpeg, .png"/>
                                 </div>
                                 <div class="container d-flex justify-content-end">
-                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
+                                    <button type="submit" name = "insertT" class="btn btn-primary btn-block ">Confirmar</button>
                                 </div>
                             </form>
                         </div>

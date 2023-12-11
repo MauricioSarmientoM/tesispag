@@ -10,89 +10,10 @@
 
     if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
     elseif (isset($_POST['update'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
-    
-    if (isset($_POST['collabRut'])) {
-        $name = $_POST['name'];
-        $collabRut = $_POST['collabRut'];
-        $id = $_POST['id'];
+    elseif (isset($_POST['delete'])) DeleteWork($con, $_POST['id']);
+    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
+    elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
 
-        if (isset($_POST['insert'])) {
-            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("ii", $collabRut, $id);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "¡Se ha añadido colaborador a $name!";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-        } elseif (isset($_POST['delete'])) {
-            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ? AND rut = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("ii", $id, $collabRut);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "Se ha quitado colaborador de $name.";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-        }
-    }
-
-    if (isset($_POST['delete'])) {
-        $id = $_POST['id'];
-        
-        $name = $_POST['name'];
-        $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $id);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "$name was deleted successfully!";
-        }
-        else {
-            $_SESSION["warning"] = $query->error;
-        }
-
-        $sql = "SELECT image FROM works WHERE id = $id";
-        $result = $con->query($sql);
-
-        $row = $result->fetch_assoc();
-        // Check if the file exists
-        if (file_exists($row['image'])) {
-            unlink($row['image']);
-        }
-        $result->free();
-
-        $query = $con->prepare("DELETE FROM works WHERE id = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $id);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "$name was deleted successfully!";
-        }
-        else {
-            $_SESSION["warning"] = $query->error;
-        }
-    }
 
     $showWorks = 10;
     if (isset($_GET['search']) == false){  /* si no es una busqueda */
@@ -159,8 +80,7 @@
                             <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
                             <input type = "hidden" name = "id" value = "<?php echo $id; ?>"/>
                             <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
-                            <input type = "hidden" name = "name" value = "<?php echo $name; ?>"/>
-                            <input type = "submit" name = "insert" class="btn btn-success" value = "Añadir"/>
+                            <input type = "submit" name = "insertC" class="btn btn-success" value = "Añadir"/>
                         </form>
                     </div>
                 </div>
@@ -315,7 +235,7 @@
                                                     <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                                     <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
                                                     <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Quitar"/>
+                                                    <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Quitar"/>
                                                 </form>
                                             </div>
                                         </div>
