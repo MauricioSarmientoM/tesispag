@@ -6,6 +6,9 @@
 
     include("./backend/connection.php");
     include("./backend/select.php");
+    include("./backend/insert.php");
+    include("./backend/update.php");
+    include("./backend/delete.php");
     $con = conectar();
 
     if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
@@ -16,12 +19,8 @@
 
 
     $showWorks = 10;
-    if (isset($_GET['search']) == false){  /* si no es una busqueda */
-        $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
-    }
-    else {
-        $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
-    }
+    if (isset($_GET['search'])) $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
 ?>
 <!DOCTYPE html>
 <html lang="en-US">

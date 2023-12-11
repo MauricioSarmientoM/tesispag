@@ -6,6 +6,9 @@
     $rut = $_POST['rut'];
     include("./backend/connection.php");
     include("./backend/select.php");
+    include("./backend/insert.php");
+    include("./backend/update.php");
+    include("./backend/delete.php");
     $con = conectar();
     if (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
     elseif (isset($_POST['insertT'])) {

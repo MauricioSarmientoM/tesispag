@@ -17,8 +17,8 @@
     elseif (isset($_POST['deleteS'])) DeleteSuper($con, $_POST['rut']);
 
     $showUsers = 10;
-    if (isset($_GET['search']) == false) $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
-    else $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+    if (isset($_GET['search'])) $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+    else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
 <html lang="es">

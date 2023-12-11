@@ -63,4 +63,7 @@
         if ($query->execute()) return 1;
         return 0;
     }
+    function InsertEvent($con, $title, $description, $image, $publicationDate, $realizationDate) {
+        
+    }
 ?>
