@@ -7,207 +7,14 @@
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
-    if (isset($_POST['update'])) {
-        if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
-        	$name = $_POST['name'];
-        	$surname = $_POST['surname'];
-    		$description = $_POST['description'];
-        	$email = $_POST['email'];
-            $phone = $_POST['phone'];
-    		$password = $_POST['password'];
-            if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/thesis/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["image"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    // Now, you can use $targetFilePath to store in the database
-                    $image = $targetFilePath;
-    
-                    $sql = "SELECT image FROM works WHERE id = $id";
-                    $resultImg = $con->query($sql);
-                    if ($resultImg->num_rows > 0) {
-                        $imgurl = $resultImg->fetch_assoc();
-                        // Check if the file exists
-                        if (file_exists($imgurl['image'])) {
-                            unlink($imgurl['image']);
-                        }
-                        $resultImg->free();
-                    }
-    
-                } else {
-                    $image = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            } else {
-                if ($_POST['img'] === '') {
-                    $image = '';
-                }
-                else {
-                    $image = $_POST['img'];
-                }
-            }
-            
-        	$direction = $_POST['direction'];
-    
-            $stringToCheck = '$2y$10$';
-            if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
-                $password = password_hash($password, PASSWORD_BCRYPT);
-            }
-            $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, $password, $imageURL, $direction, $rut);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "¡Has actualizado correctamente tu perfil!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-        elseif (isset($_POST['name']) && isset($_POST['id'])) {
-            $id = $_POST['id'];
-        	$name = $_POST['name'];
-        	$obj = $_POST['obj'];
-    		$area = $_POST['area'];
-        	$abstract = $_POST['abstract'];
-            if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/thesis/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["image"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    // Now, you can use $targetFilePath to store in the database
-                    $imageURL = $targetFilePath;
-    
-                    $sql = "SELECT image FROM works WHERE id = $id";
-                    $resultImg = $con->query($sql);
-                    if ($resultImg->num_rows > 0) {
-                        $imgurl = $resultImg->fetch_assoc();
-                        // Check if the file exists
-                        if (file_exists($imgurl['image'])) {
-                            unlink($imgurl['image']);
-                        }
-                        $resultImg->free();
-                    }
-    
-                } else {
-                    // File upload failed
-                    $imageURL = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            }
-            else {
-                if ($_POST['img'] === '' || $_POST['img'] == NULL) {
-                    $imageURL = '';
-                }
-                else {
-                    $imageURL = $_POST['img'];
-                }
-            }
-            $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("sssssi", $name, $obj, $area, $abstract, $image, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "¡Has actualizado correctamente tu la tesis \"$name\"!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-    	else {
-    		$_SESSION["warning"] = "Los datos necesarios no fueron entregados.";
-        }
-    }
-    elseif (isset($_POST['insert'])) {
-        if (isset($_POST['collabRut'])) {
-            $name = $_POST['name'];
-            $collabRut = $_POST['collabRut'];
-            $id = $_POST['id'];
-            
-            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ii", $collabRut, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "¡Se ha añadido colaborador a $name!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-        elseif (isset($_POST['name'])) {
-        	$name = $_POST['name'];
-        	$obj = $_POST['obj'];
-    		$area = $_POST['area'];
-        	$abstract = $_POST['abstract'];
-            if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/thesis/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["image"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    // Now, you can use $targetFilePath to store in the database
-                    $image = $targetFilePath;
-                } else {
-                    // File upload failed
-                    $image = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            }
-            else {
-                $image = '';
-            }
-            $query = $con->prepare("INSERT INTO works (name, obj, area, abstract, image) VALUES (?, ?, ?, ?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("sssss", $name, $obj, $area, $abstract, $image);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = '¡Se ha creado correctamente!';
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-
-            $sql = "SELECT id FROM works ORDER BY id DESC LIMIT 1";
-            $result = $con->query($sql);
-            $id = $result->fetch_assoc()['id'];
-            
-            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ii", $rut, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = '¡Se ha creado correctamente!';
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-    	else {
-    		$_SESSION["warning"] = "Los datos necesarios no fueron entregados.";
-        }
+    if (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+    elseif (isset($_POST['updateT'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
+    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
+    elseif (isset($_POST['insertT'])) {
+        InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
+        $work = SelectWorksOrderByDesc ($con, 1);
+        $work = $work->fetch_assoc();
+        InsertCollab($con, $rut, $id);
     }
     elseif (isset($_POST['delete'])) {
         if (isset($_POST['collabRut'])) {
@@ -546,7 +353,7 @@
                                                 <input type="file" id = "inputImage" class="form-control mb-3" name = "image" accept=".jpg, .jpeg, .png"/>
                                             </div>
                                             <div class="container d-flex justify-content-end">
-                                                <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
+                                                <button type="submit" name = "updateT" class="btn btn-primary btn-block ">Confirmar</button>
                                             </div>
                                         </form>
                                     </div>

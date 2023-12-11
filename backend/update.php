@@ -40,4 +40,31 @@
         if ($query->execute()) return 1;
         return 0;
     }
+    function UpdateWork($con, $id, $name, $obj, $area, $abstract, $image, $img)
+        if (isset($image) && $image["error"] == UPLOAD_ERR_OK) {
+            $targetDirectory = "uploads/thesis/";
+            $uploadedFileName = basename($image["name"]);
+            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+            if (move_uploaded_file($image["tmp_name"], $targetFilePath)) {
+                $image = $targetFilePath;
+                $sql = "SELECT image FROM works WHERE id = $id";
+                $resultImg = $con->query($sql);
+                $imgurl = $resultImg->fetch_assoc();
+                if (file_exists($imgurl['image'])) unlink($imgurl['image']);
+                $resultImg->free();
+    
+            }
+            else $image = '';
+        }
+        else {
+            if ($img === '') $image = '';
+            else $image = $img;
+        }
+        $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
+        if (!$query) die("Preparation failed: " . $con->error);
+        $query->bind_param("sssssi", $name, $obj, $area, $abstract, $image, $id);
+        if ($query->error) die("Binding parameters failed: " . $query->error);
+        if ($query->execute()) return 1;
+        return 0;
+    }
 ?>

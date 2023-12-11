@@ -8,6 +8,8 @@
     include("./backend/select.php");
     $con = conectar();
 
+    if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
+    elseif (isset($_POST['update'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
     
     if (isset($_POST['collabRut'])) {
         $name = $_POST['name'];
@@ -89,80 +91,6 @@
         }
         else {
             $_SESSION["warning"] = $query->error;
-        }
-    }
-    elseif (isset($_POST['name'])) {
-        $id = $_POST['id'];
-    	$name = $_POST['name'];
-    	$obj = $_POST['obj'];
-		$area = $_POST['area'];
-    	$abstract = $_POST['abstract'];
-
-        if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-            $targetDirectory = "uploads/thesis/";  // Set your target directory
-            $uploadedFileName = basename($_FILES["image"]["name"]);
-            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                // Now, you can use $targetFilePath to store in the database
-                $image = $targetFilePath;
-                if (!isset($_POST['insert'])) {
-                    $sql = "SELECT image FROM works WHERE id = $id";
-                    $resultImg = $con->query($sql);
-                    if ($resultImg->num_rows > 0) {
-                        $imgurl = $resultImg->fetch_assoc();
-                        // Check if the file exists
-                        if (file_exists($imgurl['image'])) {
-                            unlink($imgurl['image']);
-                        }
-                        $resultImg->free();
-                    }
-                }
-
-            } else {
-                $image = '';
-                $_SESSION["error"] = "Error uploading the file.";
-            }
-        } else {
-            if ($_POST['img'] === '') {
-                $image = '';
-            }
-            else {
-                $image = $_POST['img'];
-            }
-        }
-        
-    	if (isset($_POST['insert'])) {
-     		$query = $con->prepare("INSERT INTO works (name, obj, area, abstract, image) VALUES (?, ?, ?, ?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("sssss", $name, $obj, $area, $abstract, $image);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "$name was created successfully!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-    	}
-        elseif (isset($_POST['update'])) {
-            $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("sssssi", $name, $obj, $area, $abstract, $image, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "$name was updated successfully!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
         }
     }
 
