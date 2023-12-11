@@ -278,10 +278,10 @@
         if (isset($_POST['addCollab'])) {
             $id = $_POST['id'];
             $name = $_POST['name'];
-            $collab = SelectUsersNotInIdWork($con, 1, 10, $id, $rut);
+            $collab = SelectUsersNotInIdWork($con, 1, 10, $id);
             ?>
             <main>
-                <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
+                <div class="container-fluid zonasTitulo"><h1 class="container">Tesis</h1></div>
                 <div class = "thesisMenu py-4">
                     <div class="container">
                     <form action = "profile.php" method = "post">

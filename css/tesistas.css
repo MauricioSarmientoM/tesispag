@@ -10,3 +10,16 @@
     border: 2px solid #364c59;
     border-radius: 15px;
 }
+
+.boton {
+    color: dark;
+}
+
+.boton:hover {
+    background-color: #364c59;
+    color: white
+}
+
+h4 {
+    margin-bottom: 0 !important;
+}

@@ -19,6 +19,30 @@
         <main>
             <!-- Zona de tesistas -->
             <div class="container-fluid zonasTitulo"><h1 class="container">Tesistas</h1></div>
+
+            <div class="container my-4 ">
+                <form action="users.php" method="get">
+                    <div class="row text-center">
+                        <div class="col-md-5 my-auto">
+                            <input class="w-100 py-1 text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"/>
+                        </div>
+                        <div class="col-md-5">
+                            <select id="selector" class="form-select">
+                                <option value="" disabled selected hidden>Buscar por:</option>
+                                <option value="rut"><p>rut</p></option>
+                                <option value="name"><p>nombre</p></option>
+                                <option value="surname"><p>Apellido</p></option>
+                                <option value="email"><p>Email</p></option>
+                                <option value="direction"><p>Dirección</p></option>
+                            </select>
+                        </div>
+                        <div class="col row">
+                            <button type="submit" class="boton"><h4>&#128269;</h4></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="container my-4 tesistas">
             <!-- Diego: Celeste, de aquí en adelante añades el backend,
                 Tipo, su while piola con php que hace la consulta con arrays and stuff :)
@@ -41,10 +65,9 @@
                 </a>
             </div> 
             <!-- Fin de zona de tesistas -->
-
-            <!-- footer -->
-            <?php include './comp/footer.php' ?>
         </main>
+        <!-- footer -->
+        <?php include './comp/footer.php' ?>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>

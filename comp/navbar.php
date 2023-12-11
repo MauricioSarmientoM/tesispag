@@ -34,8 +34,8 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownUser">
                             <li>
                                 <form action = "/profile.php" method = "post">
-                                    <input type = "hidden" name = "rut" value = "<?php echo $_SESSION['rut']; ?>" />
-                                    <input type = "submit" value = "Perfil" />
+                                    <input type = "hidden" name = "rut" value = "<?php echo $_SESSION['rut']; ?>">
+                                    <input class="dropdown-item" type = "submit" value = "Perfil">
                                 </form>
                             </li>
                             <?php
