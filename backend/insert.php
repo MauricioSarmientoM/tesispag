@@ -64,6 +64,19 @@
         return 0;
     }
     function InsertEvent($con, $title, $description, $image, $publicationDate, $realizationDate) {
-        
+        if (isset($image) && $image["error"] == UPLOAD_ERR_OK) {
+            $targetDirectory = "uploads/events/";  // Set your target directory
+            $uploadedFileName = basename($image["name"]);
+            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
+            if (move_uploaded_file($image["tmp_name"], $targetFilePath)) $image = $targetFilePath;
+            else $image = '';
+        }
+        else $image = '';
+        $query = $con->prepare("INSERT INTO events (title, description, image, publicationDate, realizationDate) VALUES (?, ?, ?, ?, ?)");
+        if (!$query) die("Preparation failed: " . $con->error);
+        $query->bind_param("sssss", $title, $description, $image, $publicationDate, $realizationDate);
+        if ($query->error) die("Binding parameters failed: " . $query->error);
+        if ($query->execute()) return 1;
+        return 0;
     }
 ?>

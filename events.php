@@ -11,11 +11,12 @@
     $con = conectar();
 
     if (isset($_POST['insert'])) InsertEvent($con, $_POST['title'], $_POST['description'], $_FILES['image'], $_POST['publicationDate'], $_POST['realizationDate']);
+    elseif (isset($_POST['update'])) UpdateEvent($con, $_POST['id'], $_POST['title'], $_POST['description'], $_POST['image'], $_POST['publicationDate'], $_POST['realizationDate']);
+    elseif (isset($_POST['delete'])) DeleteEvent($con, $_POST['id']);
 
     $showEvents = 10;
-    /* datos de users */
-    if (isset($_GET['search'])) $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
-    else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
+    if (isset($_GET['search'])) $res = SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
+    else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -46,7 +47,7 @@
                         </button>
                     </div>
                     <div class="col">
-                        <h1 class="text-center">Gestor de Usuarios</h1>
+                        <h1 class="text-center">Gestor de Eventos</h1>
                     </div>
                     <div class="col-md-3"></div>
                 </div>
@@ -56,7 +57,7 @@
             <!-- CONTENEDOR DE TABLA DE GESTION -->
             <div class="container">
                 <div class="row text-end">
-                    <form action="users.php" method="get">
+                    <form action="events.php" method="get">
                         <label for="searchinput"><h5>Buscar:</h5></label>
                         <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
                         <button type="submit" class="btn">Enviar</button>
@@ -173,7 +174,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                ¿Está seguro de que desea borrar a <?php echo '' . $row['name'] . ' ' . $row['surname']; ?>?
+                                                ¿Está seguro de que desea borrar a <?php echo '' . $row['title']; ?>?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -222,7 +223,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="inputRealizationDate">Fecha de Realización</label>
-                                                    <input type="text" id = "inputRealizationDate" class="form-control mb-3" name="realizationDate"/>
+                                                    <input type="date" id = "inputRealizationDate" class="form-control mb-3" name="realizationDate"/>
                                                     <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                                 </div>
                                                 <div class="form-group">
@@ -255,8 +256,9 @@
                     <?php
                     $eventsAmount = SelectEventsCount($con);
                     $eventsAmount = $eventsAmount->fetch_assoc();
+                    $pagesAmount = ceil($eventsAmount['count'] / $showEvents);
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
+                        <li class="page-item"><a href="/events.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
                     <?php } $con->close();?>
                     <li class="page-item disabled">
                         <a class="page-link" href="#">Next</a>

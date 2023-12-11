@@ -92,7 +92,13 @@
         $result = $con->query($sql);
         return $result;
     }
-    function SelectEventCount($con) {
+    function SelectEventsWhereTitle($con, $pageNumber, $itemsPerPage, $title) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE title LIKE %$title% ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsCount($con) {
         $sql = "SELECT COUNT(id) as count FROM events";
         $result = $con->query($sql);
         return $result;
