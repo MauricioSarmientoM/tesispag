@@ -1,16 +1,16 @@
 <?php
     session_start();
-    if (!isset($_POST['rut'])){
+    $rut = $_GET['rut'];
+    if (!isset($rut)){
         header("Location: ./index.php");
     }
-    $rut = $_POST['rut'];
     include("./backend/connection.php");
     include("./backend/select.php");
     include("./backend/insert.php");
     include("./backend/update.php");
     include("./backend/delete.php");
     $con = conectar();
-    if (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+    if (isset($_POST['update'])) UpdateUser($con, $rut, $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
     elseif (isset($_POST['insertT'])) {
         InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
         $work = SelectWorksOrderByDesc ($con, 1);
@@ -48,10 +48,7 @@
                 <?php include './comp/alerts.php'; ?>
                 <div class = "thesisMenu py-4">
                     <div class="container">
-                    <form action = "profile.php" method = "post">
-                        <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
-                        <input type = "submit" class="btn btn-danger" value = "Volver"/>
-                    </form>
+                    <a href = "profile.php?rut=<?php echo $rut; ?>"><button class="btn btn-danger"/>Volver</button></a>
             <?php
             while ($data = $collab->fetch_assoc()) {
                 ?>
@@ -75,8 +72,7 @@
                         <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
                     </div>
                     <div class="col p-3">
-                        <form action = "profile.php" method = "post">
-                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                             <input type = "hidden" name = "id" value = "<?php echo $id; ?>"/>
                             <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
                             <input type = "submit" name = "insertC" class="btn btn-success" value = "Añadir"/>
@@ -153,8 +149,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="profile.php" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="rut" value = "<?php echo $row['rut']?>" readonly/>
+                            <form action = "profile.php?rut=<?php echo $rut; ?>" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="img" value = "<?php echo $row['imageURL']?>" readonly/>
                                 <div class="form-group">
                                     <label for="inputName">Nombre</label>
@@ -236,8 +231,7 @@
                                 $collab = SelectUsersWhereIdWorkButNoRut($con, 1, 10, $row['id'], $rut);
 
                                 while ($data = $collab->fetch_assoc()) {
-                                    echo '<form action="profile.php" method="post"><input type="hidden" name="rut" value = ' . $data["rut"] . ' readonly/>';
-                                    echo '<input type = "submit" value = "' . $data['name'] . ' ' . $data['surname'] .'"/></form>';
+                                    echo '<a href="profile.php?rut=' . $data["rut"] . '">' . $data['name'] . ' ' . $data['surname'] .'</a>';
                                 }
                                 ?>
                             </div>
@@ -264,8 +258,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="profile.php" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="img" value = "<?php echo $row['image']; ?>" readonly/>
                                             <input type="hidden" name="id" value = "<?php echo $row['id']; ?>" readonly/>
                                             <div class="form-group">
@@ -333,8 +326,7 @@
                                                 <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
                                             </div>
                                             <div class="col p-3">
-                                                <form action = "profile.php" method = "post">
-                                                    <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                                <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                                     <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                                     <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
                                                     <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Quitar"/>
@@ -347,14 +339,12 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <form action = "profile.php" method = "post">
-                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                             <input type = "hidden" name = "collabRut" value = "<?php echo $rut; ?>"/>
                                             <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Dejar de Colaborar"/>
                                         </form>
-                                        <form action = "profile.php" method = "post">
-                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                             <input type = "submit" name = "addCollab" class="btn btn-success" value = "Añadir Colaborador"/>
                                         </form>
@@ -374,8 +364,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <form action = "profile.php" method = "post">
-                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                             <input type = "submit" name = "deleteT" class="btn btn-danger" value = "Eliminar"/>
                                         </form>
@@ -406,7 +395,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="profile.php" method="post" enctype="multipart/form-data">
+                            <form action = "profile.php?rut=<?php echo $rut; ?>" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
                                 <div class="form-group">
                                     <label for="inputName">Nombre</label>

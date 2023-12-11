@@ -1,4 +1,13 @@
-<?php session_start(); ?>
+<?php
+    session_start();
+    include("./backend/connection.php");
+    include("./backend/select.php");
+    $con = conectar();
+
+    $showUsers = 10;
+    if (isset($_GET['search'])) $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+    else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -29,8 +38,8 @@
                         <div class="col-md-5">
                             <select id="selector" class="form-select">
                                 <option value="" disabled selected hidden>Buscar por:</option>
-                                <option value="rut"><p>rut</p></option>
-                                <option value="name"><p>nombre</p></option>
+                                <option value="rut"><p>RUT</p></option>
+                                <option value="name"><p>Nombre</p></option>
                                 <option value="surname"><p>Apellido</p></option>
                                 <option value="email"><p>Email</p></option>
                                 <option value="direction"><p>Dirección</p></option>
@@ -43,27 +52,36 @@
                 </form>
             </div>
 
+            <?php
+                while ($row = $res->fetch_assoc()) {
+            ?>
             <div class="container my-4 tesistas">
-            <!-- Diego: Celeste, de aquí en adelante añades el backend,
-                Tipo, su while piola con php que hace la consulta con arrays and stuff :)
-                (Al final elimina mis comentarios)-->
-                <a href="https://about:blank"> <!-- Diego: Aquí se vincula con su perfil -->
+                <a href="profile.php?rut=<?php echo $row['rut']; ?>"> <!-- Diego: Aquí se vincula con su perfil -->
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
-                            <img class="usuario" src="src\icons\userLogo.png" alt="foto-user"> <!-- Diego: No tengo el placeholder del user, en el brach perfil existe. -->
-                            <!-- usuario es una clase del tesistas.css, un archivo css nuevo especifico para las imagenes de esta página-->
+                            <?php
+                            if ($row['imageURL'] != NULL) {
+                                echo '<img class = "usuario" src = "' . $row['imageURL'] . '"/>';
+                            }
+                            else{
+                                echo '<img class = "usuario" src = "src/icons/iconPlaceholder.png"/>';
+                            }
+                            ?>
                         </div>
                         <div class="col my-auto">
                             <div class="row">
-                                <h2>Nombre - Apellido</h2> <!-- Diego: Aquí va una consulta php del nombre y el apellido -->
+                                <h2><?php echo $row['name'] . ' ' . $row['surname'] ?></h2>
                             </div>
                             <div class="row">
-                                <h4>Rut</h4> <!-- Diego: Aquí va una consulta php del rut -->
+                                <h4><?php echo $row['rut']; ?></h4>
                             </div>
                         </div>
                     </div>
                 </a>
-            </div> 
+            </div>
+            <?php
+            }
+            ?>
             <!-- Fin de zona de tesistas -->
         </main>
         <!-- footer -->

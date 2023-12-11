@@ -33,10 +33,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownUser">
                             <li>
-                                <form action = "/profile.php" method = "post">
-                                    <input type = "hidden" name = "rut" value = "<?php echo $_SESSION['rut']; ?>">
-                                    <input class="dropdown-item" type = "submit" value = "Perfil">
-                                </form>
+                                <a class="dropdown-item" href = "/profile.php?rut=<?php echo $_SESSION['rut']; ?>">Perfil</a>
                             </li>
                             <?php
                                 if(isset($_SESSION['super'])) {
