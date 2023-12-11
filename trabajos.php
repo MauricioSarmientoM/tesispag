@@ -1,36 +1,36 @@
+
 <?php session_start(); ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel = "stylesheet" href = "./css/tesistas.css"/>
+        <link rel = "stylesheet" href = "./css/trabajos.css"/>
         <link rel = "stylesheet" href = "./css/general.css"/>
         <title>UDA</title>
     </head>
     <body>
         <!-- Navbar -->
         <?php include './comp/navbar.php'; ?>
-
-        <!-- Alerts -->
-        <?php include './comp/alerts.php'; ?>
         <main>
+            <!-- Alerts -->
+            <?php include './comp/alerts.php'; ?>
+
             <!-- Zona de tesistas -->
-            <div class="container-fluid zonasTitulo"><h1 class="container">Tesistas</h1></div>
+            <div class="container-fluid zonasTitulo"><h1 class="container">Trabajos</h1></div>
             <div class="container my-4">
-                <form action="users.php" method="get">
+                <form action="" method="get"> <!-- cambiar action="" -->
                     <div class="row">
                         <div class="col-4"></div>
                         <div class="col">
                             <select id="selector" class="form-select">
                                 <option value="" disabled selected hidden>Buscar por:</option>
-                                <option value="rut"><p>Rut</p></option>
                                 <option value="name"><p>Nombre</p></option>
-                                <option value="surname"><p>Apellido</p></option>
-                                <option value="email"><p>Email</p></option>
-                                <option value="direction"><p>Dirección</p></option>
+                                <option value="obj"><p>Objetivo</p></option>
+                                <option value="area"><p>área</p></option>
+                                <option value="abstract"><p>Abstracto</p></option>
                             </select>
                         </div>
                         <div class="col-4">
@@ -43,28 +43,29 @@
                 </form>
             </div>
 
-            <div class="container my-4 tesistas">
+            <div class="container my-4 trabajos">
             <!-- Diego: Celeste, de aquí en adelante añades el backend,
                 Tipo, su while piola con php que hace la consulta con arrays and stuff :)
                 (Al final elimina mis comentarios)-->
                 <a href="https://about:blank"> <!-- Diego: Aquí se vincula con su perfil -->
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
-                            <img class="usuario" src="src\icons\userLogo.png" alt="foto-user"> <!-- Diego: No tengo el placeholder del user, en el brach perfil existe. -->
+                            <img class="trabajo" src="src\icons\userLogo.png" alt="foto-user"> <!-- Diego: No tengo el placeholder del user, en el brach perfil existe. -->
                             <!-- usuario es una clase del tesistas.css, un archivo css nuevo especifico para las imagenes de esta página-->
                         </div>
                         <div class="col my-auto">
                             <div class="row">
-                                <h2>Nombre - Apellido</h2> <!-- Diego: Aquí va una consulta php del nombre y el apellido -->
+                                <h2>Título</h2> <!-- Diego: Aquí va una consulta php del nombre y el apellido -->
                             </div>
                             <div class="row">
-                                <h4>Rut</h4> <!-- Diego: Aquí va una consulta php del rut -->
+                                <h4>Descripción</h4> <!-- Diego: Aquí va una consulta php del rut -->
                             </div>
                         </div>
                     </div>
                 </a>
             </div> 
-            <!-- Fin de zona de tesistas -->
+            <!-- Fin de zona de trabajos -->
+
         </main>
         <!-- footer -->
         <?php include './comp/footer.php' ?>

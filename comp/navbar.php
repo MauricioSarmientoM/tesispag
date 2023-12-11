@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col d-flex">
-                <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Trabajos</a>
+                <a class="my-auto mx-auto" href="trabajos.php">Trabajos</a>
             </div>
             <div class="col d-flex">
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contáctanos</a>
