@@ -23,7 +23,7 @@
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
-        <meta name = "description" content = "*¡Página de Tesistas!"/>
+        <meta name = "description" content = "Gestor de eventos que se muestran en la página principal."/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link rel = "stylesheet" href = "./css/general.css"/>
         <link rel = "stylesheet" href = "./css/gestor.css"/>

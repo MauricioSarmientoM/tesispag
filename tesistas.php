@@ -83,6 +83,24 @@
             }
             ?>
             <!-- Fin de zona de tesistas -->
+            
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    <?php
+                    $usersAmount = SelectUsersCount($con);
+                    $usersAmount = $usersAmount->fetch_assoc();
+                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
+                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
+                    <?php } $con->close();?>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </main>
         <!-- footer -->
         <?php include './comp/footer.php' ?>
