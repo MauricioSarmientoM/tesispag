@@ -9,32 +9,6 @@
      */
 
 
-    include("./backend/connection.php");
-
-
-            if (isset($_POST['rut']) && isset($_POST['subject']) && isset($_POST['body']) && isset($_POST['readed'])) {
-
-         if(!isset($_POST['contacto'])){
-            $rut= $_POST['rut'];
-            $subject=$_POST['subject'];
-            $body=$_POST['body'];
-            $readed=$_POST['readed'];
-    		$query = $con->prepare("INSERT INTO contact (rut, subject, body, readed) VALUES (?, ?, ?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("issi", $rut, $subject, $body, $readed);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "Mesage sent successfully!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        } 
-}
 ?>
 
 
@@ -54,15 +28,19 @@
 
 
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
- contactanos
-</button>
+
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos
+                </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                <?php 
+if (isset($_SESSION['rut'])) {
+                    ?>
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-            <form action="contacto.php" method="post">
+            <form action="backend/insertContact.php" method="post">
       <div class="modal-header ">
         <h1 class="modal-title fs-5 " id="exampleModalLabel">Contacto</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -70,38 +48,71 @@
       <div class="modal-body">
 
 
-    <div class="container mt-5 col-10">
+        <div class="container mt-5 col-10">
+            <div class="mb-3">
+                <input type="hidden" id="inputrut" class="form-control mb-3" value="1" name="rut"/>
 
+                <input type="hidden" id="inputreaded" class="form-control mb-3" value="0" name="readed" />
 
-<div >
-
-<?php // echo $_SESSION['rut'];?>
-
-<input type="hidden" id="inputrut" class="form-control mb-3" value="1" name="rut"/>
-
-<input type="hidden" id="inputreaded" class="form-control mb-3" value=0 name="readed" />
-
-  <input type="text" class="form-control" id="inputsubject" name="subject" placeholder="Asunto" />
-</div>
-<div class="mb-3">
-  <label for="inputObj" class="form-label"></label>
-  <textarea class="form-control" id="inputObj" name="body" placeholder="Escriba su mensaje aquí." rows="3"></textarea>
-</div>
-<div>
+                <input type="text" class="form-control" id="inputsubject" name="subject" placeholder="Asunto" />
+            </div>
+            <div class="mb-3">
+            <label for="inputObj" class="form-label"></label>
+            <textarea class="form-control" id="inputObj" name="body" placeholder="Escriba su mensaje aquí." rows="3"></textarea>
+            </div>
+       <div>
 </div>
 
 </div>
-
-
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="contacto">Enviar</button>
+        <button type="submit" class="boton" name="contacto">Enviar</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+                <?php 
+                } else {
+                ?>
+                <div class="alert alert-danger" role="alert">
+                Debe ingresar sesión antes.
+                </div>
+                <?php 
+                };
+                ?>        
+
+
+    <div class="container mt-3">
+        <!-- Botón que activa la alerta -->
+        <button type="button" class="btn btn-primary" onclick="mostrarAlerta()">Mostrar Alerta</button>
+
+        <!-- Alerta oculta por defecto -->
+        <div class="alert alert-success mt-3" role="alert" id="miAlerta" style="display: none;">
+            Esta es una alerta de ejemplo.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Agrega el enlace al archivo JS de Bootstrap y jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Tu script personalizado -->
+    <script>
+        function mostrarAlerta() {
+            // Muestra la alerta
+            $('#miAlerta').fadeIn();
+
+            // Oculta la alerta después de 3 segundos (3000 milisegundos)
+            setTimeout(function(){
+                $('#miAlerta').fadeOut();
+            }, 3000);
+        }
+    </script>
 
 
 </body>
