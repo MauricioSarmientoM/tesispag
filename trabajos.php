@@ -1,5 +1,39 @@
+<?php
+    session_start();
+    if(!isset($_SESSION['super'])) {
+        header("Location: ../index.php");
+    }
 
-<?php session_start(); ?>
+    include("./backend/connection.php");
+    include("./backend/select.php");
+    include("./backend/insert.php");
+    include("./backend/update.php");
+    include("./backend/delete.php");
+    $con = conectar();
+
+    if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
+    elseif (isset($_POST['update'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
+    elseif (isset($_POST['delete'])) DeleteWork($con, $_POST['id']);
+    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
+    elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
+
+
+    $showWorks = 10;
+    if (isset($_GET['search'])) {
+        $res = match ($_GET['selector']) {
+            'name' => SelectWorksWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'obj' => SelectWorksWhereObj($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'area' => SelectWorksWhereArea($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'abstract' => SelectWorksWhereAbstract($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            default => SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks),
+        };
+    }
+    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
+
+
+    if (isset($_GET['search'])) $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,16 +60,22 @@
                         <div class="col-4"></div>
                         <div class="col">
                             <select id="selector" class="form-select">
-                                <option value="" disabled selected hidden>Buscar por:</option>
-                                <option value="name"><p>Nombre</p></option>
-                                <option value="obj"><p>Objetivo</p></option>
-                                <option value="area"><p>área</p></option>
-                                <option value="abstract"><p>Abstracto</p></option>
+                                <?php
+                                // Assume you have retrieved options from the database in an array
+                                $values = array('', 'name', 'obj', 'area', 'abstract');
+                                $name = array('Buscar por:', 'Nombre', 'Objetivo', 'Área', 'Abstract');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-4">
                             <div class="btn-group" role="group">
-                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"/>
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"  value = "<?php echo $_GET['search']?>"/>
                                 <button type="submit" class="btn"><h4>&#128269;</h4></button>
                             </div>
                         </div>
