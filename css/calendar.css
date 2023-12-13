@@ -1,4 +1,4 @@
-.usuario {
+.evento {
     background-color: white;
     border-radius: 50%;
     border: 2px solid #364c59;
@@ -6,7 +6,7 @@
     height: 128px;
 }
 
-.tesistas {
+.eventos {
     border: 2px solid #364c59;
     border-radius: 15px;
 }

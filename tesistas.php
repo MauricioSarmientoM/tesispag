@@ -5,7 +5,16 @@
     $con = conectar();
 
     $showUsers = 10;
-    if (isset($_GET['search'])) $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+    if (isset($_GET['search'])) {
+        $res = match ($_GET['selector']) {
+            'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
+        };
+    }
     else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
@@ -28,25 +37,31 @@
         <main>
             <!-- Zona de tesistas -->
             <div class="container-fluid zonasTitulo"><h1 class="container">Tesistas</h1></div>
-
-            <div class="container my-4 ">
-                <form action="users.php" method="get">
-                    <div class="row text-center">
-                        <div class="col-md-5 my-auto">
-                            <input class="w-100 py-1 text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"/>
-                        </div>
-                        <div class="col-md-5">
-                            <select id="selector" class="form-select">
-                                <option value="" disabled selected hidden>Buscar por:</option>
-                                <option value="rut"><p>RUT</p></option>
-                                <option value="name"><p>Nombre</p></option>
-                                <option value="surname"><p>Apellido</p></option>
-                                <option value="email"><p>Email</p></option>
-                                <option value="direction"><p>Dirección</p></option>
+            
+            <div class="container my-4">
+                <form action="tesistas.php" method="get">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col">
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                // Assume you have retrieved options from the database in an array
+                                $values = array('', 'rut', 'name', 'surname', 'email', 'direction');
+                                $name = array('Buscar por:', 'RUT', 'Nombre', 'Apellido', 'Email', 'Dirección');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
-                        <div class="col row">
-                            <button type="submit" class="boton"><h4>&#128269;</h4></button>
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda" value = "<?php echo $_GET['search']?>"/>
+                                <button type="submit" class="btn"><h4>&#128269;</h4></button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -85,18 +100,20 @@
             <!-- Fin de zona de tesistas -->
             
             <nav aria-label="Page navigation example">
+                <?php
+                $usersAmount = SelectUsersCount($con);
+                $usersAmount = $usersAmount->fetch_assoc();
+                $pagesAmount = ceil($usersAmount['count'] / $showUsers);
+                ?>
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
+                    <li class="page-item <?php if (isset($_GET['page'])) echo 'disabled'; ?>">
                         <a class="page-link">Previous</a>
                     </li>
                     <?php
-                    $usersAmount = SelectUsersCount($con);
-                    $usersAmount = $usersAmount->fetch_assoc();
-                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
+                        <li class="page-item"><a href="/tesistas.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
                     <?php } $con->close();?>
-                    <li class="page-item disabled">
+                    <li class="page-item <?php if (isset($_GET['page'])) if(1) echo 'disabled'; ?>">
                         <a class="page-link" href="#">Next</a>
                     </li>
                 </ul>

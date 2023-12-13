@@ -17,7 +17,16 @@
     elseif (isset($_POST['deleteS'])) DeleteSuper($con, $_POST['rut']);
 
     $showUsers = 10;
-    if (isset($_GET['search'])) $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+    if (isset($_GET['search'])) {
+        $res = match ($_GET['selector']) {
+            'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+            default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
+        };
+    }
     else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
@@ -57,14 +66,37 @@
             <!-- FIN DE BOTON VOLVER Y TITULO -->
 
             <!-- CONTENEDOR DE TABLA DE GESTION -->
+
+            <div class="container my-4">
+                <form action="users.php" method="get">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col">
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                // Assume you have retrieved options from the database in an array
+                                $values = array('', 'rut', 'name', 'surname', 'email', 'direction');
+                                $name = array('Buscar por:', 'RUT', 'Nombre', 'Apellido', 'Email', 'Dirección');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda" value = "<?php echo $_GET['search']?>"/>
+                                <button type="submit" class="btn"><h4>&#128269;</h4></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="container">
-                <div class="row text-end">
-                    <form action="users.php" method="get">
-                        <label for="searchinput"><h5>Buscar:</h5></label>
-                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
-                        <button type="submit" class="btn">Enviar</button>
-                    </form>
-                </div>
                 <div class="row mt-2">
                     <!-- crud de usuario -->
                     <table class="table" >

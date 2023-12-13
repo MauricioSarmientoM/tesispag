@@ -88,7 +88,7 @@ if (!file_exists("uploads/events/")) {
                         </a>
                         <div class="row text-center">
                             <button class="boton">
-                                <a href="thesis.php"><h1 class="mb-1">Más</h1></a>
+                                <a href="trabajos.php"><h1 class="mb-1">Más</h1></a>
                             </button>
                         </div>
                     </div>

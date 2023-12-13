@@ -10,9 +10,9 @@
         </div>
         <div class="col text-center">
             <h2>Acerca De</h2>
-            <a href="aboutUs.php" target="_blank">Nosotros</a><br>
-            <a href="aboutUs.php" target="_blank">Términos y Condiciones</a><br>
-            <a href="aboutUs.php" target="_blank">Políticas de Privacidad</a>
+            <a href="aboutUs.php#quienes-somos">Nosotros</a><br>
+            <a href="aboutUs.php#terminos">Términos y Condiciones</a><br>
+            <a href="aboutUs.php#politicas">Políticas de Privacidad</a>
         </div>
         <div class="col text-center">
             <h2>Otros</h2>
