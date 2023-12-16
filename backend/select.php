@@ -81,25 +81,25 @@
     }
     function SelectWorksWhereName ($con, $pageNumber, $itemsPerPage, $name) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM works WHERE name LIKE %$name% LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM works WHERE name LIKE '%$name%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectWorksWhereObj ($con, $pageNumber, $itemsPerPage, $obj) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM works WHERE name LIKE %$obj% LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM works WHERE obj LIKE '%$obj%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectWorksWhereArea ($con, $pageNumber, $itemsPerPage, $area) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM works WHERE name LIKE %$area% LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM works WHERE area LIKE '%$area%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectWorksWhereAbstract ($con, $pageNumber, $itemsPerPage, $abstract) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM works WHERE name LIKE %$abstract% LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM works WHERE abstract LIKE '%$abstract%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }

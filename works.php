@@ -48,10 +48,7 @@
                 <?php include './comp/alerts.php'; ?>
                 <div class = "thesisMenu py-4">
                     <div class="container">
-                    <form action = "profile.php" method = "post">
-                        <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
-                        <input type = "submit" class="btn btn-danger" value = "Volver"/>
-                    </form>
+                    <a href = "works.php"><button class="btn btn-danger">Volver</button></a>
             <?php
             while ($data = $collab->fetch_assoc()) {
                 ?>

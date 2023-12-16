@@ -1,14 +1,8 @@
 <?php
     session_start();
-    if(!isset($_SESSION['super'])) {
-        header("Location: ../index.php");
-    }
 
     include("./backend/connection.php");
     include("./backend/select.php");
-    include("./backend/insert.php");
-    include("./backend/update.php");
-    include("./backend/delete.php");
     $con = conectar();
 
     if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
@@ -29,10 +23,6 @@
         };
     }
     else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
-
-
-    if (isset($_GET['search'])) $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
-    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,13 +45,12 @@
             <!-- Zona de tesistas -->
             <div class="container-fluid zonasTitulo"><h1 class="container">Trabajos</h1></div>
             <div class="container my-4">
-                <form action="" method="get"> <!-- cambiar action="" -->
+                <form action="trabajos.php" method="get">
                     <div class="row">
                         <div class="col-4"></div>
                         <div class="col">
-                            <select id="selector" class="form-select">
+                            <select id="selector" name = "selector" class="form-select">
                                 <?php
-                                // Assume you have retrieved options from the database in an array
                                 $values = array('', 'name', 'obj', 'area', 'abstract');
                                 $name = array('Buscar por:', 'Nombre', 'Objetivo', 'Área', 'Abstract');
                                 for ($counter = 0; $counter < count($values); $counter++) {
@@ -83,27 +72,38 @@
                 </form>
             </div>
 
+            <?php
+                while ($row = $res->fetch_assoc()) {
+            ?>
             <div class="container my-4 trabajos">
-            <!-- Diego: Celeste, de aquí en adelante añades el backend,
-                Tipo, su while piola con php que hace la consulta con arrays and stuff :)
-                (Al final elimina mis comentarios)-->
-                <a href="https://about:blank"> <!-- Diego: Aquí se vincula con su perfil -->
+                <a href="detalle.php?id=<?php echo $row['id'];?>">
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
-                            <img class="trabajo" src="src\icons\userLogo.png" alt="foto-user"> <!-- Diego: No tengo el placeholder del user, en el brach perfil existe. -->
-                            <!-- usuario es una clase del tesistas.css, un archivo css nuevo especifico para las imagenes de esta página-->
+                            <?php
+                            if ($row['image'] != NULL) {
+                                echo '<img class = "trabajo" src = "' . $row['image'] . '"/>';
+                            }
+                            else{
+                                echo '<img class = "trabajo" src = "src/icons/iconPlaceholder.png"/>';
+                            }
+                            ?>
                         </div>
                         <div class="col my-auto">
                             <div class="row">
-                                <h2>Título</h2> <!-- Diego: Aquí va una consulta php del nombre y el apellido -->
+                                <h2><?php echo $row['name'];?></h2>
                             </div>
                             <div class="row">
-                                <h4>Descripción</h4> <!-- Diego: Aquí va una consulta php del rut -->
+                                <h4><?php echo $row['obj']; ?></h4>
                             </div>
                         </div>
                     </div>
                 </a>
             </div> 
+
+            <?php
+            }
+            ?>
+
             <!-- Fin de zona de trabajos -->
 
         </main>

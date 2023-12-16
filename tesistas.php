@@ -45,7 +45,6 @@
                         <div class="col">
                             <select id="selector" name = "selector" class="form-select">
                                 <?php
-                                // Assume you have retrieved options from the database in an array
                                 $values = array('', 'rut', 'name', 'surname', 'email', 'direction');
                                 $name = array('Buscar por:', 'RUT', 'Nombre', 'Apellido', 'Email', 'Dirección');
                                 for ($counter = 0; $counter < count($values); $counter++) {
