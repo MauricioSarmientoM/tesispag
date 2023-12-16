@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col d-flex">
-                <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Trabajos</a>
+                <a class="my-auto mx-auto" href="trabajos.php">Trabajos</a>
             </div>
             <div class="col d-flex">
                 <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contáctanos</a>
@@ -33,10 +33,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownUser">
                             <li>
-                                <form action = "/profile.php" method = "post">
-                                    <input type = "hidden" name = "rut" value = "<?php echo $_SESSION['rut']; ?>" />
-                                    <input type = "submit" value = "Perfil" />
-                                </form>
+                                <a class="dropdown-item" href = "/profile.php?rut=<?php echo $_SESSION['rut']; ?>">Perfil</a>
                             </li>
                             <?php
                                 if(isset($_SESSION['super'])) {

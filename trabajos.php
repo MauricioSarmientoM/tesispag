@@ -1,52 +1,58 @@
 <?php
     session_start();
+
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
 
-    $showUsers = 10;
+    if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
+    elseif (isset($_POST['update'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
+    elseif (isset($_POST['delete'])) DeleteWork($con, $_POST['id']);
+    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
+    elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
+
+
+    $showWorks = 10;
     if (isset($_GET['search'])) {
         $res = match ($_GET['selector']) {
-            'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
+            'name' => SelectWorksWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'obj' => SelectWorksWhereObj($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'area' => SelectWorksWhereArea($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'abstract' => SelectWorksWhereAbstract($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            default => SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks),
         };
     }
-    else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
+    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
     <head>
         <meta charset = "utf-8"/>
         <meta name = "author" content = "Equipo4"/>
         <meta name = "description" content = "*¡Página de Tesistas!"/>
         <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel = "stylesheet" href = "./css/tesistas.css"/>
+        <link rel = "stylesheet" href = "./css/trabajos.css"/>
         <link rel = "stylesheet" href = "./css/general.css"/>
         <title>UDA</title>
     </head>
     <body>
         <!-- Navbar -->
         <?php include './comp/navbar.php'; ?>
-
-        <!-- Alerts -->
-        <?php include './comp/alerts.php'; ?>
         <main>
+            <!-- Alerts -->
+            <?php include './comp/alerts.php'; ?>
+
             <!-- Zona de tesistas -->
-            <div class="container-fluid zonasTitulo"><h1 class="container">Tesistas</h1></div>
-            
+            <div class="container-fluid zonasTitulo"><h1 class="container">Trabajos</h1></div>
             <div class="container my-4">
-                <form action="tesistas.php" method="get">
+                <form action="trabajos.php" method="get">
                     <div class="row">
                         <div class="col-4"></div>
                         <div class="col">
                             <select id="selector" name = "selector" class="form-select">
                                 <?php
-                                $values = array('', 'rut', 'name', 'surname', 'email', 'direction');
-                                $name = array('Buscar por:', 'RUT', 'Nombre', 'Apellido', 'Email', 'Dirección');
+                                $values = array('', 'name', 'obj', 'area', 'abstract');
+                                $name = array('Buscar por:', 'Nombre', 'Objetivo', 'Área', 'Abstract');
                                 for ($counter = 0; $counter < count($values); $counter++) {
                                     echo '<option value = "' . $values[$counter] . '"';
                                     if ($values[$counter] == $_GET['selector']) echo ' selected';
@@ -58,7 +64,7 @@
                         </div>
                         <div class="col-4">
                             <div class="btn-group" role="group">
-                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda" value = "<?php echo $_GET['search']?>"/>
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"  value = "<?php echo $_GET['search']?>"/>
                                 <button type="submit" class="btn"><h4>&#128269;</h4></button>
                             </div>
                         </div>
@@ -69,54 +75,37 @@
             <?php
                 while ($row = $res->fetch_assoc()) {
             ?>
-            <div class="container my-4 tesistas">
-                <a href="profile.php?rut=<?php echo $row['rut']; ?>"> <!-- Diego: Aquí se vincula con su perfil -->
+            <div class="container my-4 trabajos">
+                <a href="detalle.php?id=<?php echo $row['id'];?>">
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
                             <?php
-                            if ($row['imageURL'] != NULL) {
-                                echo '<img class = "usuario" src = "' . $row['imageURL'] . '"/>';
+                            if ($row['image'] != NULL) {
+                                echo '<img class = "trabajo" src = "' . $row['image'] . '"/>';
                             }
                             else{
-                                echo '<img class = "usuario" src = "src/icons/iconPlaceholder.png"/>';
+                                echo '<img class = "trabajo" src = "src/icons/iconPlaceholder.png"/>';
                             }
                             ?>
                         </div>
                         <div class="col my-auto">
                             <div class="row">
-                                <h2><?php echo $row['name'] . ' ' . $row['surname'] ?></h2>
+                                <h2><?php echo $row['name'];?></h2>
                             </div>
                             <div class="row">
-                                <h4><?php echo $row['rut']; ?></h4>
+                                <h4><?php echo $row['obj']; ?></h4>
                             </div>
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> 
+
             <?php
             }
             ?>
-            <!-- Fin de zona de tesistas -->
-            
-            <nav aria-label="Page navigation example">
-                <?php
-                $usersAmount = SelectUsersCount($con);
-                $usersAmount = $usersAmount->fetch_assoc();
-                $pagesAmount = ceil($usersAmount['count'] / $showUsers);
-                ?>
-                <ul class="pagination justify-content-center">
-                    <li class="page-item <?php if (isset($_GET['page'])) echo 'disabled'; ?>">
-                        <a class="page-link">Previous</a>
-                    </li>
-                    <?php
-                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/tesistas.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
-                    <?php } $con->close();?>
-                    <li class="page-item <?php if (isset($_GET['page'])) if(1) echo 'disabled'; ?>">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+
+            <!-- Fin de zona de trabajos -->
+
         </main>
         <!-- footer -->
         <?php include './comp/footer.php' ?>

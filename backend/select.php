@@ -14,7 +14,37 @@
     }
     function SelectUsersWhereRut ($con, $pageNumber, $itemsPerPage, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM users WHERE rut = $rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM users WHERE CAST(rut AS CHAR) LIKE '%$rut%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereName ($con, $pageNumber, $itemsPerPage, $name) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM users WHERE name LIKE '%$name%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereSurname ($con, $pageNumber, $itemsPerPage, $surname) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM users WHERE surname LIKE '%$surname%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereEmail ($con, $pageNumber, $itemsPerPage, $email) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM users WHERE email LIKE '%$email%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereDirection ($con, $pageNumber, $itemsPerPage, $direction) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM users WHERE surname LIKE '%$direction%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereIdWork($con, $pageNumber, $itemsPerPage, $idWork) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users JOIN workuser ON users.rut = workuser.rut WHERE workuser.idWork = $idWork LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
@@ -49,6 +79,30 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectWorksWhereName ($con, $pageNumber, $itemsPerPage, $name) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM works WHERE name LIKE '%$name%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectWorksWhereObj ($con, $pageNumber, $itemsPerPage, $obj) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM works WHERE obj LIKE '%$obj%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectWorksWhereArea ($con, $pageNumber, $itemsPerPage, $area) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM works WHERE area LIKE '%$area%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectWorksWhereAbstract ($con, $pageNumber, $itemsPerPage, $abstract) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM works WHERE abstract LIKE '%$abstract%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectWorksOrderByDesc ($con, $itemsPerPage) {
         $sql = "SELECT * FROM works ORDER BY id DESC LIMIT $itemsPerPage";
         $result = $con->query($sql);
@@ -74,13 +128,26 @@
 
     //Events
 
-    function selectEvents($con, $limit) {
-        $sql = "SELECT * FROM events LIMIT $limit";
+    function SelectEvents($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
-    function SelectEventsWhereRealizationDateExist($con, $limit) {
-        $sql = "SELECT * FROM events WHERE realizationDate IS NOT NULL ORDER BY realizationDate DESC LIMIT $limit";
+    function SelectEventsWhereRealizationDateExist($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE realizationDate IS NOT NULL ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsWhereTitle($con, $pageNumber, $itemsPerPage, $title) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE title LIKE %$title% ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsCount($con) {
+        $sql = "SELECT COUNT(id) as count FROM events";
         $result = $con->query($sql);
         return $result;
     }

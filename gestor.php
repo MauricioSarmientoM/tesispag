@@ -61,16 +61,29 @@
                         <a href="works.php"><h2>Gestionar Trabajos</h2></a>
                     </div>
                 </div>
+                <div class="row mt-4 d-flex zona">
+                    <div class="col-md-1 zona-imagen">
+                        <img class="d-flex mx-auto my-4" src="src\icons\workLogo.png" alt="">
+                    </div>
+                    <div class="col my-auto">
+                        <a href="events.php"><h2>Gestionar Eventos</h2></a>
+                    </div>
+                </div>
+                <div class="row mt-4 d-flex zona">
+                    <div class="col-md-1 zona-imagen">
+                        <img class="d-flex mx-auto my-4" src="src\icons\workLogo.png" alt="">
+                    </div>
+                    <div class="col my-auto">
+                        <a href="contacts.php"><h2>Gestionar Mensajes</h2></a>
+                    </div>
+                </div>
                 <!-- FIN BARRA DE GESTORES -->
             </div>
             <!-- FIN DE CONTENEDOR DE BARRA DE GESTORES -->
 
-            <!-- DIEGO: EL FOOTER NO ES NECESARIO EN gestor.php
-            <div class="fixed-bottom">
-                <?php /* include './comp/footer.php'; */?>
-            </div>
-            -->
         </main>
+            <!-- DIEGO: EL FOOTER NO ES NECESARIO EN gestor.php -->
+            <?php include './comp/footer.php'; ?>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>

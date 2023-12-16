@@ -4,10 +4,13 @@ if (!file_exists("uploads/")) {
     mkdir("uploads/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
 }
 if (!file_exists("uploads/thesis/")) {
-    mkdir("uploads/thesis/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/thesis/", 0777, true);
 }
 if (!file_exists("uploads/users/")) {
-    mkdir("uploads/users/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/users/", 0777, true);
+}
+if (!file_exists("uploads/events/")) {
+    mkdir("uploads/events/", 0777, true);
 }
 ?>
 <!DOCTYPE html>
@@ -85,7 +88,7 @@ if (!file_exists("uploads/users/")) {
                         </a>
                         <div class="row text-center">
                             <button class="boton">
-                                <a href="thesis.php"><h1 class="mb-1">Más</h1></a>
+                                <a href="trabajos.php"><h1 class="mb-1">Más</h1></a>
                             </button>
                         </div>
                     </div>
@@ -96,7 +99,7 @@ if (!file_exists("uploads/users/")) {
             <!-- Zona de Calendario -->
             <?php
             $amountNews = 3;
-            $news = SelectEventsWhereRealizationDateExist($con, $amountNews);
+            $news = SelectEventsWhereRealizationDateExist($con, 1, $amountNews); //to search news only of the first page
             ?>
             <div class="container-fluid zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
@@ -136,9 +139,9 @@ if (!file_exists("uploads/users/")) {
             </div>
             <!-- end of Zona de Calendario -->
             
-            <!-- footer -->
-            <?php include './comp/footer.php' ?>
         </main>
+        <!-- footer -->
+        <?php include './comp/footer.php' ?>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script type = "text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
