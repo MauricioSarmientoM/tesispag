@@ -22,9 +22,9 @@
             </div>
             <div class="col d-flex">
                  <?php if (isset($_SESSION['rut'])) { ?>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos</button>
+                <button type="button" class="btn login-btn mx-auto" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos</button>
                 <?php } else { ?>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Contáctanos</button>
+                <button type="button" class="btn login-btn mx-auto" data-bs-toggle="modal" data-bs-target="#loginModal">Contáctanos</button>
                 <?php } ?>
             </div>
             <div class="col d-flex my-auto">

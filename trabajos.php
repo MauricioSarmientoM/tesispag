@@ -5,13 +5,6 @@
     include("./backend/select.php");
     $con = conectar();
 
-    if (isset($_POST['insert'])) InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
-    elseif (isset($_POST['update'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
-    elseif (isset($_POST['delete'])) DeleteWork($con, $_POST['id']);
-    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
-    elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
-
-
     $showWorks = 10;
     if (isset($_GET['search'])) {
         $res = match ($_GET['selector']) {

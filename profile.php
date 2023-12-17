@@ -21,6 +21,11 @@
     elseif (isset($_POST['deleteT'])) DeleteWork($con, $_POST['id']);
     elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
     elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
+
+    if (isset($_POST['insertC']) || isset($_POST['deleteC'])) unset($_SESSION['addCollab']);
+    elseif (isset($_POST['addCollab'])) $_SESSION['addCollab'] = $_POST['addCollab'];
+
+    if (isset($_SESSION['addCollab']) && !isset($_SESSION['rut'])) unset($_SESSION['addCollab']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,10 +43,11 @@
         <!-- Navbar -->
         <?php
         include './comp/navbar.php'; 
-        if (isset($_POST['addCollab'])) {
+        if (isset($_SESSION['addCollab'])) {
             $id = $_POST['id'];
             $name = $_POST['name'];
-            $collab = SelectUsersNotInIdWork($con, 1, 10, $id);
+            $showUsers = 3;
+            $collab = SelectUsersNotInIdWork($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $id);
             ?>
             <main>
                 <div class="container-fluid zonasTitulo"><h1 class="container">Tesis</h1></div>
@@ -84,7 +90,27 @@
             ?>
                     </div>
                 </div>
-        <?php
+            <?php
+            $usersAmount = SelectUsersCountNotInIdWork($con, $id);
+            $usersAmount = $usersAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showUsers);
+            if ($pagesAmount > 1) {
+            ?>
+            <nav class = "thesisMenu" aria-label="Page navigation example">
+                <ul class="deleteMargin pagination justify-content-center py-3">
+                    <?php
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '&rut=' . $rut . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/profile.php?page=' . $counter . '&rut=' . $rut . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '&rut=' . $rut . '">Next</a></li>';
+                    ?>
+                </ul>
+            </nav>
+            <?php }
         }
         else {
         ?>

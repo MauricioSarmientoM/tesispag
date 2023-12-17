@@ -4,7 +4,7 @@
     include("./backend/select.php");
     $con = conectar();
 
-    $showUsers = 10;
+    $showUsers = 2;
     if (isset($_GET['search'])) {
         $res = match ($_GET['selector']) {
             'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
@@ -98,25 +98,37 @@
             ?>
             <!-- Fin de zona de tesistas -->
             
+            <?php
+            $usersAmount = match ($_GET['selector']) {
+                'rut' => SelectUsersCountWhereRut($con, $_GET['search']),
+                'name' => SelectUsersCountWhereName($con, $_GET['search']),
+                'surname' => SelectUsersCountWhereSurname($con, $_GET['search']),
+                'email' => SelectUsersCountWhereEmail($con, $_GET['search']),
+                'direction' => SelectUsersCountWhereDirection($con, $_GET['search']),
+                default => SelectUsersCount($con),// Si no es una busqueda
+            };
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
+            else $searchData = '';
+
+            $usersAmount = $usersAmount->fetch_assoc();
+            $pagesAmount = ceil($usersAmount['count'] / $showUsers);
+            if ($pagesAmount > 1) {
+            ?>
             <nav aria-label="Page navigation example">
-                <?php
-                $usersAmount = SelectUsersCount($con);
-                $usersAmount = $usersAmount->fetch_assoc();
-                $pagesAmount = ceil($usersAmount['count'] / $showUsers);
-                ?>
                 <ul class="pagination justify-content-center">
-                    <li class="page-item <?php if (isset($_GET['page'])) echo 'disabled'; ?>">
-                        <a class="page-link">Previous</a>
-                    </li>
                     <?php
-                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/tesistas.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
-                    <?php } $con->close();?>
-                    <li class="page-item <?php if (isset($_GET['page'])) if(1) echo 'disabled'; ?>">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/tesistas.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/tesistas.php?page=' . $counter . $searchData . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/tesistas.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
+                    ?>
                 </ul>
             </nav>
+            <?php } $con->close(); ?>
         </main>
         <!-- footer -->
         <?php include './comp/footer.php' ?>

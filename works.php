@@ -19,8 +19,16 @@
 
 
     $showWorks = 10;
-    if (isset($_GET['search'])) $res = SelectWorksWhereId($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
-    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
+    if (isset($_GET['search'])) {
+        $res = match ($_GET['selector']) {
+            'name' => SelectWorksWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'obj' => SelectWorksWhereObj($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'area' => SelectWorksWhereArea($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'abstract' => SelectWorksWhereAbstract($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            default => SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks),
+        };
+    }
+    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
 <html lang="en-US">

@@ -17,17 +17,14 @@
     elseif (isset($_POST['deleteS'])) DeleteSuper($con, $_POST['rut']);
 
     $showUsers = 10;
-    if (isset($_GET['search'])) {
-        $res = match ($_GET['selector']) {
-            'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
-        };
-    }
-    else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
+    $res = match ($_GET['selector']) {
+        'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
+    };
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -335,7 +332,17 @@
             <!-- End Create User -->
             
             <?php
-            $usersAmount = SelectUsersCount($con);
+            $usersAmount = match ($_GET['selector']) {
+                'rut' => SelectUsersCountWhereRut($con, $_GET['search']),
+                'name' => SelectUsersCountWhereName($con, $_GET['search']),
+                'surname' => SelectUsersCountWhereSurname($con, $_GET['search']),
+                'email' => SelectUsersCountWhereEmail($con, $_GET['search']),
+                'direction' => SelectUsersCountWhereDirection($con, $_GET['search']),
+                default => SelectUsersCount($con),// Si no es una busqueda
+            };
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=aaa' . $_GET['search'];
+            else $searchData = '';
+
             $usersAmount = $usersAmount->fetch_assoc();
             $pagesAmount = ceil($usersAmount['count'] / $showUsers);
             if ($pagesAmount > 1) {
@@ -344,13 +351,13 @@
                 <ul class="pagination justify-content-center">
                     <?php
                     if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
-                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
                     
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) {
-                        echo '<li class="page-item"><a href="/users.php?page=' . $counter . '" class="page-link">' . $counter . '</a></li>';
+                        echo '<li class="page-item"><a href="/users.php?page=' . $counter . $searchData . '" class="page-link">' . $counter . '</a></li>';
                     }
                     if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
-                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
                     ?>
                 </ul>
             </nav>

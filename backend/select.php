@@ -18,9 +18,20 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersCountWhereRut ($con, $rut) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT COUNT(rut) as count FROM users WHERE CAST(rut AS CHAR) LIKE '%$rut%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersWhereName ($con, $pageNumber, $itemsPerPage, $name) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM users WHERE name LIKE '%$name%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereName ($con, $name) {
+        $sql = "SELECT COUNT(rut) as count FROM users WHERE name LIKE '%$name%'";
         $result = $con->query($sql);
         return $result;
     }
@@ -30,15 +41,30 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersCountWhereSurname ($con, $surname) {
+        $sql = "SELECT COUNT(rut) as count FROM users WHERE surname LIKE '%$surname%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersWhereEmail ($con, $pageNumber, $itemsPerPage, $email) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM users WHERE email LIKE '%$email%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersCountWhereEmail ($con, $email) {
+        $sql = "SELECT COUNT(rut) as count FROM users WHERE email LIKE '%$email%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersWhereDirection ($con, $pageNumber, $itemsPerPage, $direction) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM users WHERE surname LIKE '%$direction%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereDirection ($con, $direction) {
+        $sql = "SELECT COUNT(rut) as count FROM users WHERE surname LIKE '%$direction%'";
         $result = $con->query($sql);
         return $result;
     }
@@ -54,6 +80,11 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersCountWhereIdWorkButNoRut($con, $idWork, $rut) {
+        $sql = "SELECT COUNT(users.rut) as count FROM users JOIN workuser ON users.rut = workuser.rut WHERE workuser.idWork = $idWork AND users.rut != $rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersNotInIdWork($con, $pageNumber, $itemsPerPage, $idWork) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM users WHERE rut NOT IN (SELECT rut FROM workuser WHERE idWork = ?) LIMIT ? OFFSET ?";
@@ -61,6 +92,11 @@
         $stmt->bind_param("iii", $idWork, $itemsPerPage, $offset);
         $stmt->execute();
         $result = $stmt->get_result();
+        return $result;
+    }
+    function SelectUsersCountNotInIdWork($con, $idWork) {
+        $sql = "SELECT * FROM users WHERE rut NOT IN (SELECT rut FROM workuser WHERE idWork = $idWork)";
+        $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCount($con) {
@@ -135,7 +171,7 @@
 
     function SelectEvents($con, $pageNumber, $itemsPerPage) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM events ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM events ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
@@ -147,7 +183,25 @@
     }
     function SelectEventsWhereTitle($con, $pageNumber, $itemsPerPage, $title) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT * FROM events WHERE title LIKE %$title% ORDER BY realizationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT * FROM events WHERE title LIKE '%$title%' ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsWhereDescription($con, $pageNumber, $itemsPerPage, $description) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE description LIKE '%$description%' ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsWherePublicationDate($con, $pageNumber, $itemsPerPage, $publicationDate) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE publicationDate LIKE '%$publicationDate%' ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsRealizationDate($con, $pageNumber, $itemsPerPage, $realizationDate) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM events WHERE realizationDate LIKE '%$realizationDate%' ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
