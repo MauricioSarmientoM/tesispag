@@ -199,8 +199,8 @@
                 </div>
             </div>
             <?php
-            $res = SelectWorksWhereRut($con, 1, 10, $rut);
-
+            $showWorks = 5;
+            $res = SelectWorksWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $rut);
             if ($res->num_rows > 0 || $_SESSION['rut'] == $rut) {
             ?>
             <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
@@ -375,17 +375,11 @@
                     <?php
                         $counter++;
                     }
-                    if (isset($_SESSION['rut']))
-                    if ($_SESSION['rut'] == $rut) {
-                        echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
-                    }
+                    if (isset($_SESSION['rut'])) if ($_SESSION['rut'] == $rut) echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
                     ?>
                     </div>
                 </div>
             </div>
-            <?php
-            }
-            ?>
             
             <div class="modal fade" id="createThesisModal" tabindex="-1" aria-labelledby="createThesisModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -429,8 +423,31 @@
                     </div>
                 </div>
             </div>
+            <?php
+            $worksAmount = SelectWorksWhereRutCount($con, $rut);;
+            $worksAmount = $worksAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showWorks);
+            if ($pagesAmount > 1) {
+            ?>
+            <nav class = "thesisMenu" aria-label="Page navigation example">
+                <ul class="deleteMargin pagination justify-content-center py-3">
+                    <?php
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '&rut=' . $rut . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/profile.php?page=' . $counter . '&rut=' . $rut . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '&rut=' . $rut . '">Next</a></li>';
+                    ?>
+                </ul>
+            </nav>
+            <?php } ?>
         </div>
         <?php
+            }
+        $con->close();
         }
         ?>
         </main>

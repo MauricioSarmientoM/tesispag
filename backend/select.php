@@ -120,6 +120,11 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectWorksWhereRutCount($con, $rut) {
+        $sql = "SELECT COUNT(works.id) as count FROM works JOIN workuser ON works.id = workuser.idWork WHERE workuser.rut = $rut";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectWorksCount($con) {
         $sql = "SELECT COUNT(id) as count FROM works";
         $result = $con->query($sql);

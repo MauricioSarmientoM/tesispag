@@ -325,24 +325,28 @@
                 </div>
             </div>
         </div>
-                                    
+            <?php
+            $worksAmount = SelectWorksCount($con);
+            $worksAmount = $worksAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showWorks);
+            if ($pagesAmount > 1) {
+            ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
                     <?php
-                        $worksAmount = SelectWorksCount($con);
-                        $worksAmount = $worksAmount->fetch_assoc();
-                        $pagesAmount = ceil($worksAmount['count'] / $showWorks);
-                        for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                            <li class="page-item"><a href="/works.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
-                    <?php } $con->close();?>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/works.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/works.php?page=' . $counter . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/works.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '">Next</a></li>';
+                    ?>
                 </ul>
             </nav>
+            <?php } $con->close(); ?>
+            
             <?php
             }
             ?>

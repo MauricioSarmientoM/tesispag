@@ -334,23 +334,27 @@
 
             <!-- End Create User -->
             
+            <?php
+            $usersAmount = SelectUsersCount($con);
+            $usersAmount = $usersAmount->fetch_assoc();
+            $pagesAmount = ceil($usersAmount['count'] / $showUsers);
+            if ($pagesAmount > 1) {
+            ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
                     <?php
-                    $usersAmount = SelectUsersCount($con);
-                    $usersAmount = $usersAmount->fetch_assoc();
-                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
-                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
-                    <?php } $con->close();?>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/users.php?page=' . $counter . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '">Next</a></li>';
+                    ?>
                 </ul>
             </nav>
+            <?php } $con->close(); ?>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
