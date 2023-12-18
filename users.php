@@ -5,175 +5,26 @@
     }
     include("./backend/connection.php");
     include("./backend/select.php");
+    include("./backend/insert.php");
+    include("./backend/update.php");
+    include("./backend/delete.php");
     $con = conectar();
 
-    if (isset($_POST['rut']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
-        $rut = $_POST['rut'];
-    	$name = $_POST['name'];
-    	$surname = $_POST['surname'];
-		$description = $_POST['description'];
-    	$email = $_POST['email'];
-        $phone = $_POST['phone'];
-        
-		$password = $_POST['password'];
-        $stringToCheck = '$2y$10$';
-        if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
-            $password = password_hash($password, PASSWORD_BCRYPT);
-        }
-    	
-        if (isset($_FILES["imageURL"]) && $_FILES["imageURL"]["error"] == UPLOAD_ERR_OK) {
-            $targetDirectory = "uploads/users/";  // Set your target directory
-            $uploadedFileName = basename($_FILES["imageURL"]["name"]);
-            $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
-                // Now, you can use $targetFilePath to store in the database
-                $imageURL = $targetFilePath;
-
-                $sql = "SELECT imageURL FROM users WHERE rut = $rut";
-                $resultImg = $con->query($sql);
-        
-                $imgurl = $resultImg->fetch_assoc();
-                // Check if the file exists
-                if (file_exists($imgurl['imageURL'])) {
-                    unlink($imgurl['imageURL']);
-                }
-                $resultImg->free();
-                
-            } else {
-                // File upload failed
-                $imageURL = '';
-                $_SESSION["error"] = "Error uploading the file.";
-            }
-        }
-        else {
-            if ($_POST['img'] === '' || $_POST['img'] == NULL) {
-                $imageURL = '';
-            }
-            else {
-                $imageURL = $_POST['img'];
-            }
-        }
-        
-    	$direction = $_POST['direction'];
-        
-    	if (isset($_POST['insert'])) {
-     		$query = $con->prepare("INSERT INTO users (rut, name, surname, description, email, phone, password, imageURL, direction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("issssisss", $rut, $name, $surname, $description, $email, $phone, $password, $imageURL, $direction);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "$name $surname was created successfully!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-    	}
-        elseif (isset($_POST['update'])) {
-            $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, $password, $imageURL, $direction, $rut);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "$name $surname was updated successfully!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-    }
-    elseif (isset($_POST['delete'])) {
-        $rut = $_POST['rut'];
-    	$name = $_POST['name'];
-    	$surname = $_POST['surname'];
-        
-        $query = $con->prepare("DELETE FROM workuser WHERE rut = ?");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $rut);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        $query->execute();
-
-        $sql = "SELECT imageURL FROM users WHERE rut = $rut";
-        $result = $con->query($sql);
-
-        $row = $result->fetch_assoc();
-        // Check if the file exists
-        if (file_exists($row['imageURL'])) {
-            unlink($row['imageURL']);
-        }
-        $result->free();
-
-        $query = $con->prepare("DELETE FROM users WHERE rut = ?");
-    	if (!$query) {
-    		die("Preparation failed: " . $con->error);
-		}
-    	$query->bind_param("i", $rut);
-    	if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-    	if ($query->execute()) {
-			$_SESSION["success"] = "$name $surname was deleted successfully!";
-    	}
-    	else {
-			$_SESSION["warning"] = $query->error;
-    	}
-    }
-    elseif (isset($_POST['insertS'])) {
-        $rut = $_POST['rut'];
-        $query = $con->prepare("INSERT INTO super (rut) VALUES (?)");
-        if (!$query) {
-            die("Preparation failed: " . $con->error);
-        }
-        $query->bind_param("i", $rut);
-        if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-        if ($query->execute()) {
-            $_SESSION["success"] = "¡Otorgados privilegios!";
-        }
-        else {
-            $_SESSION["warning"] = $query->error;
-        }
-    }
-    elseif (isset($_POST['deleteS'])) {
-        $rut = $_POST['rut'];
-        $query = $con->prepare("DELETE FROM super WHERE rut = ?");
-    	if (!$query) {
-    		die("Preparation failed: " . $con->error);
-		}
-    	$query->bind_param("i", $rut);
-    	if ($query->error) {
-            die("Binding parameters failed: " . $query->error);
-        }
-    	if ($query->execute()) {
-			$_SESSION["success"] = "Eliminando derechos.";
-    	}
-    	else {
-			$_SESSION["warning"] = $query->error;
-    	}
-    }
+    if (isset($_POST['insert'])) InsertUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction']);
+    elseif (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+    elseif (isset($_POST['delete'])) DeleteUser($con, $_POST['rut']);
+    elseif (isset($_POST['insertS'])) InsertSuper($con, $_POST['rut']);
+    elseif (isset($_POST['deleteS'])) DeleteSuper($con, $_POST['rut']);
 
     $showUsers = 10;
-    $usersAmount = SelectUsersCount($con);
-    /* datos de users */
-    if (isset($_GET['search']) == false){  /* si no es una busqueda */
-        $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
-    }
-    else {
-        $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
-    }
+    $res = match ($_GET['selector']) {
+        'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
+        default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
+    };
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -212,14 +63,37 @@
             <!-- FIN DE BOTON VOLVER Y TITULO -->
 
             <!-- CONTENEDOR DE TABLA DE GESTION -->
+
+            <div class="container my-4">
+                <form action="users.php" method="get">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col">
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                // Assume you have retrieved options from the database in an array
+                                $values = array('', 'rut', 'name', 'surname', 'email', 'direction');
+                                $name = array('Buscar por:', 'RUT', 'Nombre', 'Apellido', 'Email', 'Dirección');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda" value = "<?php echo $_GET['search']?>"/>
+                                <button type="submit" class="btn"><h4>&#128269;</h4></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="container">
-                <div class="row text-end">
-                    <form action="users.php" method="get">
-                        <label for="searchinput"><h5>Buscar:</h5></label>
-                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
-                        <button type="submit" class="btn">Enviar</button>
-                    </form>
-                </div>
                 <div class="row mt-2">
                     <!-- crud de usuario -->
                     <table class="table" >
@@ -336,6 +210,7 @@
                                                     <div class="form-group">
                                                         <label for="inputImage">Imagen</label>
                                                         <input type="file" id = "inputImage" class="form-control mb-3" name="imageURL" accept=".jpg, .jpeg, .png"/>
+                                                        <input type="text" name="img" value = "<?php echo $row['imageURL']?>"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDirection">Dirección</label>
@@ -369,8 +244,6 @@
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                 <form action = "users.php" method = "post">
                                                     <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
-                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                                    <input type = "hidden" name = "surname" value = "<?php echo $row['surname']; ?>"/>
                                                     <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
                                                 </form>
                                             </div>
@@ -458,22 +331,37 @@
 
             <!-- End Create User -->
             
+            <?php
+            $usersAmount = match ($_GET['selector']) {
+                'rut' => SelectUsersCountWhereRut($con, $_GET['search']),
+                'name' => SelectUsersCountWhereName($con, $_GET['search']),
+                'surname' => SelectUsersCountWhereSurname($con, $_GET['search']),
+                'email' => SelectUsersCountWhereEmail($con, $_GET['search']),
+                'direction' => SelectUsersCountWhereDirection($con, $_GET['search']),
+                default => SelectUsersCount($con),// Si no es una busqueda
+            };
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
+            else $searchData = '';
+
+            $usersAmount = $usersAmount->fetch_assoc();
+            $pagesAmount = ceil($usersAmount['count'] / $showUsers);
+            if ($pagesAmount > 1) {
+            ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
                     <?php
-                    $usersAmount = $usersAmount->fetch_assoc();
-                    $pagesAmount = ceil($usersAmount['count'] / $showUsers);
-                    for ($counter = 1; $counter <= $pagesAmount; $counter++) { ?>
-                        <li class="page-item"><a href="/users.php?page=<?php echo $counter; ?>" class="page-link"><?php echo $counter; ?></a></li>
-                    <?php } $con->close();?>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/users.php?page=' . $counter . $searchData . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/users.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
+                    ?>
                 </ul>
             </nav>
+            <?php } $con->close(); ?>
         </main>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

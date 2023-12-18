@@ -1,263 +1,31 @@
 <?php
     session_start();
-    if (!isset($_POST['rut'])){
+    $rut = $_GET['rut'];
+    if (!isset($rut)){
         header("Location: ./index.php");
     }
-    $rut = $_POST['rut'];
     include("./backend/connection.php");
     include("./backend/select.php");
+    include("./backend/insert.php");
+    include("./backend/update.php");
+    include("./backend/delete.php");
     $con = conectar();
-    if (isset($_POST['update'])) {
-        if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['password'])) {
-        	$name = $_POST['name'];
-        	$surname = $_POST['surname'];
-    		$description = $_POST['description'];
-        	$email = $_POST['email'];
-            $phone = $_POST['phone'];
-    		$password = $_POST['password'];
-            if (isset($_FILES["imageURL"]) && $_FILES["imageURL"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/users/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["imageURL"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["imageURL"]["tmp_name"], $targetFilePath)) {
-                // Now, you can use $targetFilePath to store in the database
-                $imageURL = $targetFilePath;
+    if (isset($_POST['update'])) UpdateUser($con, $rut, $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+    elseif (isset($_POST['insertT'])) {
+        InsertWork($con, $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"]);
+        $work = SelectWorksOrderByDesc ($con, 1);
+        $work = $work->fetch_assoc();
+        InsertCollab($con, $rut, $work['id']);
+    }
+    elseif (isset($_POST['updateT'])) UpdateWork($con, $_POST['id'], $_POST['name'], $_POST['obj'], $_POST['area'], $_POST['abstract'], $_FILES["image"], $_POST['img']);
+    elseif (isset($_POST['deleteT'])) DeleteWork($con, $_POST['id']);
+    elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
+    elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
 
-                $sql = "SELECT imageURL FROM users WHERE rut = $rut";
-                $resultImg = $con->query($sql);
-        
-                $imgurl = $resultImg->fetch_assoc();
-                // Check if the file exists
-                if (file_exists($imgurl['imageURL'])) {
-                    unlink($imgurl['imageURL']);
-                }
-                $resultImg->free();
-                
-            } else {
-                    // File upload failed
-                    $imageURL = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            }
-            else {
-                if ($_POST['img'] === '' || $_POST['img'] == NULL) {
-                    $imageURL = '';
-                }
-                else {
-                    $imageURL = $_POST['img'];
-                }
-            }
-        	$direction = $_POST['direction'];
-    
-            $stringToCheck = '$2y$10$';
-            if (!(substr($password, 0, strlen($stringToCheck)) === $stringToCheck)) {
-                $password = password_hash($password, PASSWORD_BCRYPT);
-            }
-            $query = $con->prepare("UPDATE users SET name = ?, surname = ?, description = ?, email = ?, phone = ?, password = ?, imageURL = ?, direction = ? WHERE rut = ?");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ssssisssi", $name, $surname, $description, $email, $phone, $password, $imageURL, $direction, $rut);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "¡Has actualizado correctamente tu perfil!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-        elseif (isset($_POST['name']) && isset($_POST['id'])) {
-            $id = $_POST['id'];
-        	$name = $_POST['name'];
-        	$obj = $_POST['obj'];
-    		$area = $_POST['area'];
-        	$abstract = $_POST['abstract'];
-            if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/thesis/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["image"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    $image = $targetFilePath;
-                } else {
-                    $image = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            }
-            else {
-                if ($_POST['img'] === '' || $_POST['img'] == NULL) {
-                    $image = '';
-                }
-                else {
-                    $image = $_POST['img'];
-                }
-            }
-            $query = $con->prepare("UPDATE works SET name = ?, obj = ?, area = ?, abstract = ?, image = ? WHERE id = ?");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("sssssi", $name, $obj, $area, $abstract, $image, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "¡Has actualizado correctamente tu la tesis \"$name\"!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-    	else {
-    		$_SESSION["warning"] = "Los datos necesarios no fueron entregados.";
-        }
-    }
-    elseif (isset($_POST['insert'])) {
-        if (isset($_POST['collabRut'])) {
-            $name = $_POST['name'];
-            $collabRut = $_POST['collabRut'];
-            $id = $_POST['id'];
-            
-            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ii", $collabRut, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = "¡Se ha añadido colaborador a $name!";
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-        elseif (isset($_POST['name'])) {
-        	$name = $_POST['name'];
-        	$obj = $_POST['obj'];
-    		$area = $_POST['area'];
-        	$abstract = $_POST['abstract'];
-            if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-                $targetDirectory = "uploads/thesis/";  // Set your target directory
-                $uploadedFileName = basename($_FILES["image"]["name"]);
-                $targetFilePath = $targetDirectory . uniqid() . '_' . $uploadedFileName;
-                // Move the uploaded file to the target directory
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                    // Now, you can use $targetFilePath to store in the database
-                    $image = $targetFilePath;
-                } else {
-                    // File upload failed
-                    $image = '';
-                    $_SESSION["error"] = "Error uploading the file.";
-                }
-            }
-            else {
-                $image = '';
-            }
-            $query = $con->prepare("INSERT INTO works (name, obj, area, abstract, image) VALUES (?, ?, ?, ?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("sssss", $name, $obj, $area, $abstract, $image);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = '¡Se ha creado correctamente!';
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
+    if (isset($_POST['insertC']) || isset($_POST['deleteC'])) unset($_SESSION['addCollab']);
+    elseif (isset($_POST['addCollab'])) $_SESSION['addCollab'] = $_POST['addCollab'];
 
-            $sql = "SELECT id FROM works ORDER BY id DESC LIMIT 1";
-            $result = $con->query($sql);
-            $id = $result->fetch_assoc()['id'];
-            
-            $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
-    		if (!$query) {
-    			die("Preparation failed: " . $con->error);
-    		}
-    		$query->bind_param("ii", $rut, $id);
-    		if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-    		if ($query->execute()) {
-    			$_SESSION["success"] = '¡Se ha creado correctamente!';
-    		}
-    		else {
-    			$_SESSION["warning"] = $query->error;
-    		}
-        }
-    	else {
-    		$_SESSION["warning"] = "Los datos necesarios no fueron entregados.";
-        }
-    }
-    elseif (isset($_POST['delete'])) {
-        if (isset($_POST['collabRut'])) {
-            $name = $_POST['name'];
-            $collabRut = $_POST['collabRut'];
-            $id = $_POST['id'];
-            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ? AND rut = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("ii", $id, $collabRut);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "Se ha quitado colaborador de $name.";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-        }
-        else {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $query = $con->prepare("DELETE FROM workuser WHERE idWork = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("i", $id);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "$name was deleted successfully!";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-    
-            $sql = "SELECT image FROM works WHERE id = $id";
-            $result = $con->query($sql);
-        
-            $row = $result->fetch_assoc();
-            // Check if the file exists
-            if (file_exists($row['image'])) {
-                unlink($row['image']);
-            }
-            $result->free();
-            
-            $query = $con->prepare("DELETE FROM works WHERE id = ?");
-            if (!$query) {
-                die("Preparation failed: " . $con->error);
-            }
-            $query->bind_param("i", $id);
-            if ($query->error) {
-                die("Binding parameters failed: " . $query->error);
-            }
-            if ($query->execute()) {
-                $_SESSION["success"] = "$name was deleted successfully!";
-            }
-            else {
-                $_SESSION["warning"] = $query->error;
-            }
-        }
-    }
+    if (isset($_SESSION['addCollab']) && !isset($_SESSION['rut'])) unset($_SESSION['addCollab']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -275,19 +43,18 @@
         <!-- Navbar -->
         <?php
         include './comp/navbar.php'; 
-        if (isset($_POST['addCollab'])) {
+        if (isset($_SESSION['addCollab'])) {
             $id = $_POST['id'];
             $name = $_POST['name'];
-            $collab = SelectUsersNotInIdWork($con, 1, 10, $id);
+            $showUsers = 3;
+            $collab = SelectUsersNotInIdWork($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $id);
             ?>
             <main>
                 <div class="container-fluid zonasTitulo"><h1 class="container">Tesis</h1></div>
+                <?php include './comp/alerts.php'; ?>
                 <div class = "thesisMenu py-4">
                     <div class="container">
-                    <form action = "profile.php" method = "post">
-                        <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
-                        <input type = "submit" class="btn btn-danger" value = "Volver"/>
-                    </form>
+                    <a href = "profile.php?rut=<?php echo $rut; ?>"><button class="btn btn-danger"/>Volver</button></a>
             <?php
             while ($data = $collab->fetch_assoc()) {
                 ?>
@@ -311,12 +78,10 @@
                         <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
                     </div>
                     <div class="col p-3">
-                        <form action = "profile.php" method = "post">
-                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                             <input type = "hidden" name = "id" value = "<?php echo $id; ?>"/>
                             <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
-                            <input type = "hidden" name = "name" value = "<?php echo $name; ?>"/>
-                            <input type = "submit" name = "insert" class="btn btn-success" value = "Añadir"/>
+                            <input type = "submit" name = "insertC" class="btn btn-success" value = "Añadir"/>
                         </form>
                     </div>
                 </div>
@@ -325,7 +90,27 @@
             ?>
                     </div>
                 </div>
-        <?php
+            <?php
+            $usersAmount = SelectUsersCountNotInIdWork($con, $id);
+            $usersAmount = $usersAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showUsers);
+            if ($pagesAmount > 1) {
+            ?>
+            <nav class = "thesisMenu" aria-label="Page navigation example">
+                <ul class="deleteMargin pagination justify-content-center py-3">
+                    <?php
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '&rut=' . $rut . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/profile.php?page=' . $counter . '&rut=' . $rut . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '&rut=' . $rut . '">Next</a></li>';
+                    ?>
+                </ul>
+            </nav>
+            <?php }
         }
         else {
         ?>
@@ -390,8 +175,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="profile.php" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="rut" value = "<?php echo $row['rut']?>" readonly/>
+                            <form action = "profile.php?rut=<?php echo $rut; ?>" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="img" value = "<?php echo $row['imageURL']?>" readonly/>
                                 <div class="form-group">
                                     <label for="inputName">Nombre</label>
@@ -441,8 +225,8 @@
                 </div>
             </div>
             <?php
-            $res = SelectWorksWhereRut($con, 1, 10, $rut);
-
+            $showWorks = 5;
+            $res = SelectWorksWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $rut);
             if ($res->num_rows > 0 || $_SESSION['rut'] == $rut) {
             ?>
             <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
@@ -473,8 +257,7 @@
                                 $collab = SelectUsersWhereIdWorkButNoRut($con, 1, 10, $row['id'], $rut);
 
                                 while ($data = $collab->fetch_assoc()) {
-                                    echo '<form action="profile.php" method="post"><input type="hidden" name="rut" value = ' . $data["rut"] . ' readonly/>';
-                                    echo '<input type = "submit" value = "' . $data['name'] . ' ' . $data['surname'] .'"/></form>';
+                                    echo '<a href="profile.php?rut=' . $data["rut"] . '">' . $data['name'] . ' ' . $data['surname'] .'</a>';
                                 }
                                 ?>
                             </div>
@@ -501,8 +284,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="profile.php" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="img" value = "<?php echo $row['image']; ?>" readonly/>
                                             <input type="hidden" name="id" value = "<?php echo $row['id']; ?>" readonly/>
                                             <div class="form-group">
@@ -530,7 +312,7 @@
                                                 <input type="file" id = "inputImage" class="form-control mb-3" name = "image" accept=".jpg, .jpeg, .png"/>
                                             </div>
                                             <div class="container d-flex justify-content-end">
-                                                <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
+                                                <button type="submit" name = "updateT" class="btn btn-primary btn-block ">Confirmar</button>
                                             </div>
                                         </form>
                                     </div>
@@ -570,12 +352,10 @@
                                                 <p><?php echo $data['name'] . ' ' . $data['surname']; ?></p>
                                             </div>
                                             <div class="col p-3">
-                                                <form action = "profile.php" method = "post">
-                                                    <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                                <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                                     <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                                     <input type = "hidden" name = "collabRut" value = "<?php echo $data['rut']; ?>"/>
-                                                    <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                                    <input type = "submit" name = "delete" class="btn btn-danger" value = "Quitar"/>
+                                                    <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Quitar"/>
                                                 </form>
                                             </div>
                                         </div>
@@ -585,10 +365,13 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <form action = "profile.php" method = "post">
-                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
+                                            <input type = "hidden" name = "collabRut" value = "<?php echo $rut; ?>"/>
+                                            <input type = "submit" name = "deleteC" class="btn btn-danger" value = "Dejar de Colaborar"/>
+                                        </form>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
+                                            <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
                                             <input type = "submit" name = "addCollab" class="btn btn-success" value = "Añadir Colaborador"/>
                                         </form>
                                     </div>
@@ -607,11 +390,9 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <form action = "profile.php" method = "post">
-                                            <input type = "hidden" name = "rut" value = "<?php echo $rut; ?>"/>
+                                        <form action = "profile.php?rut=<?php echo $rut; ?>" method = "post">
                                             <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                            <input type = "hidden" name = "name" value = "<?php echo $row['name']; ?>"/>
-                                            <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
+                                            <input type = "submit" name = "deleteT" class="btn btn-danger" value = "Eliminar"/>
                                         </form>
                                     </div>
                                 </div>
@@ -620,17 +401,11 @@
                     <?php
                         $counter++;
                     }
-                    if (isset($_SESSION['rut']))
-                    if ($_SESSION['rut'] == $rut) {
-                        echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
-                    }
+                    if (isset($_SESSION['rut'])) if ($_SESSION['rut'] == $rut) echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
                     ?>
                     </div>
                 </div>
             </div>
-            <?php
-            }
-            ?>
             
             <div class="modal fade" id="createThesisModal" tabindex="-1" aria-labelledby="createThesisModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -640,7 +415,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="profile.php" method="post" enctype="multipart/form-data">
+                            <form action = "profile.php?rut=<?php echo $rut; ?>" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="rut" value = "<?php echo $rut; ?>" readonly/>
                                 <div class="form-group">
                                     <label for="inputName">Nombre</label>
@@ -667,15 +442,38 @@
                                     <input type="file" id = "inputImage" class="form-control mb-3" name = "image" accept=".jpg, .jpeg, .png"/>
                                 </div>
                                 <div class="container d-flex justify-content-end">
-                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
+                                    <button type="submit" name = "insertT" class="btn btn-primary btn-block ">Confirmar</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php
+            $worksAmount = SelectWorksWhereRutCount($con, $rut);;
+            $worksAmount = $worksAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showWorks);
+            if ($pagesAmount > 1) {
+            ?>
+            <nav class = "thesisMenu" aria-label="Page navigation example">
+                <ul class="deleteMargin pagination justify-content-center py-3">
+                    <?php
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '&rut=' . $rut . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/profile.php?page=' . $counter . '&rut=' . $rut . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/profile.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '&rut=' . $rut . '">Next</a></li>';
+                    ?>
+                </ul>
+            </nav>
+            <?php } ?>
         </div>
         <?php
+            }
+        $con->close();
         }
         ?>
         </main>

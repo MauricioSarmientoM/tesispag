@@ -61,6 +61,22 @@
                         <a href="works.php"><h2>Gestionar Trabajos</h2></a>
                     </div>
                 </div>
+                <div class="row mt-4 d-flex zona">
+                    <div class="col-md-1 zona-imagen">
+                        <img class="d-flex mx-auto my-4" src="src\icons\workLogo.png" alt="">
+                    </div>
+                    <div class="col my-auto">
+                        <a href="events.php"><h2>Gestionar Eventos</h2></a>
+                    </div>
+                </div>
+                <div class="row mt-4 d-flex zona">
+                    <div class="col-md-1 zona-imagen">
+                        <img class="d-flex mx-auto my-4" src="src\icons\workLogo.png" alt="">
+                    </div>
+                    <div class="col my-auto">
+                        <a href="contacts.php"><h2>Gestionar Mensajes</h2></a>
+                    </div>
+                </div>
                 <!-- FIN BARRA DE GESTORES -->
             </div>
             <!-- FIN DE CONTENEDOR DE BARRA DE GESTORES -->

@@ -1,5 +1,22 @@
+<?php
+    session_start();
 
-<?php session_start(); ?>
+    include("./backend/connection.php");
+    include("./backend/select.php");
+    $con = conectar();
+
+    $showWorks = 10;
+    if (isset($_GET['search'])) {
+        $res = match ($_GET['selector']) {
+            'name' => SelectWorksWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'obj' => SelectWorksWhereObj($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'area' => SelectWorksWhereArea($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            'abstract' => SelectWorksWhereAbstract($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
+            default => SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks),
+        };
+    }
+    else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,21 +38,26 @@
             <!-- Zona de tesistas -->
             <div class="container-fluid zonasTitulo"><h1 class="container">Trabajos</h1></div>
             <div class="container my-4">
-                <form action="" method="get"> <!-- cambiar action="" -->
+                <form action="trabajos.php" method="get">
                     <div class="row">
                         <div class="col-4"></div>
                         <div class="col">
-                            <select id="selector" class="form-select">
-                                <option value="" disabled selected hidden>Buscar por:</option>
-                                <option value="name"><p>Nombre</p></option>
-                                <option value="obj"><p>Objetivo</p></option>
-                                <option value="area"><p>área</p></option>
-                                <option value="abstract"><p>Abstracto</p></option>
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                $values = array('', 'name', 'obj', 'area', 'abstract');
+                                $name = array('Buscar por:', 'Nombre', 'Objetivo', 'Área', 'Abstract');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-4">
                             <div class="btn-group" role="group">
-                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"/>
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"  value = "<?php echo $_GET['search']?>"/>
                                 <button type="submit" class="btn"><h4>&#128269;</h4></button>
                             </div>
                         </div>
@@ -43,28 +65,69 @@
                 </form>
             </div>
 
+            <?php
+                while ($row = $res->fetch_assoc()) {
+            ?>
             <div class="container my-4 trabajos">
-            <!-- Diego: Celeste, de aquí en adelante añades el backend,
-                Tipo, su while piola con php que hace la consulta con arrays and stuff :)
-                (Al final elimina mis comentarios)-->
-                <a href="detalle.php">
+                <a href="detalle.php?id=<?php echo $row['id'];?>">
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
-                            <img class="trabajo" src="src\icons\userLogo.png" alt="foto-user"> <!-- Diego: No tengo el placeholder del user, en el brach perfil existe. -->
-                            <!-- usuario es una clase del tesistas.css, un archivo css nuevo especifico para las imagenes de esta página-->
+                            <?php
+                            if ($row['image'] != NULL) {
+                                echo '<img class = "trabajo" src = "' . $row['image'] . '"/>';
+                            }
+                            else{
+                                echo '<img class = "trabajo" src = "src/icons/iconPlaceholder.png"/>';
+                            }
+                            ?>
                         </div>
                         <div class="col my-auto">
                             <div class="row">
-                                <h2>Título</h2> <!-- Diego: Aquí va una consulta php del nombre y el apellido -->
+                                <h2><?php echo $row['name'];?></h2>
                             </div>
                             <div class="row">
-                                <h4>Descripción</h4> <!-- Diego: Aquí va una consulta php del rut -->
+                                <h4><?php echo $row['obj']; ?></h4>
                             </div>
                         </div>
                     </div>
                 </a>
             </div> 
+
+            <?php
+            }
+            ?>
+
             <!-- Fin de zona de trabajos -->
+            <?php
+            $worksAmount = match ($_GET['selector']) {
+                'name' => SelectWorksCountWhereName($con, $_GET['search']),
+                'obj' => SelectWorksCountWhereObj($con, $_GET['search']),
+                'area' => SelectWorksCountWhereArea($con, $_GET['search']),
+                'abstract' => SelectWorksCountWhereAbstract($con, $_GET['search']),
+                default => SelectWorksCount($con),
+            };
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
+            else $searchData = '';
+            
+            $worksAmount = $worksAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showWorks);
+            if ($pagesAmount > 1) {
+            ?>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <?php
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/trabajos.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/trabajos.php?page=' . $counter . $searchData . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/trabajos.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
+                    ?>
+                </ul>
+            </nav>
+            <?php } $con->close(); ?>
 
         </main>
         <!-- footer -->

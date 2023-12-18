@@ -21,7 +21,11 @@
                 <a class="my-auto mx-auto" href="trabajos.php">Trabajos</a>
             </div>
             <div class="col d-flex">
-                <a class="my-auto mx-auto" href="https://about:blank" target="_blank">Contáctanos</a>
+                 <?php if (isset($_SESSION['rut'])) { ?>
+                <button type="button" class="btn login-btn mx-auto" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos</button>
+                <?php } else { ?>
+                <button type="button" class="btn login-btn mx-auto" data-bs-toggle="modal" data-bs-target="#loginModal">Contáctanos</button>
+                <?php } ?>
             </div>
             <div class="col d-flex my-auto">
                 <?php 
@@ -33,10 +37,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownUser">
                             <li>
-                                <form action = "/profile.php" method = "post">
-                                    <input type = "hidden" name = "rut" value = "<?php echo $_SESSION['rut']; ?>">
-                                    <input class="dropdown-item" type = "submit" value = "Perfil">
-                                </form>
+                                <a class="dropdown-item" href = "/profile.php?rut=<?php echo $_SESSION['rut']; ?>">Perfil</a>
                             </li>
                             <?php
                                 if(isset($_SESSION['super'])) {
@@ -89,3 +90,33 @@
     </div>
 </div>
 <!-- end of modal login -->
+
+<!-- Modal Contact -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="./backend/insertContact.php" method="post">
+                <div class="modal-header ">
+                    <h1 class="modal-title fs-5 " id="exampleModalLabel">Contacto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-5 col-10">
+                        <div class="mb-3">
+                            <input type="hidden" id="inputrut" class="form-control mb-3" value="<?php echo $_SESSION['rut'] ?>" name="rut"/>
+                            <input type="text" class="form-control" id="inputsubject" name="subject" placeholder="Asunto" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputObj" class="form-label"></label>
+                            <textarea class="form-control" id="inputObj" name="body" placeholder="Escriba su mensaje aquí." rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="boton" name="contacto">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End -->

@@ -116,6 +116,6 @@ class DB():
         return self
 def Main():
     db = DB(database = "tesis")
-    print(db.Select('super', fetch = -1))
+    print(db.Select('users', fetch = -1))
     #db.DropDatabase('tesis')
 if __name__ == '__main__': Main()

@@ -4,10 +4,13 @@ if (!file_exists("uploads/")) {
     mkdir("uploads/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
 }
 if (!file_exists("uploads/thesis/")) {
-    mkdir("uploads/thesis/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/thesis/", 0777, true);
 }
 if (!file_exists("uploads/users/")) {
-    mkdir("uploads/users/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
+    mkdir("uploads/users/", 0777, true);
+}
+if (!file_exists("uploads/events/")) {
+    mkdir("uploads/events/", 0777, true);
 }
 ?>
 <!DOCTYPE html>
@@ -96,7 +99,7 @@ if (!file_exists("uploads/users/")) {
             <!-- Zona de Calendario -->
             <?php
             $amountNews = 3;
-            $news = SelectEventsWhereRealizationDateExist($con, $amountNews);
+            $news = SelectEventsWhereRealizationDateExist($con, 1, $amountNews); //to search news only of the first page
             ?>
             <div class="container-fluid zonasTitulo"><h1 class="container">Calendario</h1></div>
                 <div class="container my-4">
