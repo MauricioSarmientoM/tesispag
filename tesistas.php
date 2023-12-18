@@ -6,14 +6,25 @@
 
     $showUsers = 10;
     if (isset($_GET['search'])) {
-        $res = match ($_GET['selector']) {
-            'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'name' => SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'surname' => SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'email' => SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            'direction' => SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),
-            default => SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers),
-        };
+        switch ($_GET['selector']) {
+            case 'rut':
+                $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                break;
+            case 'name':
+                $res = SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                break;
+            case 'surname':
+                $res = SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                break;
+            case 'email':
+                $res = SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                break;
+            case 'direction':
+                $res = SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                break;
+            default:
+                $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
+        }
     }
     else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
 ?>
@@ -99,14 +110,26 @@
             <!-- Fin de zona de tesistas -->
             
             <?php
-            $usersAmount = match ($_GET['selector']) {
-                'rut' => SelectUsersCountWhereRut($con, $_GET['search']),
-                'name' => SelectUsersCountWhereName($con, $_GET['search']),
-                'surname' => SelectUsersCountWhereSurname($con, $_GET['search']),
-                'email' => SelectUsersCountWhereEmail($con, $_GET['search']),
-                'direction' => SelectUsersCountWhereDirection($con, $_GET['search']),
-                default => SelectUsersCount($con),// Si no es una busqueda
-            };
+            if (isset($_GET['search'])) {
+                switch ($_GET['selector']) {
+                    case 'rut':
+                        $usersAmount = SelectUsersCountWhereRut($con, $_GET['search']);
+                        break;
+                    case 'name':
+                        $usersAmount = SelectUsersCountWhereName($con, $_GET['search']);
+                    case 'surname':
+                        SelectUsersCountWhereSurname($con, $_GET['search']);
+                    case 'email':
+                        $usersAmount = SelectUsersCountWhereEmail($con, $_GET['search']);
+                        break;
+                    case 'direction':
+                        SelectUsersCountWhereDirection($con, $_GET['search']);
+                        break;
+                    default: SelectUsersCount($con);
+                }
+            }
+            else $usersAmount = SelectUsersCount($con);
+            
             if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
             else $searchData = '';
 

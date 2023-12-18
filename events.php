@@ -16,16 +16,24 @@
 
     $showEvents = 10;
     if (isset($_GET['search'])) {
-        $res = match ($_GET['selector']) {
-            'title' => SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
-            'description' => SelectEventsWhereDescription($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
-            'publicationDate' => SelectEventsWherePublicationDate($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
-            'realizationDate' => SelectEventsRealizationDate($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
-            default => SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents),
-        };
+         switch ($_GET['selector']) {
+            case 'title':
+                $res = SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
+                break;
+            case 'description':
+                $res = SelectEventsWhereDescription($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
+                break;
+            case 'publicationDate':
+                $res = SelectEventsWherePublicationDate($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
+                break;
+            case 'realizationDate':
+                $res = SelectEventsRealizationDate($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
+                break;
+            default:
+                $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents);
+        }
     }
     else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents); // Si no es una busqueda
-?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -257,13 +265,26 @@
             <!-- End Create User -->
 
             <?php
-            $eventsAmount = match ($_GET['selector']) {
-                'title' => SelectEventsCountWhereTitle($con, $_GET['search']),
-                'description' => SelectEventsCountWhereDescription($con, $_GET['search']),
-                'publicationDate' => SelectEventsCountWherePublicationDate($con, $_GET['search']),
-                'realizationDate' => SelectEventsCountRealizationDate($con, $_GET['search']),
-                default => SelectEventsCount($con),
-            };
+            if (isset($_GET['search'])) {
+                 switch ($_GET['selector']) {
+                    case 'title':
+                        $eventsAmount = SelectEventsCountWhereTitle($con, $_GET['search']);
+                        break;
+                    case 'description':
+                        $eventsAmount = SelectEventsCountWhereDescription($con, $_GET['search']);
+                        break;
+                    case 'publicationDate':
+                        $eventsAmount = SelectEventsCountWherePublicationDate($con, $_GET['search']);
+                        break;
+                    case 'realizationDate':
+                        $eventsAmount = SelectEventsCountRealizationDate($con, $_GET['search']);
+                        break;
+                    default:
+                        $eventsAmount = SelectEventsCount($con);
+                }
+            }
+            else $eventsAmount = SelectEventsCount($con);
+                
             if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
             else $searchData = '';
             

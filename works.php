@@ -20,12 +20,21 @@
 
     $showWorks = 10;
     if (isset($_GET['search'])) {
-        $res = match ($_GET['selector']) {
-            'name' => SelectWorksWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
-            'obj' => SelectWorksWhereObj($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
-            'area' => SelectWorksWhereArea($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
-            'abstract' => SelectWorksWhereAbstract($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']),
-            default => SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks),
+        switch ($_GET['selector']) {
+            case 'name':
+                $res = SelectWorksWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+                break;
+            case 'obj':
+                $res = SelectWorksWhereObj($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+                break;
+            case 'area':
+                $res = SelectWorksWhereArea($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+                break;
+            case 'abstract':
+                $res = SelectWorksWhereAbstract($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $_GET['search']);
+                break;
+            default:
+                $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
         };
     }
     else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
@@ -334,13 +343,26 @@
             </div>
         </div>
             <?php
-            $worksAmount = match ($_GET['selector']) {
-                'name' => SelectWorksCountWhereName($con, $_GET['search']),
-                'obj' => SelectWorksCountWhereObj($con, $_GET['search']),
-                'area' => SelectWorksCountWhereArea($con, $_GET['search']),
-                'abstract' => SelectWorksCountWhereAbstract($con, $_GET['search']),
-                default => SelectWorksCount($con),
-            };
+            if (isset($_GET['search'])) {
+                switch ($_GET['selector']) {
+                    case 'name':
+                        $worksAmount = SelectWorksCountWhereName($con, $_GET['search']);
+                        break;
+                    case 'obj':
+                        $worksAmount = SelectWorksCountWhereObj($con, $_GET['search']);
+                        break;
+                    case 'area':
+                        $worksAmount = SelectWorksCountWhereArea($con, $_GET['search']);
+                        break;
+                    case 'abstract':
+                        $worksAmount = SelectWorksCountWhereAbstract($con, $_GET['search']);
+                        break;
+                    default:
+                        $worksAmount = SelectWorksCount($con);
+                }
+            }
+            else $worksAmount =  SelectWorksCount($con);
+            
             if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
             else $searchData = '';
             
