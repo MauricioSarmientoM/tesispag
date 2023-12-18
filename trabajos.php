@@ -47,7 +47,7 @@
             <!-- Diego: Celeste, de aquí en adelante añades el backend,
                 Tipo, su while piola con php que hace la consulta con arrays and stuff :)
                 (Al final elimina mis comentarios)-->
-                <a href="https://about:blank"> <!-- Diego: Aquí se vincula con su perfil -->
+                <a href="detalle.php">
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
                             <img class="trabajo" src="src\icons\userLogo.png" alt="foto-user"> <!-- Diego: No tengo el placeholder del user, en el brach perfil existe. -->
