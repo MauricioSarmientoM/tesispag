@@ -98,6 +98,36 @@
             ?>
 
             <!-- Fin de zona de trabajos -->
+            <?php
+            $worksAmount = match ($_GET['selector']) {
+                'name' => SelectWorksCountWhereName($con, $_GET['search']),
+                'obj' => SelectWorksCountWhereObj($con, $_GET['search']),
+                'area' => SelectWorksCountWhereArea($con, $_GET['search']),
+                'abstract' => SelectWorksCountWhereAbstract($con, $_GET['search']),
+                default => SelectWorksCount($con),
+            };
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
+            else $searchData = '';
+            
+            $worksAmount = $worksAmount->fetch_assoc();
+            $pagesAmount = ceil($worksAmount['count'] / $showWorks);
+            if ($pagesAmount > 1) {
+            ?>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <?php
+                    if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/trabajos.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
+                    
+                    for ($counter = 1; $counter <= $pagesAmount; $counter++) {
+                        echo '<li class="page-item"><a href="/trabajos.php?page=' . $counter . $searchData . '" class="page-link">' . $counter . '</a></li>';
+                    }
+                    if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/trabajos.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
+                    ?>
+                </ul>
+            </nav>
+            <?php } $con->close(); ?>
 
         </main>
         <!-- footer -->

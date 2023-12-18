@@ -15,8 +15,16 @@
     elseif (isset($_POST['delete'])) DeleteEvent($con, $_POST['id']);
 
     $showEvents = 10;
-    if (isset($_GET['search'])) $res = SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
-    else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents);
+    if (isset($_GET['search'])) {
+        $res = match ($_GET['selector']) {
+            'title' => SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
+            'description' => SelectEventsWhereDescription($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
+            'publicationDate' => SelectEventsWherePublicationDate($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
+            'realizationDate' => SelectEventsRealizationDate($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']),
+            default => SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents),
+        };
+    }
+    else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -249,7 +257,16 @@
             <!-- End Create User -->
 
             <?php
-            $eventsAmount = SelectEventsCount($con);
+            $eventsAmount = match ($_GET['selector']) {
+                'title' => SelectEventsCountWhereTitle($con, $_GET['search']),
+                'description' => SelectEventsCountWhereDescription($con, $_GET['search']),
+                'publicationDate' => SelectEventsCountWherePublicationDate($con, $_GET['search']),
+                'realizationDate' => SelectEventsCountRealizationDate($con, $_GET['search']),
+                default => SelectEventsCount($con),
+            };
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
+            else $searchData = '';
+            
             $eventsAmount = $eventsAmount->fetch_assoc();
             $pagesAmount = ceil($eventsAmount['count'] / $showEvents);
             if ($pagesAmount > 1) {
@@ -258,13 +275,13 @@
                 <ul class="pagination justify-content-center">
                     <?php
                     if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
-                    else echo '<li class="page-item"><a class="page-link" href="/events.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/events.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
                     
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) {
-                        echo '<li class="page-item"><a href="/events.php?page=' . $counter . '" class="page-link">' . $counter . '</a></li>';
+                        echo '<li class="page-item"><a href="/events.php?page=' . $counter . $searchData .'" class="page-link">' . $counter . '</a></li>';
                     }
                     if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
-                    else echo '<li class="page-item"><a class="page-link" href="/events.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/events.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
                     ?>
                 </ul>
             </nav>

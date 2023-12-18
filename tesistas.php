@@ -4,7 +4,7 @@
     include("./backend/select.php");
     $con = conectar();
 
-    $showUsers = 2;
+    $showUsers = 10;
     if (isset($_GET['search'])) {
         $res = match ($_GET['selector']) {
             'rut' => SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']),

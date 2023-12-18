@@ -340,7 +340,7 @@
                 'direction' => SelectUsersCountWhereDirection($con, $_GET['search']),
                 default => SelectUsersCount($con),// Si no es una busqueda
             };
-            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=aaa' . $_GET['search'];
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
             else $searchData = '';
 
             $usersAmount = $usersAmount->fetch_assoc();

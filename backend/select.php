@@ -121,9 +121,19 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectWorksCountWhereName ($con, $name) {
+        $sql = "SELECT COUNT(id) as count FROM works WHERE name LIKE '%$name%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectWorksWhereObj ($con, $pageNumber, $itemsPerPage, $obj) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM works WHERE obj LIKE '%$obj%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectWorksCountWhereObj ($con, $obj) {
+        $sql = "SELECT COUNT(id) as count FROM works WHERE obj LIKE '%$obj%'";
         $result = $con->query($sql);
         return $result;
     }
@@ -133,9 +143,19 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectWorksCountWhereArea ($con, $area) {
+        $sql = "SELECT COUNT(id) as count FROM works WHERE area LIKE '%$area%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectWorksWhereAbstract ($con, $pageNumber, $itemsPerPage, $abstract) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM works WHERE abstract LIKE '%$abstract%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectWorksCountWhereAbstract ($con, $abstract) {
+        $sql = "SELECT COUNT(id) as count FROM works WHERE abstract LIKE '%$abstract%'";
         $result = $con->query($sql);
         return $result;
     }
@@ -187,9 +207,19 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectEventsCountWhereTitle($con, $title) {
+        $sql = "SELECT COUNT(id) as count FROM events WHERE title LIKE '%$title%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectEventsWhereDescription($con, $pageNumber, $itemsPerPage, $description) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM events WHERE description LIKE '%$description%' ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsCountWhereDescription($con, $description) {
+        $sql = "SELECT COUNT(id) as count FROM events WHERE description LIKE '%$description%'";
         $result = $con->query($sql);
         return $result;
     }
@@ -199,9 +229,19 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectEventsCountWherePublicationDate($con, $publicationDate) {
+        $sql = "SELECT COUNT(id) as count FROM events WHERE publicationDate LIKE '%$publicationDate%'";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectEventsRealizationDate($con, $pageNumber, $itemsPerPage, $realizationDate) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM events WHERE realizationDate LIKE '%$realizationDate%' ORDER BY publicationDate DESC LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectEventsCountRealizationDate($con, $realizationDate) {
+        $sql = "SELECT COUNT(id) as count FROM events WHERE realizationDate LIKE '%$realizationDate%'";
         $result = $con->query($sql);
         return $result;
     }
