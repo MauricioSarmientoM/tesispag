@@ -1,5 +1,11 @@
 <?php
     function DeleteUser($con, $rut) {
+        $query = $con->prepare("DELETE FROM contact WHERE rut = ?");
+        if (!$query) die("Preparation failed: " . $con->error);
+        $query->bind_param("i", $rut);
+        if ($query->error) die("Binding parameters failed: " . $query->error);
+        $query->execute();
+        
         $query = $con->prepare("DELETE FROM super WHERE rut = ?");
     	if (!$query) die("Preparation failed: " . $con->error);
     	$query->bind_param("i", $rut);
