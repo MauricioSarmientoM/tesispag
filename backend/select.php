@@ -1,8 +1,5 @@
 <?php
-
-
     //User
-
     function SelectUsers ($con, $pageNumber, $itemsPerPage) {
         // Calculate the offset
         $offset = ($pageNumber - 1) * $itemsPerPage;
@@ -11,6 +8,22 @@
         $result = $con->query($sql);
         return $result;
         //if ($result->num_rows > 0) {}  With this I can verify if the query got data
+    }
+    function SelectUsersCount($con) {
+        $sql = "SELECT COUNT(rut) as count FROM users";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersNoTutor ($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE usertutor.rut != user.rut";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountNoTutor ($con) {
+        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE usertutor.rut != user.rut";
+        $result = $con->query($sql);
+        return $result;
     }
     function SelectUsersWhereRut ($con, $pageNumber, $itemsPerPage, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
@@ -21,6 +34,17 @@
     function SelectUsersCountWhereRut ($con, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT COUNT(rut) as count FROM users WHERE CAST(rut AS CHAR) LIKE '%$rut%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereRutAndNoTutor ($con, $pageNumber, $itemsPerPage, $rut) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereRutAndNoTutor ($con, $rut) {
+        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' AND usertutor.rut != user.rut";
         $result = $con->query($sql);
         return $result;
     }
@@ -35,6 +59,17 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersWhereNameAndNoTutor ($con, $pageNumber, $itemsPerPage, $name) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.name LIKE '%$name%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereNameAndNoTutor ($con, $rut) {
+        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.name LIKE '%$name%' AND usertutor.rut != user.rut";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersWhereSurname ($con, $pageNumber, $itemsPerPage, $surname) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM users WHERE surname LIKE '%$surname%' LIMIT $itemsPerPage OFFSET $offset";
@@ -43,6 +78,17 @@
     }
     function SelectUsersCountWhereSurname ($con, $surname) {
         $sql = "SELECT COUNT(rut) as count FROM users WHERE surname LIKE '%$surname%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereSurnameAndNoTutor ($con, $pageNumber, $itemsPerPage, $surname) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.surname LIKE '%$surname%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereSurnameAndNoTutor ($con, $surname) {
+        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.surname LIKE '%$surname%' AND usertutor.rut != user.rut";
         $result = $con->query($sql);
         return $result;
     }
@@ -57,6 +103,17 @@
         $result = $con->query($sql);
         return $result;
     }
+    function SelectUsersWhereEmailAndNoTutor ($con, $pageNumber, $itemsPerPage, $email) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.email LIKE '%$email%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereEmailAndNoTutor ($con, $email) {
+        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.email LIKE '%$email%' AND usertutor.rut != user.rut";
+        $result = $con->query($sql);
+        return $result;
+    }
     function SelectUsersWhereDirection ($con, $pageNumber, $itemsPerPage, $direction) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT * FROM users WHERE surname LIKE '%$direction%' LIMIT $itemsPerPage OFFSET $offset";
@@ -65,6 +122,17 @@
     }
     function SelectUsersCountWhereDirection ($con, $direction) {
         $sql = "SELECT COUNT(rut) as count FROM users WHERE surname LIKE '%$direction%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersWhereDirectionAndNoTutor ($con, $pageNumber, $itemsPerPage, $direction) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.direction LIKE '%$direction%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectUsersCountWhereDirectionAndNoTutor ($con, $direction) {
+        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.direction LIKE '%$direction%' AND usertutor.rut != user.rut";
         $result = $con->query($sql);
         return $result;
     }
@@ -99,12 +167,26 @@
         $result = $con->query($sql);
         return $result;
     }
-    function SelectUsersCount($con) {
-        $sql = "SELECT COUNT(rut) as count FROM users";
+
+    //Tutores
+
+    function SelectTutots ($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
-
+    function SelectTutorsWhereRut($con, $pageNumber, $itemsPerPage, $rut) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectTutorsCount($con) {
+        $sql = "SELECT COUNT(users.rut) as count FROM users INNER JOIN usertutor ON users.rut = usertutor.rut";
+        $result = $con->query($sql);
+        return $result;
+    }
 
     //Works
 

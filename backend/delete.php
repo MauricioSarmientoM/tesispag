@@ -17,6 +17,12 @@
         $query->bind_param("i", $rut);
         if ($query->error) die("Binding parameters failed: " . $query->error);
         $query->execute();
+        
+        $query = $con->prepare("DELETE FROM usertutor WHERE rut = ?");
+    	if (!$query) die("Preparation failed: " . $con->error);
+    	$query->bind_param("i", $rut);
+    	if ($query->error) die("Binding parameters failed: " . $query->error);
+    	$query->execute();
 
         $sql = "SELECT imageURL FROM users WHERE rut = $rut";
         $result = $con->query($sql);
@@ -45,6 +51,14 @@
         
     	if ($query->error) die("Binding parameters failed: " . $query->error);
         
+    	if ($query->execute()) return 1;
+    	return 0;
+    }
+    function DeleteTutor($con, $rut) {
+        $query = $con->prepare("DELETE FROM usertutor WHERE rut = ?");
+    	if (!$query) die("Preparation failed: " . $con->error);
+    	$query->bind_param("i", $rut);
+    	if ($query->error) die("Binding parameters failed: " . $query->error);
     	if ($query->execute()) return 1;
     	return 0;
     }

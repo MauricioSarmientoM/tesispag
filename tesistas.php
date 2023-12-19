@@ -8,25 +8,25 @@
     if (isset($_GET['search'])) {
         switch ($_GET['selector']) {
             case 'rut':
-                $res = SelectUsersWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                $res = SelectUsersWhereRutAndNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
                 break;
             case 'name':
-                $res = SelectUsersWhereName($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                $res = SelectUsersWhereNameAndNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
                 break;
             case 'surname':
-                $res = SelectUsersWhereSurname($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                $res = SelectUsersWhereSurnameAndNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
                 break;
             case 'email':
-                $res = SelectUsersWhereEmail($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                $res = SelectUsersWhereEmailAndNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
                 break;
             case 'direction':
-                $res = SelectUsersWhereDirection($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
+                $res = SelectUsersWhereDirectionAndNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers, $_GET['search']);
                 break;
             default:
-                $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
+                $res = SelectUsersAndNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers);
         }
     }
-    else $res = SelectUsers($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
+    else $res = SelectUsersNoTutor($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showUsers); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -113,22 +113,22 @@
             if (isset($_GET['search'])) {
                 switch ($_GET['selector']) {
                     case 'rut':
-                        $usersAmount = SelectUsersCountWhereRut($con, $_GET['search']);
+                        $usersAmount = SelectUsersCountWhereRutNoTutor($con, $_GET['search']);
                         break;
                     case 'name':
-                        $usersAmount = SelectUsersCountWhereName($con, $_GET['search']);
+                        $usersAmount = SelectUsersCountWhereNameNoTutor($con, $_GET['search']);
                     case 'surname':
-                        SelectUsersCountWhereSurname($con, $_GET['search']);
+                        $usersAmount = SelectUsersCountWhereSurnameNoTutor($con, $_GET['search']);
                     case 'email':
-                        $usersAmount = SelectUsersCountWhereEmail($con, $_GET['search']);
+                        $usersAmount = SelectUsersCountWhereEmailNoTutor($con, $_GET['search']);
                         break;
                     case 'direction':
-                        SelectUsersCountWhereDirection($con, $_GET['search']);
+                        $usersAmount = SelectUsersCountWhereDirectionNoTutor($con, $_GET['search']);
                         break;
-                    default: SelectUsersCount($con);
+                    default: $usersAmount = SelectUsersCountNoTutor($con);
                 }
             }
-            else $usersAmount = SelectUsersCount($con);
+            else $usersAmount = SelectUsersCountNoTutor($con);
             
             if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
             else $searchData = '';

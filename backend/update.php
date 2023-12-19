@@ -102,4 +102,12 @@
 		if ($query->execute()) return 1;
         return 0;
     }
+    function UpdateTutor($con, $rut, $grade) {
+        $query = $con->prepare("UPDATE usertutor SET grade = ? WHERE rut = ?");
+		if (!$query) die("Preparation failed: " . $connection->error);
+		$query->bind_param("si", $grade, $rut);
+		if (!$query) die("Binding parameters failed: " . $query->error);
+		if ($query->execute()) return 1;
+        return 0;
+    }
 ?>

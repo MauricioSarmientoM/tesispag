@@ -39,6 +39,18 @@
         if ($query->execute()) return 1;
         return 0;
     }
+    function InsertTutor($con, $rut) {
+        $query = $con->prepare("INSERT INTO usertutor (rut) VALUES (?)");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $rut);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) return 1;
+        return 0;
+    }
     function InsertCollab($con, $collabRut, $id) {
         $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
         if (!$query) die("Preparation failed: " . $con->error);

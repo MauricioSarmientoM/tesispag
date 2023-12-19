@@ -11,10 +11,15 @@
     $con = conectar();
 
     if (isset($_POST['insert'])) InsertUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction']);
-    elseif (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+    elseif (isset($_POST['update'])) {
+        UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+        if (isset($_POST['updateT'])) UpdateTutor($con, $_POST['rut'], $_POST['grade']);
+    }
     elseif (isset($_POST['delete'])) DeleteUser($con, $_POST['rut']);
     elseif (isset($_POST['insertS'])) InsertSuper($con, $_POST['rut']);
     elseif (isset($_POST['deleteS'])) DeleteSuper($con, $_POST['rut']);
+    elseif (isset($_POST['insertT'])) InsertTutor($con, $_POST['rut']);
+    elseif (isset($_POST['deleteT'])) DeleteTutor($con, $_POST['rut']);
 
     $showUsers = 10;
     if (isset($_GET['search'])) {
@@ -144,6 +149,20 @@
                                         }
                                         else {
                                             echo '<input type = "submit" name = "insertS" class="btn btn-success" value = "Dar Privilegios"/>';
+                                        }
+                                        ?>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action = "users.php" method = "post">
+                                        <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
+                                        <?php
+                                        $super = SelectTutorsWhereRut($con, 1, 1, $row['rut']);
+                                        if ($super->num_rows > 0) {
+                                            echo '<input type = "submit" name = "deleteT" class="btn btn-warning" value = "Deshabilitar como Tutor"/>';
+                                        }
+                                        else {
+                                            echo '<input type = "submit" name = "insertT" class="btn btn-success" value = "Habilitar como Tutor"/>';
                                         }
                                         ?>
                                     </form>
