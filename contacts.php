@@ -10,9 +10,9 @@
     include("./backend/delete.php");
     $con = conectar();
 
-    if (isset($_POST['insert'])) InsertEvent($con, $_POST['title'], $_POST['description'], $_FILES['image'], $_POST['publicationDate'], $_POST['realizationDate']);
-    elseif (isset($_POST['update'])) UpdateEvent($con, $_POST['id'], $_POST['title'], $_POST['description'], $_POST['image'], $_POST['publicationDate'], $_POST['realizationDate']);
-    elseif (isset($_POST['delete'])) DeleteEvent($con, $_POST['id']);
+    if (isset($_POST['insert'])) InsertContact($con, $_POST['rut'], $_POST['subject'], $_POST['body']);
+    elseif (isset($_POST['update'])) UpdateContact($con, $_POST['id'], $_POST['readed']);
+    elseif (isset($_POST['delete'])) DeleteContact($con, $_POST['id']);
 
     $showEvents = 10;
     if (isset($_GET['search'])) $res = SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);

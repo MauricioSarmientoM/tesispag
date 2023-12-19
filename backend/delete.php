@@ -84,4 +84,12 @@
         if ($query->execute()) return 1;
         return 0;
     }
+    function DeleteContact($con, $id) {
+        $query = $con->prepare("DELETE FROM contacts WHERE id = ?");
+        if (!$query) die("Preparation failed: " . $con->error);
+        $query->bind_param("i", $id);
+        if ($query->error) die("Binding parameters failed: " . $query->error);
+        if ($query->execute()) return 1;
+        return 0;
+    }
 ?>

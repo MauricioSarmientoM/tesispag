@@ -276,4 +276,95 @@
         $result = $con->query($sql);
         return $result;
     }
+
+    //Contact Messages
+
+    function SelectContacts($con, $pageNumber, $itemsPerPage) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCount($con) {
+        $sql = "SELECT COUNT(id) as count FROM contacts";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereReaded($con, $pageNumber, $itemsPerPage, $readed) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE readed = $readed LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereReaded($con, $readed) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE readed = $readed";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereRut($con, $pageNumber, $itemsPerPage, $rut) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE CAST(rut AS CHAR) LIKE '%$rut%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereRut($con, $rut) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE CAST(rut AS CHAR) LIKE '%$rut%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereReadedAndRut($con, $pageNumber, $itemsPerPage, $readed, $rut) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE readed = $readed AND CAST(rut AS CHAR) LIKE '%$rut%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereReadedAndRut($con, $readed, $rut) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE readed = $readed AND CAST(rut AS CHAR) LIKE '%$rut%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereSubject($con, $pageNumber, $itemsPerPage, $subject) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE subject LIKE '%$subject%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereSubject($con, $subject) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE subject LIKE '%$subject%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereReadedAndSubject($con, $pageNumber, $itemsPerPage, $readed, $subject) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE readed = $readed AND subject LIKE '%$subject%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereReadedAndSubject($con, $readed, $subject) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE readed = $readed AND subject LIKE '%$subject%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereBody($con, $pageNumber, $itemsPerPage, $body) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE body LIKE '%$body%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereBody($con, $body) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE subject LIKE '%$subject%'";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsWhereReadedAndBody($con, $pageNumber, $itemsPerPage, $readed, $body) {
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM contacts WHERE readed = $readed AND body LIKE '%$body%' LIMIT $itemsPerPage OFFSET $offset";
+        $result = $con->query($sql);
+        return $result;
+    }
+    function SelectContactsCountWhereReadedAndBody($con, $readed, $body) {
+        $sql = "SELECT COUNT(id) as count FROM contacts WHERE readed = $readed AND subject LIKE '%$subject%'";
+        $result = $con->query($sql);
+        return $result;
+    }
 ?>

@@ -68,7 +68,6 @@
         return 0;
     }
     function UpdateEvent($con, $id, $title, $description, $image, $publicationDate, $realizationDate) {
-        
         if (isset($image) && $image["error"] == UPLOAD_ERR_OK) {
             $targetDirectory = "uploads/events/";
             $uploadedFileName = basename($image["name"]);
@@ -93,6 +92,14 @@
         $query->bind_param("sssssi", $title, $description, $image, $publicationDate, $realizationDate, $id);
         if ($query->error) die("Binding parameters failed: " . $query->error);
         if ($query->execute()) return 1;
+        return 0;
+    }
+    function UpdateContact($con, $id, $readed) {
+        $query = $con->prepare("UPDATE contacts SET readed = ? WHERE id = ?");
+		if (!$query) die("Preparation failed: " . $connection->error);
+		$query->bind_param("ii", $readed, $id);
+		if (!$query) die("Binding parameters failed: " . $query->error);
+		if ($query->execute()) return 1;
         return 0;
     }
 ?>
