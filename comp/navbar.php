@@ -1,7 +1,7 @@
 <div class="header-top navbarData fixed-top">
     <div class="container-fluid py-2">
         <div class="row px-4">
-            <div class="col-md-6 col-lg-6 d-flex mx-auto my-auto">
+            <div class="col-ms-6 col-md-12 col-lg-5 d-flex mx-auto my-auto">
                 <a href="index.php">
                     <img width="297px" id="udaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
                 </a>
@@ -13,18 +13,22 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownPersonas">
                         <li><a class="dropdown-item" href="tesistas.php">Tesistas</a></li>
-                        <li><a class="dropdown-item" href="#">Tutores</a></li>
+                        <li><a class="dropdown-item" href="tutores.php">Tutores</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col d-flex">
                 <a class="my-auto mx-auto" href="trabajos.php">Trabajos</a>
             </div>
+            <!-- Nuevo link: Eventos -->
+            <div class="col d-flex">
+                <a class="my-auto mx-auto" href="calendar.php">Eventos</a>
+            </div>
             <div class="col d-flex">
                  <?php if (isset($_SESSION['rut'])) { ?>
-                <button type="button" class="btn login-btn mx-auto" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos</button>
+                <button type="button" class="btn login-btn mx-auto my-auto" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos</button>
                 <?php } else { ?>
-                <button type="button" class="btn login-btn mx-auto" data-bs-toggle="modal" data-bs-target="#loginModal">Contáctanos</button>
+                <button type="button" class="btn login-btn mx-auto my-auto" data-bs-toggle="modal" data-bs-target="#loginModal">Contáctanos</button>
                 <?php } ?>
             </div>
             <div class="col d-flex my-auto">

@@ -1,3 +1,4 @@
+<?php session_start(); /*Diego: Veo que el id de la tesis se envia por el url. Celeste, usala con los llamados php */ ?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -10,13 +11,30 @@
         <title>UDA</title>
     </head>
     <body>
-        
         <!-- Navbar -->
         <?php include './comp/navbar.php'; ?>
-        <main>
-            <!-- Alerts -->
-            <?php include './comp/alerts.php'; ?>
-
+        <!-- Alerts -->
+        <?php include './comp/alerts.php'; ?>
+        <main class="fondo"> <!-- Diego: La clase fondo pertenece a detalle.css, ahí define la foto de fondo. Celeste,
+                                  debes modificar detalle.css para que la imagen de fondo se la correspondiente -->
+            <div class="container py-4 text-center">
+                <div class="row my-4 py-4 zona"> <!-- Diego: Celeste, En Título, Área, Objetivo, Abstract, Colaboradores, van
+                                                      los correspondientes echo session[''] del php-->
+                    <h1>Título</h1>
+                </div>
+                <div class="row my-4 py-4 zona">
+                    <h5>Área</h5>
+                </div>
+                <div class="row my-4 py-4 zona">
+                    <h3>Objetivo</h3>
+                </div>
+                <div class="row my-4 py-4 zona">
+                    <p>Abstract</p>
+                </div>
+                <div class="row my-4 py-4 zona">
+                    <h4>Colaboradores</h4>
+                </div>
+            </div>
         </main>
         <!-- footer -->
         <?php include './comp/footer.php' ?>

@@ -34,6 +34,7 @@
         }
     }
     else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents); // Si no es una busqueda
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
