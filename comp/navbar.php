@@ -18,7 +18,16 @@
                 </div>
             </div>
             <div class="col d-flex">
-                <a class="my-auto mx-auto" href="trabajos.php">Trabajos</a>
+                <div class="dropdown mx-auto my-auto">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownTrabajos" data-toggle="dropdown" aria-expanded="false">
+                        Trabajos
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownTrabajos">
+                        <li><a class="dropdown-item" href="trabajos.php">Tesis</a></li>
+                        <li><a class="dropdown-item" href="guia.php">Guía de Presentación</a></li>
+                        <li><a class="dropdown-item" href="reglamento.php">Reglamento</a></li>
+                    </ul>
+                </div>
             </div>
             <!-- Nuevo link: Eventos -->
             <div class="col d-flex">

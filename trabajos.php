@@ -45,7 +45,7 @@
             <?php include './comp/alerts.php'; ?>
 
             <!-- Zona de tesistas -->
-            <div class="container-fluid zonasTitulo"><h1 class="container">Trabajos</h1></div>
+            <div class="container-fluid zonasTitulo"><h1 class="container">Tesis</h1></div>
             <div class="container my-4">
                 <form action="trabajos.php" method="get">
                     <div class="row">
