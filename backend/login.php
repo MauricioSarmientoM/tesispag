@@ -44,19 +44,19 @@
                     }
                 }
                 else {
-                    $_SESSION['error'] = "Couldn't enter to your session, try again.";
+                    $_SESSION['error'] = "No se ha podido iniciar sesión, inténtelo otra vez.";
                 }
             }
             else {
-                $_SESSION['warning'] = "Invalid password.";
+                $_SESSION['warning'] = "Contraseña inválida.";
             }
         }
         else {
-            $_SESSION['error'] = "$rut is not an user.";
+            $_SESSION['error'] = "El rut $rut no está registrado en nuestro sistema.";
         }
     }
 	else {
-		$_SESSION['warning'] = "Must provide a RUT and a password.";
+		$_SESSION['warning'] = "Debes ingresar un RUT y contraseña.";
 	}
     $con->close();
     header("Location: ../index.php");
