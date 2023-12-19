@@ -44,7 +44,7 @@
                 <?php 
                 if (isset($_SESSION['rut'])) {
                     ?>
-                    <div class="dropdown mx-auto my-auto">
+                    <div class="dropdown mx-auto">
                         <button class="btn dropdown-toggle" type="button" id="dropdownUser" data-toggle="dropdown" aria-expanded="false">
                             <?php echo '' . $_SESSION['name']; ?>
                         </button>
@@ -78,26 +78,46 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Inicio de Sesión</h5>
+                <h5 class="modal-title">Registre su Información</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="nav barraModal" id="nav-tab">
+                <button class="nav-link active col text-center" id="inicioSesion" data-bs-toggle="tab" data-bs-target="#sesionInit" role="tab" aria-selected="true">Iniciar Sesión</button>
+                <button class="nav-link col text-center"     id="recuperarContra" data-bs-toggle="tab" data-bs-target="#forgotPass" role="tab" aria-selected="false">Recuperar Contraseña</button>
+            </div>
             <div class="modal-body">
-                <form action="./backend/login.php" method="POST">
-                    <div class="form-group pb-2">
-                        <label for="inputEmail">Rut*</label>
-                        <input type="text" class="form-control" name="rut" id="inputRut" placeholder="Ingrese su Rut" required>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="sesionInit" role="tabpanel" aria-labelledby="inicioSesion" tabindex="0">
+                        <form action="./backend/login.php" method="POST">
+                            <div class="form-group pb-2">
+                                <label for="inputRut">Rut*</label>
+                                <input type="text" class="form-control" name="rut" id="inputRut" placeholder="Ingrese su Rut" required>
+                            </div>
+                            <div class="form-group py-2 mb-3">
+                                <label for="inputPassword">Contraseña*</label>
+                                <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Ingrese su contraseña" required>
+                            </div>
+                            <div class="text-end">
+                                <hr class="my-1">
+                                <button type="submit" class="btn login-btn mt-3">Iniciar Sesión</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group py-2 mb-3">
-                        <label for="inputPassword">Contraseña*</label>
-                        <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Ingrese su contraseña" required>
+                    <div class="tab-pane fade" id="forgotPass" role="tabpanel" aria-labelledby="recuperarContra" tabindex="0">
+                        <form action="" method="POST"> <!--Diego: Celeste, cambia el action al correspondiente -->
+                            <div class="form-group pb-2 mb-3">
+                                <label for="inputRutRecuperar">Rut*</label>
+                                <input type="text" class="form-control" name="rut" id="inputRutRecuperar" placeholder="Ingrese su Rut" required>
+                            </div>
+                            <div class="text-end">
+                                <hr class="my-1">
+                                <button type="submit" class="btn login-btn mt-3">Enviar Rut a Administrador</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="text-end">
-                        <hr class="my-1">
-                        <button type="submit" class="btn login-btn mt-3">Iniciar Sesión</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
