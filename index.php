@@ -31,8 +31,8 @@ if (!file_exists("uploads/events/")) {
             <!-- Alerts -->
             <?php include './comp/alerts.php'; ?>
             <!-- Banner -->
-            <?php include './comp/banner.php'; ?>
-
+            <?php include './comp/banner.php'; 
+            echo password_hash('1234', PASSWORD_BCRYPT);?>
             <!-- Zona de tesis -->
             <?php
             $amountWorks = 3;

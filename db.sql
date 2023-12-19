@@ -1,63 +1,22 @@
 CREATE DATABASE tesis;
-CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY,
-    name VARCHAR(128) NOT NULL,
-    surname VARCHAR(128) NOT NULL,
-    description VARCHAR(1000),
-    email VARCHAR(128),
-    phone INT,
-    password VARCHAR(256) NOT NULL,
-    imageURL VARCHAR(256),
-    direction VARCHAR(128));
-CREATE TABLE usertutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, 
-    rut INT UNIQUE NOT NULL,
-    grade VARCHAR(128),
-    FOREIGN KEY (rut) REFERENCES users(rut));
-CREATE TABLE super (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT UNIQUE NOT NULL,
-    FOREIGN KEY (rut) REFERENCES users(rut));
-CREATE TABLE contact (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT NOT NULL,
-    subject VARCHAR(64) NOT NULL,
-    body VARCHAR(1000),
-    readed BOOLEAN,
-    FOREIGN KEY (rut) REFERENCES users(rut));
-CREATE TABLE works (id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(128) NOT NULL,
-    obj VARCHAR(128),
-    area VARCHAR(128),
-    abstract VARCHAR(1000),
-    image VARCHAR(256));
-CREATE TABLE workuser (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT NOT NULL,
-    idWork INT NOT NULL,
-    FOREIGN KEY (rut) REFERENCES users(rut),
-    FOREIGN KEY (idWork) REFERENCES works(id));
-CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(256) NOT NULL,
-    description VARCHAR(1000),
-    image VARCHAR(256),
-    publicationDate DATE NOT NULL,
-    realizationDate DATE);
-INSERT INTO users (rut, name, surname, description, email, phone, password, imageURL, direction) VALUES
-    (20751584, 'Celeste', 'Marambio', NULL, 'celestemarmar2@gmail.com', 42707297, '$2y$10$dmooAIPaTY80/rpajWPfsO/jEdFn8kMD03K6JhFhnhFPjcWgzujWG', NULL, 'Caburga 1105 Villa Arauco'),
-    (20036002, 'Javier', 'Ponce', NULL, NULL, NULL, '$2y$10$Q2/JWgpTVCcJ8LrJm2w2b.iwyqaHeRbvXpdUu.4k7aORQUEMxReNm', NULL, 'Los Carreras 3465 Villa Modelo'),
-    (20864127, 'Gutemberg', 'Ávila', NULL, 'gutemberg.avila.21@alumnos.uda.cl', NULL, '$2y$10$fdLEEzEZ6zWRo/IQYx8mZeMyeQiUwhRDtOYu0PtBVqcdx4EkfnxS6', NULL, 'Aldunate 402'),
-    (21239226, 'José', 'Herrera', NULL, 'jose.herrera.21@alumnos.uda.cl', NuLL, '$2y$10$GRh3DlflxWwBcw/U/U6yGOTEP2d8Nxf.n/gRP/VX/oznKjhE0BOQC', NULL, 'Guacolda 1062 Ampliacion Prat'),
-    (15871295, 'Andrés', 'Alfaro', NULL, 'andres.alfaro@uda.cl', NULL, '$2y$10$C9ExGRnNn7VmsLM4FsFeU.GYOGCE5HODOAl3O9ik81qLtUUpDims.', NULL, 'Rio Copiapo 1591 V Valle De Los Rios'),
-    (8368745, 'Manuel', 'Monasterio', NULL, 'manuel.monasterio@uda.cl', NULL, '$2y$10$6oZVlFk0H7eupble7f8DXuTzNwn0mlfWvRx54qXwaLUVD5ni0dkhK', NULL, 'Pj Jose O Valdivia 609 Ampl Los Sauces'),
-    (13015354, 'Héctor', 'Córnide', NULL, 'hector.cornide@uda.cl', NULL, '$2y$10$OqzqynOEHEbv3aKfdcjSmOkrhE6.RQ0BPC6i3wpC/ioGZt7UG.age', NULL, 'Salitrera Limeñita 2496 El Palomar'),
-    (1, 'root', 'user', NULL, NULL, NULL, '$2y$10$A4vsESvIBw2iFHlYdUd3M.cjzOzL5JNrhAX2OxyKBTKdwOS9ahC0S', NULL, NULL);
-INSERT INTO super (rut) VALUES
-    (20751584),
-    (15871295),
-    (13015354), 
-    (1);
-INSERT INTO works (name, obj, area, abstract) VALUES
-    ('Advanced Machine Learning Techniques', 'Development of a new machine learning algorithm', 'Machine Learning', 'This thesis explores advanced machine learning techniques and proposes a novel algorithm for improved predictive modeling.'),
-    ('Secure Data Encryption in Cloud Computing', 'Enhancing data security in cloud environments', 'Cloud Computing', 'This research focuses on securing data in cloud computing environments by developing and implementing advanced encryption methods.'),
-    ('Blockchain Technology in Supply Chain Management', 'Implementing blockchain for transparent supply chain', 'Blockchain', 'Examining the application of blockchain technology in supply chain management to enhance transparency and traceability.'),
-    ('Human-Computer Interaction in Virtual Reality', 'Improving user experience in VR environments', 'Human-Computer Interaction', 'This thesis investigates the principles of human-computer interaction in virtual reality, aiming to enhance user experience and interaction design.'),
-    ('Cybersecurity Threats and Mitigation Strategies', 'Analyzing and mitigating cybersecurity threats', 'Cybersecurity', 'An in-depth study of emerging cybersecurity threats and the development of effective mitigation strategies for protecting information systems.');
+CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY, name VARCHAR(128) NOT NULL, surname VARCHAR(128) NOT NULL, description VARCHAR(1000), email VARCHAR(128), phone INT, password VARCHAR(256) NOT NULL, imageURL VARCHAR(256), direction VARCHAR(128));
+CREATE TABLE usertutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, rut INT UNIQUE NOT NULL, grade VARCHAR(128), FOREIGN KEY (rut) REFERENCES users(rut));
+CREATE TABLE super (id INT AUTO_INCREMENT PRIMARY KEY, rut INT UNIQUE NOT NULL, FOREIGN KEY (rut) REFERENCES users(rut));
+CREATE TABLE contact (id INT AUTO_INCREMENT PRIMARY KEY, rut INT NOT NULL, subject VARCHAR(64) NOT NULL, body VARCHAR(1000), readed BOOLEAN, FOREIGN KEY (rut) REFERENCES users(rut));
+CREATE TABLE works (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(128) NOT NULL, obj VARCHAR(128), area VARCHAR(128), abstract VARCHAR(1000), image VARCHAR(256));
+CREATE TABLE workuser (id INT AUTO_INCREMENT PRIMARY KEY, rut INT NOT NULL, idWork INT NOT NULL, FOREIGN KEY (rut) REFERENCES users(rut), FOREIGN KEY (idWork) REFERENCES works(id));
+CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(256) NOT NULL, description VARCHAR(1000), image VARCHAR(256), publicationDate DATE NOT NULL, realizationDate DATE);
+INSERT INTO users (rut, name, surname, email, password, direction) VALUES
+    (20751584, 'Celeste', 'Marambio', 'celestemarmar2@gmail.com', '$2y$10$dmooAIPaTY80/rpajWPfsO/jEdFn8kMD03K6JhFhnhFPjcWgzujWG', 'Caburga 1105 Villa Arauco'),
+    (15871295, 'Andrés', 'Alfaro', 'andres.alfaro@uda.cl', '$2y$10$C9ExGRnNn7VmsLM4FsFeU.GYOGCE5HODOAl3O9ik81qLtUUpDims.', 'Rio Copiapo 1591 V Valle De Los Rios'),
+    (8368745, 'Manuel', 'Monasterio', 'manuel.monasterio@uda.cl', '$2y$10$6oZVlFk0H7eupble7f8DXuTzNwn0mlfWvRx54qXwaLUVD5ni0dkhK', 'Pj Jose O Valdivia 609 Ampl Los Sauces'),
+    (13015354, 'Héctor', 'Córnide', 'hector.cornide@uda.cl', '$2y$10$OqzqynOEHEbv3aKfdcjSmOkrhE6.RQ0BPC6i3wpC/ioGZt7UG.age', 'Salitrera Limeñita 2496 El Palomar'),
+    (10198361, 'Dante', 'Carrizo', 'dante.carrizo@uda.cl', '$2y$10$GjY1gV/DdTjF73dLNvkc/uSz0uMHTyF.0v961E5sqjN5h3qxbpwga', 'Tte Merino 756 Pob Los Estandartes'),
+    (12065689, 'Vladimir', 'Riffo', 'vladimir.riffo@uda.cl', '$2y$10$0H0lMfjU4byvK2KapAa.0OSVKKFgVOTP2OIu77REZAoirE0UllTx2', 'Sta Cruz 01792'),
+    (, 'John', 'Castro', 'john.castro@uda.cl', ''),
+    (21401814, 'Ignacio', 'Pizarro',);
+INSERT INTO super (rut) VALUES (20751584), (15871295), (13015354);
+INSERT INTO works (name) VALUES ('Análisis del uso de los Sistemas Eye Tracking Como Apoyo en la Evaluación de Usabilidad'), ('Análisis y Especificación De Requisitos del Sistema Scot Para la Empresa Entel S.A'), ('Estudio Empirico Sobre el Efecto de un Software Para Facilitar Ajustes de Teléfonos Inteligentes en el Comportamiento'), ('Evaluación de Resultados de Aprendizaje en Ingeniería de Software, Utilizando la Analítica Multimodal del Aprendizaje y la Metodología Lego Serious Play'), ('Técnicas de Evaluación de Usabilidad Para Entornos Virtuales: Un Estudio Exploratorio'), ('Inspección Activa de Objetos para la Detección y Cuantificación del Volumen de un Eventual Daño, usando Reconstrucción 3D');
 INSERT INTO workuser (rut, idWork) VALUES
     (15871295, 1),
     (20864127, 1),
