@@ -8,8 +8,10 @@ CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY,
     password VARCHAR(256) NOT NULL,
     imageURL VARCHAR(256),
     direction VARCHAR(128));
---CREATE TABLE userTesist (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
---CREATE TABLE userTutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
+CREATE TABLE userTutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, 
+    rut INT UNIQUE NOT NULL,
+    grade VARCHAR(128),
+    FOREIGN KEY (rut) REFERENCES users(rut));
 CREATE TABLE super (id INT AUTO_INCREMENT PRIMARY KEY,
     rut INT UNIQUE NOT NULL,
     FOREIGN KEY (rut) REFERENCES users(rut));
@@ -29,10 +31,6 @@ CREATE TABLE workuser (id INT AUTO_INCREMENT PRIMARY KEY,
     rut INT NOT NULL,
     idWork INT NOT NULL,
     FOREIGN KEY (rut) REFERENCES users(rut),
-    FOREIGN KEY (idWork) REFERENCES works(id));
-CREATE TABLE workfile (id INT AUTO_INCREMENT PRIMARY KEY,
-    idWork INT NOT NULL,
-    files VARCHAR(256),
     FOREIGN KEY (idWork) REFERENCES works(id));
 CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(256) NOT NULL,
@@ -54,11 +52,6 @@ INSERT INTO super (rut) VALUES
     (15871295),
     (13015354), 
     (1);
-INSERT INTO contact (rut, subject, body) VALUES
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
-    (20864127, 'Invitar colaboradores', 'Como se añaden compañeros a las tesis???');
 INSERT INTO works (name, obj, area, abstract) VALUES
     ('Advanced Machine Learning Techniques', 'Development of a new machine learning algorithm', 'Machine Learning', 'This thesis explores advanced machine learning techniques and proposes a novel algorithm for improved predictive modeling.'),
     ('Secure Data Encryption in Cloud Computing', 'Enhancing data security in cloud environments', 'Cloud Computing', 'This research focuses on securing data in cloud computing environments by developing and implementing advanced encryption methods.'),

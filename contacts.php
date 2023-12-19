@@ -11,12 +11,44 @@
     $con = conectar();
 
     if (isset($_POST['insert'])) InsertContact($con, $_POST['rut'], $_POST['subject'], $_POST['body']);
-    elseif (isset($_POST['update'])) UpdateContact($con, $_POST['id'], $_POST['readed']);
+    elseif (isset($_POST['update'])) UpdateContact($con, $_POST['id'], $_POST['readedVal']);
     elseif (isset($_POST['delete'])) DeleteContact($con, $_POST['id']);
 
-    $showEvents = 10;
-    if (isset($_GET['search'])) $res = SelectEventsWhereTitle($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents, $_GET['search']);
-    else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents);
+    $showContacts = 10;
+    
+    if (isset($_GET['search'])) {
+        if ((isset($_GET['readed']) ? intval($_GET['readed']) : -1) != -1) {
+            switch ($_GET['selector']) {
+                case 'rut':
+                    $res = SelectContactsWhereReadedAndRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['readed'], $_GET['search']);
+                    break;
+                case 'subject':
+                    $res = SelectContactsWhereReadedAndSubject($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['readed'], $_GET['search']);
+                    break;
+                case 'abstract':
+                    $res = SelectContactsWhereReadedAndBody($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['readed'], $_GET['search']);
+                    break;
+                default:
+                    $res = SelectContactsWhereReaded($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['readed']);
+            }
+        }
+        else {
+            switch ($_GET['selector']) {
+                case 'rut':
+                    $res = SelectContactsWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['search']);
+                    break;
+                case 'subject':
+                    $res = SelectContactsWhereSubject($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['search']);
+                    break;
+                case 'abstract':
+                    $res = SelectContactsWhereBody($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts, $_GET['search']);
+                    break;
+                default:
+                    $res = SelectContacts($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts);
+            }
+        }
+    }
+    else $res = SelectContacts($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showContacts); // Si no es una busqueda
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -54,15 +86,50 @@
             </div>
             <!-- FIN DE BOTON VOLVER Y TITULO -->
 
+            
+            <div class="container my-4">
+                <form action="contacts.php" method="get">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col">
+                            <select id="readed" name = "readed" class="form-select">
+                                <?php
+                                $values = array('-1', '0', '1');
+                                $name = array('Todos', 'No leídos', 'Leídos');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['readed']) echo ' selected';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                $values = array('', 'rut', 'subject', 'body');
+                                $name = array('Buscar por:', 'RUT', 'Asunto', 'Mensaje');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"  value = "<?php echo $_GET['search']?>"/>
+                                <button type="submit" class="btn"><h4>&#128269;</h4></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <!-- CONTENEDOR DE TABLA DE GESTION -->
             <div class="container">
-                <div class="row text-end">
-                    <form action="events.php" method="get">
-                        <label for="searchinput"><h5>Buscar:</h5></label>
-                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
-                        <button type="submit" class="btn">Enviar</button>
-                    </form>
-                </div>
                 <div class="row mt-2">
                     <!-- crud de usuario -->
                     <table class="table" >
@@ -72,95 +139,24 @@
                             while($row = $res->fetch_assoc()){
                             ?>
                             <tr>
+                                <td><?php echo $row['name'] . ' ' . $row['surname'] . ' ' . $row['rut']; ?></td>
+                                <td><?php echo $row['subject']; ?></td>
+                                <td><?php echo $row['body']; ?></td>
+                                <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button></td>
                                 <td>
-                                <?php
-                                if ($row['image'] != NULL) echo '<img class = "thesisPhoto" src = "' . $row['image'] . '"/>';
-                                else echo '<img class = "thesisPhoto" src = "src/FotosDIICC/_ALX9336.JPG"/>';
-                                ?>
-                                </td>
-                                <td><?php echo $row['title']; ?></td>
-                                <td>
-                                    <h3>Fecha de Publicación</h3>
-                                    <?php echo date("d/m/Y", strtotime($row['publicationDate'])); ?>
-                                </td>
-                                <td>
-                                    <h3>Fecha de Realización</h3>
-                                    <?php echo date("d/m/Y", strtotime($row['realizationDate'])); ?>
-                                </td>
-                                <td>
-                                    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infoModal<?php echo $counter;?>">Información</button>
-                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateUserModal<?php echo $counter;?>">Editar</button>
-                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $counter;?>">Eliminar</button>
-                                    </div>
-                                </td>
-
-                                <!-- Show Info -->
-
-                                <div class="modal fade" id="infoModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div>Id: <?php echo $row['id'];?></div>
-                                                <div>Título: <?php echo $row['title'];  ?></div>
-                                                <div>Descripción: <?php echo $row['description'];  ?></div>
-                                                <div>Fecha de Publicación: <?php echo date("d/m/Y", strtotime($row['publicationDate']));  ?></div>
-                                                <div>Fecha de Realización: <?php echo date("d/m/Y", strtotime($row['realizationDate']));  ?></div>
-                                                <div>Imagen: <?php echo $row['image'];  ?></div>
-                                            </div>
+                                    <form action="contacts.php" method="post"  enctype="multipart/form-data">
+                                        <div class="container d-flex justify-content-end">
+                                            <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
+                                            <?php if ($row['readed'] == 0) { ?>
+                                                <input type = "hidden" name = "readedVal" value = "1"/>
+                                                <input type = "submit" name = "update" class="btn btn-primary btn-block" value = "Marcar como Leído"/>
+                                            <?php } else { ?>
+                                                <input type = "hidden" name = "readedVal" value = "0"/>
+                                                <input type = "submit" name = "update" class="btn btn-secondary btn-block" value = "Marcar como No Leído"/>
+                                            <?php } ?>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- Update -->
-
-                                <div class="modal fade" id="updateUserModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Usuario</h1>
-                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="events.php" method="post"  enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label for="inputTitle">Título</label>
-                                                        <input type="text" id = "inputTitle" class="form-control mb-3" name="title" value = "<?php echo $row['title']?>" required/>
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputDesc">Descripción</label>
-                                                        <input type="text" id = "inputDesc" class="form-control mb-3" name="description" value = "<?php echo $row['description']?>"/>
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputPublicationDate">Fecha de Publicación</label>
-                                                        <input type="date" id = "inputPublicationDate" class="form-control mb-3" name="publicationDate" value = "<?php echo $row['publicationDate']?>"/>
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputRealizationDate">Fecha de Realización</label>
-                                                        <input type="date" id = "inputRealizationDate" class="form-control mb-3" name="realizationDate" value = "<?php echo $row['realizationDate']?>"/>
-                                                        <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="inputImage">Imagen Referencial</label>
-                                                        <input type="file" id = "inputImage" class="form-control mb-3" name="image" accept=".jpg, .jpeg, .png"/>
-                                                    </div>
-                                                    <div class="container d-flex justify-content-end">
-                                                        <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </form>
+                                </td>
 
                                 <!-- DELETE -->
 
@@ -174,13 +170,12 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                ¿Está seguro de que desea borrar a <?php echo '' . $row['title']; ?>?
+                                                ¿Está seguro de que desea borrar "<?php echo '' . $row['subject']; ?>" de <?php echo $row['name'] . ' ' . $row['surname']?>?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                <form action = "events.php" method = "post">
+                                                <form action = "contacts.php" method = "post">
                                                     <input type = "hidden" name = "id" value = "<?php echo $row['id']; ?>"/>
-                                                    <input type = "hidden" name = "title" value = "<?php echo $row['title']; ?>"/>
                                                     <input type = "submit" name = "delete" class="btn btn-danger" value = "Eliminar"/>
                                                 </form>
                                             </div>
@@ -193,78 +188,63 @@
                             }
                             ?>
                             
-                            <!-- Create user -->
-                            
-                            <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Evento</h1>
-                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="events.php" method="post" enctype="multipart/form-data">
-                                                <div class="form-group">
-                                                    <label for="inputTitle">Title</label>
-                                                    <input type="text" id = "inputTitle" class="form-control mb-3" name="title" placeholder="Se invita a toda la comunidad..." required/>
-                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputDesc">Descripción</label>
-                                                    <input type="text" id = "inputDesc" class="form-control mb-3" name="description" placeholder="Descripción del Evento"/>
-                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputPublicationDate">Fecha de Publicación*</label>
-                                                    <input type="date" id = "inputPublicationDate" class="form-control mb-3" name="publicationDate"/>
-                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputRealizationDate">Fecha de Realización</label>
-                                                    <input type="date" id = "inputRealizationDate" class="form-control mb-3" name="realizationDate"/>
-                                                    <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inputImage">Imagen Referencial</label>
-                                                    <input type="file" id = "inputImage" class="form-control mb-3" name="image" accept=".jpg, .jpeg, .png"/>
-                                                </div>
-                                                <div class="container d-flex justify-content-end">
-                                                    <button type="submit" name = "insert" class="btn btn-primary btn-block ">Confirmar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </tbody>
-                    </table>
-                    <div class="row text-center m-4">
-                        <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#createUserModal">Añadir Evento</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- End Create User -->
-
             <?php
-            $eventsAmount = SelectEventsCount($con);
-            $eventsAmount = $eventsAmount->fetch_assoc();
-            $pagesAmount = ceil($eventsAmount['count'] / $showEvents);
+
+            if (isset($_GET['search'])) {
+                if ((isset($_GET['readed']) ? intval($_GET['readed']) : -1) != -1) {
+                    switch ($_GET['selector']) {
+                        case 'rut':
+                            $contactsAmount = SelectContactsCountWhereReadedAndRut($con, $_GET['readed'], $_GET['search']);
+                            break;
+                        case 'subject':
+                            $contactsAmount = SelectContactsCountWhereReadedAndSubject($con, $_GET['readed'], $_GET['search']);
+                            break;
+                        case 'abstract':
+                            $contactsAmount = SelectContactsCountWhereReadedAndBody($con, $_GET['readed'], $_GET['search']);
+                            break;
+                        default:
+                            $contactsAmount = SelectContactsCountWhereReaded($con, $_GET['readed']);
+                    }
+                }
+                else {
+                    switch ($_GET['selector']) {
+                        case 'rut':
+                            $contactsAmount = SelectContactsCountWhereRut($con, $_GET['search']);
+                            break;
+                        case 'subject':
+                            $contactsAmount = SelectContactsCountWhereSubject($con, $_GET['search']);
+                            break;
+                        case 'abstract':
+                            $contactsAmount = SelectContactsCountWhereBody($con, $_GET['search']);
+                            break;
+                        default:
+                            $contactsAmount = SelectContactsCount($con);
+                    }
+                }
+            }
+            else $contactsAmount = SelectContactsCount($con, $showContacts);
+            
+            if (isset($_GET['selector'])) $searchData = '&selector=' . $_GET['selector'] . '&search=' . $_GET['search'];
+            else $searchData = '';
+            
+            if (isset($_GET['readed'])) $searchData = $searchData . '&readed=' . $readed;
+            
+            $contactsAmount = $contactsAmount->fetch_assoc();
+            $pagesAmount = ceil($contactsAmount['count'] / $showContacts);
             if ($pagesAmount > 1) {
             ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <?php
                     if ((isset($_GET['page']) ? intval($_GET['page']) : 1) == 1) echo '<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>';
-                    else echo '<li class="page-item"><a class="page-link" href="/events.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . '">Previous</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/contacts.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) - 1 . $searchData . '">Previous</a></li>';
                     
                     for ($counter = 1; $counter <= $pagesAmount; $counter++) {
-                        echo '<li class="page-item"><a href="/events.php?page=' . $counter . '" class="page-link">' . $counter . '</a></li>';
+                        echo '<li class="page-item"><a href="/contacts.php?page=' . $counter . $searchData . '" class="page-link">' . $counter . '</a></li>';
                     }
                     if ($_GET['page'] == $pagesAmount) echo '<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>';
-                    else echo '<li class="page-item"><a class="page-link" href="/events.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . '">Next</a></li>';
+                    else echo '<li class="page-item"><a class="page-link" href="/contacts.php?page=' . (isset($_GET['page']) ? intval($_GET['page']) : 1) + 1 . $searchData . '">Next</a></li>';
                     ?>
                 </ul>
             </nav>

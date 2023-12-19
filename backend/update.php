@@ -95,7 +95,7 @@
         return 0;
     }
     function UpdateContact($con, $id, $readed) {
-        $query = $con->prepare("UPDATE contacts SET readed = ? WHERE id = ?");
+        $query = $con->prepare("UPDATE contact SET readed = ? WHERE id = ?");
 		if (!$query) die("Preparation failed: " . $connection->error);
 		$query->bind_param("ii", $readed, $id);
 		if (!$query) die("Binding parameters failed: " . $query->error);

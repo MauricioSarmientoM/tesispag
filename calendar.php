@@ -44,7 +44,6 @@
             <!-- Alerts -->
             <?php include './comp/alerts.php'; ?>
 
-            <!-- Zona de tesistas -->
             <div class="container-fluid zonasTitulo"><h1 class="container">Eventos</h1></div>
             
             <div class="container my-4">

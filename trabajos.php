@@ -22,7 +22,7 @@
                 break;
             default:
                 $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks);
-        };
+        }
     }
     else $res = SelectWorks($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks); // Si no es una busqueda
 ?>
