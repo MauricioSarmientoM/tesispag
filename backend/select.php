@@ -39,7 +39,7 @@
     }
     function SelectUsersWhereRutAndNoTutor ($con, $pageNumber, $itemsPerPage, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE d AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
@@ -170,7 +170,7 @@
 
     //Tutores
 
-    function SelectTutots ($con, $pageNumber, $itemsPerPage) {
+    function SelectTutors ($con, $pageNumber, $itemsPerPage) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
         $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
@@ -178,7 +178,7 @@
     }
     function SelectTutorsWhereRut($con, $pageNumber, $itemsPerPage, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }

@@ -157,8 +157,8 @@
                                     <form action = "users.php" method = "post">
                                         <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
                                         <?php
-                                        $super = SelectTutorsWhereRut($con, 1, 1, $row['rut']);
-                                        if ($super->num_rows > 0) {
+                                        $tutor = SelectTutorsWhereRut($con, 1, 1, $row['rut']);
+                                        if ($tutor->num_rows > 0) {
                                             echo '<input type = "submit" name = "deleteT" class="btn btn-warning" value = "Deshabilitar como Tutor"/>';
                                         }
                                         else {
