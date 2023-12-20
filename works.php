@@ -128,15 +128,36 @@
             </div>
             <!-- FIN DE BOTON VOLVER Y TITULO -->
 
+            <div class="container my-4">
+                <form action="works.php" method="get">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col">
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                $values = array('', 'name', 'obj', 'area', 'abstract');
+                                $name = array('Buscar por:', 'Nombre', 'Objetivo', 'Área', 'Abstract');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda"  value = "<?php echo $_GET['search']?>"/>
+                                <button type="submit" class="btn"><h4>&#128269;</h4></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
             <!-- CONTENEDOR DE TABLA DE GESTION -->
             <div class="container">
-                <div class="row text-end">
-                    <form action="works.php" method="get">
-                        <label for="searchinput"><h5>Buscar:</h5></label>
-                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
-                        <button type="submit" class="btn">Enviar</button>
-                    </form>
-                </div>
                 <div class="row mt-2">
                     <table class="table">
                         <tbody>

@@ -60,11 +60,3 @@
 		<span class="visually-hidden">Next</span>
 	</button>
 </div>
-<!--
-Investigadores de la Universidad de Atacama Descubren Nueva Especie de Mariposa
-En un emocionante avance científico, un equipo de investigadores de la Universidad de Atacama ha identificado y catalogado una nueva especie de mariposa en una expedición en la selva amazónica. Este descubrimiento destaca el compromiso de la universidad con la investigación biológica y la conservación de la biodiversidad.
-Estudiantes de la Universidad de Atacama son Ganadores del Concurso Nacional de Innovación Tecnológica
-¡Éxito estudiantil! Un grupo de estudiantes de la Universidad de Atacama ha triunfado en el Concurso Nacional de Innovación Tecnológica con su proyecto revolucionario de inteligencia artificial para asistencia médica. Este logro subraya el enfoque vanguardista de la universidad en la formación de futuros líderes en el campo de la tecnología.
-Conferencia Internacional en la Universidad de Atacama Destaca Avances en Energías Renovables
-La Universidad de Atacama fue anfitriona de una destacada conferencia internacional sobre energías renovables, donde expertos de todo el mundo compartieron sus investigaciones más recientes. Este evento reafirma el papel de la universidad como un centro líder en la promoción de soluciones sostenibles y la colaboración global para abordar los desafíos ambientales.
--->

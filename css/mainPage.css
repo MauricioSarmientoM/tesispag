@@ -21,6 +21,37 @@
     padding-right: 0 !important;
     overflow: hidden;
 }
+
+@media (min-width: 0px){
+    .GalTesisL {
+        height: auto;
+    }
+    .GalTesisS {
+        height: auto;
+    }
+    .fotoTesisL {
+        height: auto !important;
+    }
+    .fotoTesisS {
+        height: auto !important;
+    }
+}
+
+@media (min-width: 768px) and (orientation:landscape) {
+    .GalTesisL {
+        height: 27.5rem;
+    }
+    .GalTesisS {
+        height: 13rem;
+    }
+    .fotoTesisL {
+        height: 25rem !important;
+    }
+    .fotoTesisS {
+        height: 10.5rem !important;
+    }
+}
+
 .fotoTesis {
     width: 100%;
     height: auto;

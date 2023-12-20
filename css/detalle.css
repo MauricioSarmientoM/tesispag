@@ -1,0 +1,47 @@
+.zona {
+    border: solid 2px var(--udaColor);
+    border-radius: 15px;
+    background: linear-gradient(var(--udaColorTras), var(--udaColor));
+    color: white;
+    backdrop-filter: blur(16px);
+}
+
+.fondo {
+    position: fixed;
+    left: 0;
+    right: 0;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    object-fit: cover;
+    width: 100%;
+    height: 1000px;
+    -webkit-filter: brightness(0.5);
+    -moz-filter: brightness(0.5);
+    -o-filter: brightness(0.5);
+    -ms-filter: brightness(0.5);
+    filter: brightness(0.5);
+    z-index: -1;
+}
+
+.collabPhoto {
+    object-fit: cover;
+    width: 96px;
+    height: 96px;
+    border: 2px solid var(--udaColor);
+    border-radius: 50%;
+    background-color: white;
+    margin: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.prof {
+    color: white !important;
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0 !important;
+}

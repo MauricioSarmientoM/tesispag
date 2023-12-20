@@ -1,12 +1,12 @@
 <footer class="container-fluid">
-    <div class="row px-4 py-4" style="border-bottom: 1px solid gray">
+    <div class="row px-4 py-4 borde">
         <div class="col d-flex mx-auto my-auto">
             <a href="https://uda.cl" target="_blank">
                 <img width="297px" id="footerUdaLogo" src="src\materialessolciitados\logo-udacorp-txtblanco.png">
             </a>
         </div>
         <div class="col">
-            Explora más sobre nuestra queridísima Universidad de Atacama, visitando nuestro sitio web y siguiéndonos en nuestras redes sociales. Mantente actualizado con las últimas noticias, eventos y logros.
+            <p>Explora más sobre nuestra queridísima Universidad de Atacama, visitando nuestro sitio web y siguiéndonos en nuestras redes sociales. Mantente actualizado con las últimas noticias, eventos y logros.</p>
         </div>
         <div class="col text-center">
             <h2>Acerca De</h2>
@@ -40,6 +40,6 @@
         </div>
     </div>
     <div class="text-center py-4" style="color: lightgray">
-        © Grupo n, Copyleft.
+       <p>© Grupo n, Copyleft.</p>
     </div>
 </footer>

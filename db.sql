@@ -1,82 +1,14 @@
 CREATE DATABASE tesis;
-CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY,
-    name VARCHAR(128) NOT NULL,
-    surname VARCHAR(128) NOT NULL,
-    description VARCHAR(1000),
-    email VARCHAR(128),
-    phone INT,
-    password VARCHAR(256) NOT NULL,
-    imageURL VARCHAR(256),
-    direction VARCHAR(128));
---CREATE TABLE userTesist (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
---CREATE TABLE userTutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, );
-CREATE TABLE super (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT UNIQUE NOT NULL,
-    FOREIGN KEY (rut) REFERENCES users(rut));
-CREATE TABLE contact (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT NOT NULL,
-    subject VARCHAR(64) NOT NULL,
-    body VARCHAR(1000),
-    readed BOOLEAN,
-    FOREIGN KEY (rut) REFERENCES users(rut));
-CREATE TABLE works (id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(128) NOT NULL,
-    obj VARCHAR(128),
-    area VARCHAR(128),
-    abstract VARCHAR(1000),
-    image VARCHAR(256));
-CREATE TABLE workuser (id INT AUTO_INCREMENT PRIMARY KEY,
-    rut INT NOT NULL,
-    idWork INT NOT NULL,
-    FOREIGN KEY (rut) REFERENCES users(rut),
-    FOREIGN KEY (idWork) REFERENCES works(id));
-CREATE TABLE workfile (id INT AUTO_INCREMENT PRIMARY KEY,
-    idWork INT NOT NULL,
-    files VARCHAR(256),
-    FOREIGN KEY (idWork) REFERENCES works(id));
-CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(256) NOT NULL,
-    description VARCHAR(1000),
-    image VARCHAR(256),
-    publicationDate DATE NOT NULL,
-    realizationDate DATE);
-INSERT INTO users (rut, name, surname, description, email, phone, password, imageURL, direction) VALUES
-    (20751584, 'Celeste', 'Marambio', NULL, 'celestemarmar2@gmail.com', 42707297, '$2y$10$dmooAIPaTY80/rpajWPfsO/jEdFn8kMD03K6JhFhnhFPjcWgzujWG', NULL, 'Caburga 1105 Villa Arauco'),
-    (20036002, 'Javier', 'Ponce', NULL, NULL, NULL, '$2y$10$Q2/JWgpTVCcJ8LrJm2w2b.iwyqaHeRbvXpdUu.4k7aORQUEMxReNm', NULL, 'Los Carreras 3465 Villa Modelo'),
-    (20864127, 'Gutemberg', 'Ávila', NULL, 'gutemberg.avila.21@alumnos.uda.cl', NULL, '$2y$10$fdLEEzEZ6zWRo/IQYx8mZeMyeQiUwhRDtOYu0PtBVqcdx4EkfnxS6', NULL, 'Aldunate 402'),
-    (21239226, 'José', 'Herrera', NULL, 'jose.herrera.21@alumnos.uda.cl', NuLL, '$2y$10$GRh3DlflxWwBcw/U/U6yGOTEP2d8Nxf.n/gRP/VX/oznKjhE0BOQC', NULL, 'Guacolda 1062 Ampliacion Prat'),
-    (15871295, 'Andrés', 'Alfaro', NULL, 'andres.alfaro@uda.cl', NULL, '$2y$10$C9ExGRnNn7VmsLM4FsFeU.GYOGCE5HODOAl3O9ik81qLtUUpDims.', NULL, 'Rio Copiapo 1591 V Valle De Los Rios'),
-    (8368745, 'Manuel', 'Monasterio', NULL, 'manuel.monasterio@uda.cl', NULL, '$2y$10$6oZVlFk0H7eupble7f8DXuTzNwn0mlfWvRx54qXwaLUVD5ni0dkhK', NULL, 'Pj Jose O Valdivia 609 Ampl Los Sauces'),
-    (13015354, 'Héctor', 'Córnide', NULL, 'hector.cornide@uda.cl', NULL, '$2y$10$OqzqynOEHEbv3aKfdcjSmOkrhE6.RQ0BPC6i3wpC/ioGZt7UG.age', NULL, 'Salitrera Limeñita 2496 El Palomar'),
-    (1, 'root', 'user', NULL, NULL, NULL, '$2y$10$A4vsESvIBw2iFHlYdUd3M.cjzOzL5JNrhAX2OxyKBTKdwOS9ahC0S', NULL, NULL);
-INSERT INTO super (rut) VALUES
-    (20751584),
-    (15871295),
-    (13015354), 
-    (1);
-INSERT INTO contact (rut, subject, body) VALUES
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
-    (20864127, 'RECUPERAR CONTRASEÑA', 'Gutemberg Ávila parece haber olvidado su contraseña y pide que se le restaure.'),
-    (20864127, 'Invitar colaboradores', 'Como se añaden compañeros a las tesis???');
-INSERT INTO works (name, obj, area, abstract) VALUES
-    ('Advanced Machine Learning Techniques', 'Development of a new machine learning algorithm', 'Machine Learning', 'This thesis explores advanced machine learning techniques and proposes a novel algorithm for improved predictive modeling.'),
-    ('Secure Data Encryption in Cloud Computing', 'Enhancing data security in cloud environments', 'Cloud Computing', 'This research focuses on securing data in cloud computing environments by developing and implementing advanced encryption methods.'),
-    ('Blockchain Technology in Supply Chain Management', 'Implementing blockchain for transparent supply chain', 'Blockchain', 'Examining the application of blockchain technology in supply chain management to enhance transparency and traceability.'),
-    ('Human-Computer Interaction in Virtual Reality', 'Improving user experience in VR environments', 'Human-Computer Interaction', 'This thesis investigates the principles of human-computer interaction in virtual reality, aiming to enhance user experience and interaction design.'),
-    ('Cybersecurity Threats and Mitigation Strategies', 'Analyzing and mitigating cybersecurity threats', 'Cybersecurity', 'An in-depth study of emerging cybersecurity threats and the development of effective mitigation strategies for protecting information systems.');
-INSERT INTO workuser (rut, idWork) VALUES
-    (15871295, 1),
-    (20864127, 1),
-    (8368745,  2),
-    (20036002, 2),
-    (15871295, 3),
-    (21239226, 3),
-    (13015354, 4),
-    (20751584, 4),
-    (13015354, 5),
-    (21239226, 5);
-INSERT INTO events (title, description, image, publicationDate, realizationDate) VALUES
-    ('Feria científica, escolar y académica', 'Estacionamiento campus Romulo 3, Peña Maturana, Área Sur UDA', NULL, '2023-11-02', '2023-11-03'),
-    ('Encuentro Recreativo-Deportivo UDA', 'Te invitamos al II Encuentro Deportivo UDA, donde la pasión y el espíritus deportivo, se unirán en un día lleno de energía y compañerismo. Este evento reunirá a estudiantes de enseñanza media de diversos establecimientos educacionales de la Región de Atacama.', NULL, '2023-11-14', '2023-11-17'),
-    ('Forma parte del impulso empresarial: Ciclo Exclusivo de Charlas para Potenciar tus Conocimientos en Contratación, Impuestos e Inteligencia de Negocios', 'Orientadas a los estudiantes del Departamento de Administración y Gestión de la Facultad de Tecnología y la comunidad en general, con el fin de entregar conocimientos actualizados y nuevas herramientas que se están dando en el mercado.', NULL, '2023-11-24', '2023-11-28');
+CREATE TABLE users (rut INT NOT NULL UNIQUE PRIMARY KEY, name VARCHAR(128) NOT NULL, surname VARCHAR(128) NOT NULL, description VARCHAR(1000), email VARCHAR(128), phone INT, password VARCHAR(256) NOT NULL, imageURL VARCHAR(256), direction VARCHAR(128));
+CREATE TABLE usertutor (id INT UNIQUE AUTO_INCREMENT PRIMARY KEY, rut INT UNIQUE NOT NULL, grade VARCHAR(128), FOREIGN KEY (rut) REFERENCES users(rut));
+CREATE TABLE super (id INT AUTO_INCREMENT PRIMARY KEY, rut INT UNIQUE NOT NULL, FOREIGN KEY (rut) REFERENCES users(rut));
+CREATE TABLE contact (id INT AUTO_INCREMENT PRIMARY KEY, rut INT NOT NULL, subject VARCHAR(64) NOT NULL, body VARCHAR(1000), readed BOOLEAN, FOREIGN KEY (rut) REFERENCES users(rut));
+CREATE TABLE works (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(256) NOT NULL, obj VARCHAR(256), area VARCHAR(128), abstract VARCHAR(2000), image VARCHAR(256));
+CREATE TABLE workuser (id INT AUTO_INCREMENT PRIMARY KEY, rut INT NOT NULL, idWork INT NOT NULL, FOREIGN KEY (rut) REFERENCES users(rut), FOREIGN KEY (idWork) REFERENCES works(id));
+CREATE TABLE events (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(256) NOT NULL, description VARCHAR(1000), image VARCHAR(256), publicationDate DATE NOT NULL, realizationDate DATE);
+INSERT INTO users * VALUES (10198361, 'Dante', 'Carrizo', '', 'dante.carrizo@uda.cl', 0, '$2y$10$GjY1gV/DdTjF73dLNvkc/uSz0uMHTyF.0v961E5sqjN5h3qxbpwga', 'uploads/users/65824e1dc6ce4_Dante.jpg', 'Tte Merino 756 Pob Los Estandartes'), (11111111, 'John', 'Castro', '', 'john.castro@uda.cl', 0, '$2y$10$cXEaL9THRKzmNMKh118SkuE78Hxm9TdVl/hg5CQao6p45j.psIz56', 'uploads/users/65824e4012e7e_John.jpg', ''), (12065689, 'Vladimir', 'Riffo', '', 'vladimir.riffo@uda.cl', 0, '$2y$10$0H0lMfjU4byvK2KapAa.0OSVKKFgVOTP2OIu77REZAoirE0UllTx2', 'uploads/users/65824efc0418f_Riffo.jpg', 'Sta Cruz 01792'), (13015354, 'Héctor', 'Córnide', '', 'hector.cornide@uda.cl', 0, '$2y$10$OqzqynOEHEbv3aKfdcjSmOkrhE6.RQ0BPC6i3wpC/ioGZt7UG.age', 'uploads/users/65824f56c7159_Hector.jpg', 'Salitrera Limeñita 2496 El Palomar'), (15871295, 'Andrés', 'Alfaro', '', 'andres.alfaro@uda.cl', 0, '$2y$10$C9ExGRnNn7VmsLM4FsFeU.GYOGCE5HODOAl3O9ik81qLtUUpDims.', 'uploads/users/65824f9e01982_Andres.jpg', 'Rio Copiapo 1591 V Valle De Los Rios'), (16929207, 'Maiquel', 'Guerrero', None, '', None, '$2y$10$6oZVlFk0H7eupble7f8DXuTzNwn0mlfWvRx54qXwaLUVD5ni0dkhK', None, 'Caranpangue 1291 Balmaceda Norte'), (17762190, 'Rodrigo', 'Hidalgo', None, '', None, '$2y$10$toyOvkT7K7yYzqlLD4VzxunnrDp7bMdjXLwf0y/kGqAQPgAE16I5W', None, 'Covadonga 0311 Poblacion Ampliacion'), (18968842, 'Ignacio', 'Pizarro', None, '', None, '$2y$10$ma8Cc6URI1I5mYeM7AWYKOrMOQz7MJC49XKwKFAJR4JTNyr5SZVCG', None, 'Flora Normilla 1451 Padro Leon Gallo'), (19356566, 'Rodolfo', 'Barraza', None, '', None, '$2y$10$kinfl.FPoAo7IdEHF/2W4e/IYULMO7PzMy.tfs54wYJpl7D/4FNlq', None, 'San Pedro 926 Villa Charles Bourg'), (19451494, 'Guisselle', 'Muñoz', None, '', None, '$2y$10$jUl36Esn6bUoNyFqW1bAdOK9MgW0rqXuWU36ZieUcxeCGYkgA0Tje', None, 'Sotomayor 1684'), (19460777, 'Gianina', 'Madrigal', None, '', None, '$2y$10$7dkUIBemZBzNn274G02zOOfjLi71niGmQCakjjzl4SsvzISGUOI2a', None, 'Portales 830'), (20751584, 'Celeste', 'Marambio', None, 'celestemarmar2@gmail.com', None, '$2y$10$dmooAIPaTY80/rpajWPfsO/jEdFn8kMD03K6JhFhnhFPjcWgzujWG', None, 'Caburga 1105 Villa Arauco');
+INSERT INTO usertutor * VALUES (2, 10198361, 'Doctor'), (3, 11111111, 'Doctor'), (4, 12065689, 'Doctor'), (5, 13015354, 'Doctor'), (6, 15871295, 'Magister');
+INSERT INTO super * VALUES (3, 13015354), (2, 15871295), (1, 20751584);
+INSERT INTO works * VALUES (1, 'Análisis del uso de los Sistemas Eye Tracking Como Apoyo en la Evaluación de Usabilidad', '', '', '', 'uploads/thesis/65827d55da054_ojo-1434873.jpg'), (2, 'Análisis y Especificación De Requisitos del Sistema Scot Para la Empresa Entel S.A', '', '', '', 'uploads/thesis/65827e3839935_torre-entel-2.jpg'), (3, 'Estudio Empirico Sobre el Efecto de un Software Para Facilitar Ajustes de Teléfonos Inteligentes en el Comportamiento', '', '', '', 'uploads/thesis/65827dd957ce6_the-network-3-1163969.jpg'), (4, 'Evaluación de Resultados de Aprendizaje en Ingeniería de Software, Utilizando la Analítica Multimodal del Aprendizaje y la Metodología Lego Serious Play', '', '', '', 'uploads/thesis/65827d3f6fa14_lego-1492495.jpg'), (5, 'Técnicas de Evaluación de Usabilidad Para Entornos Virtuales: Un Estudio Exploratorio', '', '', '', 'uploads/thesis/65827f4acfecc_OIG.jpeg'), (6, 'Inspección Activa de Objetos para la Detección y Cuantificación del Volumen de un Eventual Daño, usando Reconstrucción 3D', '', '', '', 'uploads/thesis/65827d9448b6d_maxresdefault.jpg');
+INSERT INTO workuser * VALUES (1, 18968842, 1), (2, 11111111, 1), (3, 16929207, 2), (4, 11111111, 2), (5, 19356566, 3), (6, 10198361, 3), (7, 19451494, 4), (8, 13015354, 4), (9, 19460777, 5), (10, 11111111, 5), (11, 17762190, 6), (12, 12065689, 6);
+INSERT INTO events * VALUES (1, 'Feria científica, escolar y académica', 'Estacionamiento campus Romulo 3, Peña Maturana, Área Sur UDA', None, datetime.date(2023, 11, 2), datetime.date(2023, 11, 3)), (2, 'Encuentro Recreativo-Deportivo UDA', 'Te invitamos al II Encuentro Deportivo UDA, donde la pasión y el espíritus deportivo, se unirán en un día lleno de energía y compañerismo. Este evento reunirá a estudiantes de enseñanza media de diversos establecimientos educacionales de la Región de Atacama.', None, datetime.date(2023, 11, 14), datetime.date(2023, 11, 17)), (3, 'Forma parte del impulso empresarial: Ciclo Exclusivo de Charlas para Potenciar tus Conocimientos en Contratación, Impuestos e Inteligencia de Negocios', 'Orientadas a los estudiantes del Departamento de Administración y Gestión de la Facultad de Tecnología y la comunidad en general, con el fin de entregar conocimientos actualizados y nuevas herramientas que se están dando en el mercado.', None, datetime.date(2023, 11, 24), datetime.date(2023, 11, 28));

@@ -11,10 +11,15 @@
     $con = conectar();
 
     if (isset($_POST['insert'])) InsertUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction']);
-    elseif (isset($_POST['update'])) UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+    elseif (isset($_POST['update'])) {
+        UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
+        if (isset($_POST['grade'])) UpdateTutor($con, $_POST['rut'], $_POST['grade']);
+    }
     elseif (isset($_POST['delete'])) DeleteUser($con, $_POST['rut']);
     elseif (isset($_POST['insertS'])) InsertSuper($con, $_POST['rut']);
     elseif (isset($_POST['deleteS'])) DeleteSuper($con, $_POST['rut']);
+    elseif (isset($_POST['insertT'])) InsertTutor($con, $_POST['rut']);
+    elseif (isset($_POST['deleteT'])) DeleteTutor($con, $_POST['rut']);
 
     $showUsers = 10;
     if (isset($_GET['search'])) {
@@ -148,29 +153,87 @@
                                         ?>
                                     </form>
                                 </td>
+                                <td>
+                                    <form action = "users.php" method = "post">
+                                        <input type = "hidden" name = "rut" value = "<?php echo $row['rut']; ?>"/>
+                                        <?php
+                                        $tutor = SelectTutorsWhereRut($con, 1, 1, $row['rut']);
+                                        if ($tutor->num_rows > 0) {
+                                            echo '<input type = "submit" name = "deleteT" class="btn btn-warning" value = "Deshabilitar como Tutor"/>';
+                                        }
+                                        else {
+                                            echo '<input type = "submit" name = "insertT" class="btn btn-success" value = "Habilitar como Tutor"/>';
+                                        }
+                                        ?>
+                                    </form>
+                                </td>
 
                                 <!-- Show Info -->
 
                                 <div class="modal fade" id="InfoUserModal<?php echo $counter;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Informacion</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <div>Rut: <?php echo $row['rut'];?></div>
-                                                <div>Nombre: <?php echo $row['name'];  ?></div>
-                                                <div>Apellidos: <?php echo $row['surname'];  ?></div>
-                                                <div>Descripción: <?php echo $row['description'];  ?></div>
-                                                <div>Email: <?php echo $row['email'];  ?></div>
-                                                <div>Telefono: <?php echo $row['phone'];  ?></div>
-                                                <div>Contraseña: <?php echo $row['password'];  ?></div>
-                                                <div>Imagen: <?php echo $row['imageURL'];  ?></div>
-                                                <div>Direccion: <?php echo $row['direction'];  ?></div>
+                                                <div class = "container perfil">
+                                                    <div class ="row">
+                                                        <div class="col text-center">
+                                                            <div class ="row-md-1 my-1">
+                                                                <?php
+                                                                if ($row['imageURL'] != NULL) {
+                                                                    echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
+                                                                }
+                                                                else{
+                                                                    echo '<img class = "profileIMG" src = "src/icons/iconPlaceholder.png"/>';
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                            <div class ="row-md-1 my-4">
+                                                                <h2><?php echo $row['name']; ?>  <?php echo $row['surname']; ?></h2>
+                                                            </div>
+                                                            <div class ="row-md-1 my-1">
+                                                                <?php
+                                                                if (isset($_SESSION['rut']))
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                                    <div class="row my-1">
+                                                                        <h4> Rut </h4>
+                                                                        <p><?php echo $row['rut']; ?></p>
+                                                                    </div>
+                                                                    <div class="row my-1">
+                                                                        <h4> Nombres: </h4>
+                                                                        <p><?php echo $row['name']; ?></p>
+                                                                    </div>
+                                                        <div class="row my-1">
+                                                            <h4> Apellidos: </h4>
+                                                            <p><?php echo $row['surname']; ?></p>
+                                                        </div>
+                                                        <div class ="row my-1">
+                                                            <h4> Email: </h4>
+                                                            <p><?php echo $row['email']; ?></p>
+                                                        </div>
+                                                        <div class ="row my-1">
+                                                            <h4> Número de teléfono: </h4>
+                                                            <p>+56 9 <?php echo $row['phone']; ?></p>
+                                                        </div>
+                                                        <div class ="row my-1">
+                                                            <h4> Dirección: </h4>
+                                                            <p><?php echo $row['direction']; ?></p>
+                                                        </div>
+                                                        <div class="row my-1">
+                                                            <h4> Descripción: </h4>
+                                                            <p><?php echo $row['description']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
 
                                 <!-- Update -->
@@ -224,13 +287,22 @@
                                                     <div class="form-group">
                                                         <label for="inputImage">Imagen</label>
                                                         <input type="file" id = "inputImage" class="form-control mb-3" name="imageURL" accept=".jpg, .jpeg, .png"/>
-                                                        <input type="text" name="img" value = "<?php echo $row['imageURL']?>"/>
+                                                        <input type="hidden" name="img" value = "<?php echo $row['imageURL']?>"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDirection">Dirección</label>
                                                         <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" value = "<?php echo $row['direction']?>"/>
                                                         <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                                     </div>
+                                                    <?php
+                                                    if ($tutor->num_rows > 0) {
+                                                        $data = $tutor->fetch_assoc();
+                                                        echo '<div class="form-group">';
+                                                        echo '<label for="inputGrade">Grado</label>';
+                                                        echo '<input type = "text" id = "inputGrade" name = "grade" class="form-control mb-3" value = "' . $data['grade'] . '"/>';
+                                                        echo '<div class="invalid-feedback">Por favor ingrese un dato válido.</div></div>';
+                                                    }
+                                                    ?>
                                                     <div class="container d-flex justify-content-end">
                                                         <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
                                                     </div>

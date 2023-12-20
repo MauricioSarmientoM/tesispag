@@ -39,6 +39,18 @@
         if ($query->execute()) return 1;
         return 0;
     }
+    function InsertTutor($con, $rut) {
+        $query = $con->prepare("INSERT INTO usertutor (rut) VALUES (?)");
+        if (!$query) {
+            die("Preparation failed: " . $con->error);
+        }
+        $query->bind_param("i", $rut);
+        if ($query->error) {
+            die("Binding parameters failed: " . $query->error);
+        }
+        if ($query->execute()) return 1;
+        return 0;
+    }
     function InsertCollab($con, $collabRut, $id) {
         $query = $con->prepare("INSERT INTO workuser (rut, idWork) VALUES (?, ?)");
         if (!$query) die("Preparation failed: " . $con->error);
@@ -80,9 +92,10 @@
         return 0;
     }
     function InsertContact($con, $rut, $subject, $body) {
-        $query = $connection->prepare("INSERT INTO contact (rut, subject, body, readed) VALUES (?, ?, ?, ?)");
+        $query = $con->prepare("INSERT INTO contact (rut, subject, body, readed) VALUES (?, ?, ?, ?)");
 		if (!$query) die("Preparation failed: " . $connection->error);
-		$query->bind_param("issi", $rut, $subject, $body, 0);
+        $readed = 0;
+		$query->bind_param("issi", $rut, $subject, $body, $readed);
 		if (!$query) die("Binding parameters failed: " . $query->error);
 		if ($query->execute()) return 1;
         return 0;

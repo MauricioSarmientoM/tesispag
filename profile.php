@@ -118,6 +118,9 @@
             <?php
                 $res = SelectUsersWhereRut($con, 1, 1, $rut);
                 $row = $res->fetch_assoc();
+
+                $tutor = SelectTutorsWhereRut($con, 1, 1, $row['rut']);
+                $data = $tutor->fetch_assoc();
             ?>
             <div class = "container perfil">
                 <div class ="row">
@@ -134,6 +137,9 @@
                         </div>
                         <div class ="row-md-1 my-4">
                             <h2><?php echo $row['name']; ?>  <?php echo $row['surname']; ?></h2>
+                            <?php if ($data['grade'] != '') { ?>
+                            <h5><?php echo $data['grade']; ?></h2>
+                            <?php } ?>
                         </div>
                         <div class ="row-md-1 my-4">
                         <?php
@@ -144,23 +150,29 @@
                         ?>
                         </div>
                     </div>
+                    <?php if ($row['description'] != '') { ?>
                     <div class="col py-4">
                         <h4> Descripción </h4>
                         <p><?php echo $row['description']; ?></p>
                     </div>
+                    <?php } ?>
                     <div class="col">
+                        <?php if ($row['email'] != '') { ?>
                         <div class ="row my-4">
                             <h4> Email: </h4>
                             <p><?php echo $row['email']; ?></p>
                         </div>
+                        <?php } if($row['phone'] != 0) { ?>
                         <div class ="row my-4">
                             <h4> Número de teléfono: </h4>
                             <p>+56 9 <?php echo $row['phone']; ?></p>
                         </div>
+                        <?php } if ($row['direction'] != '') { ?>
                         <div class ="row my-4">
                             <h4> Dirección: </h4>
                             <p><?php echo $row['direction']; ?></p>
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -227,7 +239,7 @@
             <?php
             $showWorks = 5;
             $res = SelectWorksWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $rut);
-            if ($res->num_rows > 0 || $_SESSION['rut'] == $rut) {
+            if ($res->num_rows > 0 /* || $_SESSION['rut'] == $rut */) {
             ?>
             <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
             <div class = "thesisMenu py-4">
@@ -247,10 +259,10 @@
                                 }
                             ?>
                             </div>
-                            <div class="col p-3">
+                            <a href = "detalle.php?id=<?php echo $row['id']; ?>" class="col p-3">
                                 <h4><?php echo $row['name']; ?></h4>
                                 <p><?php echo $row['abstract']; ?></p>
-                            </div>
+                            </a>
                             <div class="col-md-2">
                                 <h4>Colaboradores</h4>
                                 <?php

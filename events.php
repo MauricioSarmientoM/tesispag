@@ -34,6 +34,7 @@
         }
     }
     else $res = SelectEvents($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showEvents); // Si no es una busqueda
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -63,22 +64,42 @@
                         </button>
                     </div>
                     <div class="col">
-                        <h1 class="text-center">Gestor de Eventos</h1>
+                        <h1 class="text-center">Gestor de Eventos Calendarizados</h1>
                     </div>
                     <div class="col-md-3"></div>
                 </div>
             </div>
-            <!-- FIN DE BOTON VOLVER Y TITULO -->
+            
+            <div class="container my-4">
+                <form action="events.php" method="get">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col">
+                            <select id="selector" name = "selector" class="form-select">
+                                <?php
+                                $values = array('', 'title', 'description', 'publicationDate', 'realizationDate');
+                                $name = array('Buscar por:', 'Titulo', 'Descripción', 'Fecha de Publicación', 'Fecha de Realización');
+                                for ($counter = 0; $counter < count($values); $counter++) {
+                                    echo '<option value = "' . $values[$counter] . '"';
+                                    if ($values[$counter] == $_GET['selector']) echo ' selected';
+                                    if ($counter == 0) echo ' disabled hidden';
+                                    echo '>' . $name[$counter] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group" role="group">
+                                <input class="text-center" id = "buscar" type = "search" name = "search" placeholder ="Inserte su búsqueda" value = "<?php echo $_GET['search']?>"/>
+                                <button type="submit" class="btn"><h4>&#128269;</h4></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <!-- CONTENEDOR DE TABLA DE GESTION -->
             <div class="container">
-                <div class="row text-end">
-                    <form action="events.php" method="get">
-                        <label for="searchinput"><h5>Buscar:</h5></label>
-                        <input id = "searchinput" type = "search" name = "search" placeholder ="Inserte busqueda">
-                        <button type="submit" class="btn">Enviar</button>
-                    </form>
-                </div>
                 <div class="row mt-2">
                     <!-- crud de usuario -->
                     <table class="table" >
@@ -96,12 +117,12 @@
                                 </td>
                                 <td><?php echo $row['title']; ?></td>
                                 <td>
-                                    <h3>Fecha de Publicación</h3>
-                                    <?php echo date("d/m/Y", strtotime($row['publicationDate'])); ?>
+                                    <p>Fecha de Publicación</p>
+                                    <h4><?php echo date("d/m/Y", strtotime($row['publicationDate'])); ?></h4>
                                 </td>
                                 <td>
-                                    <h3>Fecha de Realización</h3>
-                                    <?php echo date("d/m/Y", strtotime($row['realizationDate'])); ?>
+                                    <p>Fecha de Realización</p>
+                                    <h4><?php echo date("d/m/Y", strtotime($row['realizationDate'])); ?></h4>
                                 </td>
                                 <td>
                                     <div class="btn-group-vertical" role="group" aria-label="Vertical button group">

@@ -116,6 +116,10 @@ footer {
     color: white;
 }
 
+.borde {
+    border-bottom: 1px solid gray;
+}
+
 .carousel-caption, h1 {
     height: 80%;
 }
@@ -125,6 +129,19 @@ footer {
         background-color: #364c59;
         color: white;
     }
+
+    .nav-link {
+        color: white;
+    }
+
+    .nav-link:hover {
+        color: #dbca11;
+    }
+
+    .barraModal {
+        border-bottom: 1px solid white;
+    }
+
     /***** BOTON QUE CIERRA UN MODAL *****/
         .close {
             background-color: #364c59;
