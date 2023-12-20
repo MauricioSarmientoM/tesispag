@@ -41,7 +41,7 @@ if (!file_exists("uploads/events/")) {
             <div class="container my-4">
                 <div class="row">
                     <?php $row = $works->fetch_assoc();?>
-                    <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="col-md-7 fotosCol">
+                    <a href = "thesis.php?id=<?php echo $row['id'] ?>" class="col-md-7 mb-auto fotosCol">
                         <?php
                         if ($row['image'] === '' or $row['image'] == NULL) {
                         ?>
@@ -53,8 +53,6 @@ if (!file_exists("uploads/events/")) {
                         <img class = "fotoCal" src="<?php echo $row['image'] ?>" alt="Evento_<?php echo $row['name'] ?>">
                         <?php } ?>
                         <h3 class = "px-2 py-1 shorterLine"><?php echo $row['name'] ?></h3>
-                        <h5 class = "px-2 py-1 shorterLine"><?php echo $row['area'] ?></h5>
-                        <p class = "px-4"><?php echo $row['abstract']?></p>
                     </a>
                     <div class="col-md-4 ms-auto">
                         <?php $row = $works->fetch_assoc();?>
@@ -85,12 +83,12 @@ if (!file_exists("uploads/events/")) {
                             <?php } ?>
                             <h3 class = "px-2 py-1 shorterLine"><?php echo '' . $row['name'] . ' - ' . $row['area'] ?></h3>
                         </a>
-                        <div class="row text-center">
-                            <button class="boton">
-                                <a href="trabajos.php"><h1 class="mb-1">Más</h1></a>
-                            </button>
-                        </div>
                     </div>
+                </div>
+                <div class="row text-center">
+                    <button class="boton">
+                        <a href="trabajos.php"><h1 class="mb-1">Más</h1></a>
+                    </button>
                 </div>
             </div>
             <!-- end of Zona de tesis -->
