@@ -99,6 +99,7 @@
                             </div>
                             <div class="row">
                                 <h4><?php echo $row['rut']; ?></h4>
+                                <h4><?php echo $row['email']; ?></h4>
                             </div>
                         </div>
                     </div>

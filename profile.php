@@ -1,9 +1,9 @@
 <?php
-/*     session_start();
+    session_start();
     $rut = $_GET['rut'];
     if (!isset($rut)){
         header("Location: ./index.php");
-    } */
+    }
     include("./backend/connection.php");
     include("./backend/select.php");
     include("./backend/insert.php");
@@ -116,7 +116,6 @@
         ?>
         <main>
             <?php
-            $rut="20751584";
                 $res = SelectUsersWhereRut($con, 1, 1, $rut);
                 $row = $res->fetch_assoc();
             ?>

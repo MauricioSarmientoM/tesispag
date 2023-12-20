@@ -1,12 +1,14 @@
 <?php
     session_start();
-
+    if(!isset($_GET['id'])) {
+        header("Location: ../index.php");
+    }
     include("./backend/connection.php");
     include("./backend/select.php");
     $con = conectar();
 
-    $showUsers = 20;
-    $res = SelectTutors($con, 1, $showUsers);
+    $res = SelectWorksWhereId($con, 1, 1, $_GET['id']);
+    $row = $res->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -24,14 +26,52 @@
         <?php include './comp/navbar.php'; ?>
         <!-- Alerts -->
         <?php include './comp/alerts.php'; ?>
-        <main class="fondo">
+        <main>
+            <?php if ($row['image'] == '') { ?>
+                <div style = 'background-image: url("../src/FotosDIICC/_ALX9325.JPG")' class = "fondo"></div>
+            <?php } else {?>
+                <div style = 'background-image: url("<?php echo $row['image']; ?>")' class = "fondo"></div>
+            <?php } ?>
             <div class="container py-4 text-center">
                 <div class="row my-4 py-4 zona">
-                    <h1>Título</h1>
-                    <h5>Área</h5>
-                    <h3>Objetivo</h3>
-                    <p>Abstract</p>
+                    <h1><?php echo $row['name']; ?></h1>
+                    <?php if ($row['area'] == '') { ?>
+                        <h5>Área: N/D</h5>
+                    <?php } else {?>
+                        <h5>Área: <?php echo $row['area']; ?></h5>
+                    <?php } if ($row['obj'] == '') { ?>
+                        <h3>Objetivo: N/D</h3>
+                    <?php } else {?>
+                        <h3>Objetivo: <?php echo $row['obj']; ?></h3>
+                    <?php } if ($row['abstract'] == '') { ?>
+                        <p>Abstact: N/D</p>
+                    <?php } else {?>
+                        <p>Abstract: <?php echo $row['abstract']; ?></p>
+                    <?php } ?>
+                    </div>
+                <div class="row my-4 py-4 zona">
                     <h4>Colaboradores</h4>
+                    <div class="row my-4">
+                    <?php
+                    $collab = SelectUsersWhereIdWork($con, 1, 10, $_GET['id']);
+                    while ($data = $collab->fetch_assoc()) {
+                        ?>
+                        <a href = "profile.php?rut=<?php echo $data['rut']; ?>" class="col my-2 prof">
+                            <?php
+                            if ($data['imageURL'] != NULL) {
+                                echo '<img class = "collabPhoto" src = "' . $data['imageURL'] . '"/>';
+                            }
+                            else{
+                                echo '<img class = "collabPhoto" src = "src/icons/iconPlaceholder.png"/>';
+                            }
+                            ?>
+                            <h2><?php echo $data['name'] . ' ' . $data['surname']; ?></h2>
+                            <h4><?php echo $data['email']; ?></h4>
+                        </a>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
         </main>
