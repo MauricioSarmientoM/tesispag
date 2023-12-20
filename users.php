@@ -243,7 +243,7 @@
                                                     <div class="form-group">
                                                         <label for="inputImage">Imagen</label>
                                                         <input type="file" id = "inputImage" class="form-control mb-3" name="imageURL" accept=".jpg, .jpeg, .png"/>
-                                                        <input type="text" name="img" value = "<?php echo $row['imageURL']?>"/>
+                                                        <input type="hidden" name="img" value = "<?php echo $row['imageURL']?>"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputDirection">Dirección</label>

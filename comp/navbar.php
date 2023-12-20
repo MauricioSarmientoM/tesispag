@@ -106,14 +106,14 @@
                         </form>
                     </div>
                     <div class="tab-pane fade" id="forgotPass" role="tabpanel" aria-labelledby="recuperarContra" tabindex="0">
-                        <form action="" method="POST"> <!--Diego: Celeste, cambia el action al correspondiente -->
+                        <form action="backend/recover.php" method="POST">
                             <div class="form-group pb-2 mb-3">
                                 <label for="inputRutRecuperar">Rut*</label>
                                 <input type="text" class="form-control" name="rut" id="inputRutRecuperar" placeholder="Ingrese su Rut" required>
                             </div>
                             <div class="text-end">
                                 <hr class="my-1">
-                                <button type="submit" class="btn login-btn mt-3">Enviar Rut a Administrador</button>
+                                <button type="submit" class="btn login-btn mt-3">Solicitar recuperación a Administrador</button>
                             </div>
                         </form>
                     </div>

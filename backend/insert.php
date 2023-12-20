@@ -94,7 +94,8 @@
     function InsertContact($con, $rut, $subject, $body) {
         $query = $con->prepare("INSERT INTO contact (rut, subject, body, readed) VALUES (?, ?, ?, ?)");
 		if (!$query) die("Preparation failed: " . $connection->error);
-		$query->bind_param("issi", $rut, $subject, $body, 0);
+        $readed = 0;
+		$query->bind_param("issi", $rut, $subject, $body, $readed);
 		if (!$query) die("Binding parameters failed: " . $query->error);
 		if ($query->execute()) return 1;
         return 0;

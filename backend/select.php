@@ -16,12 +16,12 @@
     }
     function SelectUsersNoTutor ($con, $pageNumber, $itemsPerPage) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE usertutor.rut != user.rut";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCountNoTutor ($con) {
-        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE usertutor.rut != user.rut";
+        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
@@ -39,12 +39,12 @@
     }
     function SelectUsersWhereRutAndNoTutor ($con, $pageNumber, $itemsPerPage, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE d AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE d AND usertutor.rut IS NULL LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCountWhereRutAndNoTutor ($con, $rut) {
-        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' AND usertutor.rut != user.rut";
+        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' AND usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
@@ -61,12 +61,12 @@
     }
     function SelectUsersWhereNameAndNoTutor ($con, $pageNumber, $itemsPerPage, $name) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.name LIKE '%$name%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.name LIKE '%$name%' AND usertutor.rut IS NULL LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCountWhereNameAndNoTutor ($con, $rut) {
-        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.name LIKE '%$name%' AND usertutor.rut != user.rut";
+        $sql = "SELECT COUNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.name LIKE '%$name%' AND usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
@@ -83,12 +83,12 @@
     }
     function SelectUsersWhereSurnameAndNoTutor ($con, $pageNumber, $itemsPerPage, $surname) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.surname LIKE '%$surname%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.surname LIKE '%$surname%' AND usertutor.rut IS NULL LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCountWhereSurnameAndNoTutor ($con, $surname) {
-        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.surname LIKE '%$surname%' AND usertutor.rut != user.rut";
+        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.surname LIKE '%$surname%' AND usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
@@ -105,12 +105,12 @@
     }
     function SelectUsersWhereEmailAndNoTutor ($con, $pageNumber, $itemsPerPage, $email) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.email LIKE '%$email%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.email LIKE '%$email%' AND usertutor.rut IS NULL LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCountWhereEmailAndNoTutor ($con, $email) {
-        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.email LIKE '%$email%' AND usertutor.rut != user.rut";
+        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.email LIKE '%$email%' AND usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
@@ -127,12 +127,12 @@
     }
     function SelectUsersWhereDirectionAndNoTutor ($con, $pageNumber, $itemsPerPage, $direction) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.direction LIKE '%$direction%' AND usertutor.rut != user.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.* FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.direction LIKE '%$direction%' AND usertutor.rut IS NULL LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectUsersCountWhereDirectionAndNoTutor ($con, $direction) {
-        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.direction LIKE '%$direction%' AND usertutor.rut != user.rut";
+        $sql = "SELECT COuNT(users.rut) as count FROM users LEFT JOIN usertutor ON users.rut = usertutor.rut WHERE users.direction LIKE '%$direction%' AND usertutor.rut IS NULL";
         $result = $con->query($sql);
         return $result;
     }
