@@ -1,8 +1,8 @@
 <?php
-/*     session_start();
+    session_start();
     if(!isset($_SESSION['super'])) {
         header("Location: ../index.php");
-    } */
+    }
     include("./backend/connection.php");
     include("./backend/select.php");
     include("./backend/insert.php");
@@ -178,72 +178,62 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <?php
-            ?>
-            <div class = "container perfil">
-                <div class ="row">
-                    <div class="col text-center">
-                        <div class ="row-md-1 my-1">
-                        <?php
-                            if ($row['imageURL'] != NULL) {
-                                echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
-                            }
-                            else{
-                                echo '<img class = "profileIMG" src = "src/icons/iconPlaceholder.png"/>';
-                            }
-                        ?>
-                        </div>
-                        <div class ="row-md-1 my-4">
-                            <h2><?php echo $row['name']; ?>  <?php echo $row['surname']; ?></h2>
-                        </div>
-                        <div class ="row-md-1 my-1">
-                        <?php
-                            if (isset($_SESSION['rut']))
-                        ?>
-                        </div>
-                    </div>
-                    <div class="row my-1">
-                        <h4> Rut </h4>
-                        <p><?php echo $row['rut']; ?></p>
-                    </div>
-                    <div class="row my-1">
-                        <h4> Nombres: </h4>
-                        <p><?php echo $row['name']; ?></p>
-                    </div>
-                    <div class="row my-1">
-                        <h4> Apellidos: </h4>
-                        <p><?php echo $row['surname']; ?></p>
-                    </div>
-                        <div class ="row my-1">
-                            <h4> Email: </h4>
-                            <p><?php echo $row['email']; ?></p>
-                        </div>
-                        <div class ="row my-1">
-                            <h4> Número de teléfono: </h4>
-                            <p>+56 9 <?php echo $row['phone']; ?></p>
-                        </div>
-                        <div class="row my-1">
-                        <h4> Contraseña: </h4>
-                        <p><?php echo $row['password']; ?></p>
-                    </div>
-                        <div class="row my-1">
-                        <h4> Imagen URL: </h4>
-                        <p><?php echo $row['imageURL']; ?></p>
-                    </div>
-                        <div class ="row my-1">
-                            <h4> Dirección: </h4>
-                            <p><?php echo $row['direction']; ?></p>
-                        </div>
-                        <div class="row my-1">
-                        <h4> Descripción: </h4>
-                        <p><?php echo $row['description']; ?></p>
-                    </div>
-                    </div>
-                </div>
-            </div>
+                                                <div class = "container perfil">
+                                                    <div class ="row">
+                                                        <div class="col text-center">
+                                                            <div class ="row-md-1 my-1">
+                                                                <?php
+                                                                if ($row['imageURL'] != NULL) {
+                                                                    echo '<img class = "profileIMG" src = "' . $row['imageURL'] . '"/>';
+                                                                }
+                                                                else{
+                                                                    echo '<img class = "profileIMG" src = "src/icons/iconPlaceholder.png"/>';
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                            <div class ="row-md-1 my-4">
+                                                                <h2><?php echo $row['name']; ?>  <?php echo $row['surname']; ?></h2>
+                                                            </div>
+                                                            <div class ="row-md-1 my-1">
+                                                                <?php
+                                                                if (isset($_SESSION['rut']))
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                                    <div class="row my-1">
+                                                                        <h4> Rut </h4>
+                                                                        <p><?php echo $row['rut']; ?></p>
+                                                                    </div>
+                                                                    <div class="row my-1">
+                                                                        <h4> Nombres: </h4>
+                                                                        <p><?php echo $row['name']; ?></p>
+                                                                    </div>
+                                                        <div class="row my-1">
+                                                            <h4> Apellidos: </h4>
+                                                            <p><?php echo $row['surname']; ?></p>
+                                                        </div>
+                                                        <div class ="row my-1">
+                                                            <h4> Email: </h4>
+                                                            <p><?php echo $row['email']; ?></p>
+                                                        </div>
+                                                        <div class ="row my-1">
+                                                            <h4> Número de teléfono: </h4>
+                                                            <p>+56 9 <?php echo $row['phone']; ?></p>
+                                                        </div>
+                                                        <div class ="row my-1">
+                                                            <h4> Dirección: </h4>
+                                                            <p><?php echo $row['direction']; ?></p>
+                                                        </div>
+                                                        <div class="row my-1">
+                                                            <h4> Descripción: </h4>
+                                                            <p><?php echo $row['description']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
 
                                 <!-- Update -->

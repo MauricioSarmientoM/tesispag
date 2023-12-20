@@ -3,6 +3,7 @@
     border-radius: 15px;
     background: linear-gradient(var(--udaColorTras), var(--udaColor));
     color: white;
+    backdrop-filter: blur(16px);
 }
 
 .fondo {
