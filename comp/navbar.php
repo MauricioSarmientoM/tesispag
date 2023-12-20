@@ -135,7 +135,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="./backend/insertContact.php" method="post">
+                <form action="./index.php" method="post">
                     <div class="form-group mt-2">
                         <input type="hidden" id="inputrut" class="form-control mb-3" value="<?php echo $_SESSION['rut'] ?>" name="rut"/>
                         <input type="text" class="form-control" id="inputsubject" name="subject" placeholder="Asunto" />

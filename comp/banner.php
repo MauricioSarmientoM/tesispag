@@ -1,9 +1,6 @@
 <div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel">
 	<div class="carousel-indicators">
         <?php
-            include './backend/connection.php';
-            include './backend/select.php';
-            $con = conectar();
             $amountNews = 3;
             $news = SelectEvents($con, 1, $amountNews); //Only select the first page of news
             for ($counter = 0; $counter < $amountNews; $counter++) {

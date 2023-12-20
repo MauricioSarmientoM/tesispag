@@ -1,4 +1,8 @@
 <?php
+include './backend/connection.php';
+include './backend/select.php';
+include './backend/insert.php';
+$con = conectar();
 session_start();
 if (!file_exists("uploads/")) {
     mkdir("uploads/", 0777, true); // The third parameter (true) creates nested directories if they don't exist
@@ -11,6 +15,9 @@ if (!file_exists("uploads/users/")) {
 }
 if (!file_exists("uploads/events/")) {
     mkdir("uploads/events/", 0777, true);
+}
+if (isset($_POST['subject'])) {
+    InsertContact($con, $_POST['rut'], $_POST['subject'], $_POST['body']);
 }
 ?>
 <!DOCTYPE html>
