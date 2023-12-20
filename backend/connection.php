@@ -2,7 +2,7 @@
     function conectar(){
         $server = "127.0.0.1";
         $user = "root";
-        $pass = "";
+        $pass = "sonsofeter";
         $db = "tesis";
         $con = new mysqli($server, $user, $pass, $db);
         if ($con->connect_error) {

@@ -1,9 +1,9 @@
 <?php
-    session_start();
+/*     session_start();
     $rut = $_GET['rut'];
     if (!isset($rut)){
         header("Location: ./index.php");
-    }
+    } */
     include("./backend/connection.php");
     include("./backend/select.php");
     include("./backend/insert.php");
@@ -116,6 +116,7 @@
         ?>
         <main>
             <?php
+            $rut="20751584";
                 $res = SelectUsersWhereRut($con, 1, 1, $rut);
                 $row = $res->fetch_assoc();
             ?>
@@ -227,7 +228,7 @@
             <?php
             $showWorks = 5;
             $res = SelectWorksWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $rut);
-            if ($res->num_rows > 0 || $_SESSION['rut'] == $rut) {
+            if ($res->num_rows > 0 /* || $_SESSION['rut'] == $rut */) {
             ?>
             <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
             <div class = "thesisMenu py-4">

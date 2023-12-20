@@ -62,3 +62,11 @@ thead {
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
+.profileIMG {
+    border: 2px solid var(--udaColor);
+    border-radius: 50%;
+    height: 128px;
+    width: 128px;
+    background-color: white;
+}
