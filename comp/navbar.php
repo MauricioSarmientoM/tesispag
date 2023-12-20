@@ -37,7 +37,7 @@
                  <?php if (isset($_SESSION['rut'])) { ?>
                 <button type="button" class="btn login-btn mx-auto my-auto" data-bs-toggle="modal" data-bs-target="#contactModal">Contáctanos</button>
                 <?php } else { ?>
-                <button type="button" class="btn login-btn mx-auto my-auto" data-bs-toggle="modal" data-bs-target="#loginModal">Contáctanos</button>
+                <button type="button" class="btn login-btn mx-auto my-auto" data-toggle="modal" data-target="#loginModal">Contáctanos</button>
                 <?php } ?>
             </div>
             <div class="col d-flex my-auto">

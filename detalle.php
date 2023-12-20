@@ -1,4 +1,13 @@
-<?php session_start(); /*Diego: Veo que el id de la tesis se envia por el url. Celeste, usala con los llamados php */ ?>
+<?php
+    session_start();
+
+    include("./backend/connection.php");
+    include("./backend/select.php");
+    $con = conectar();
+
+    $showUsers = 20;
+    $res = SelectTutors($con, 1, $showUsers);
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -15,23 +24,13 @@
         <?php include './comp/navbar.php'; ?>
         <!-- Alerts -->
         <?php include './comp/alerts.php'; ?>
-        <main class="fondo"> <!-- Diego: La clase fondo pertenece a detalle.css, ahí define la foto de fondo. Celeste,
-                                  debes modificar detalle.css para que la imagen de fondo se la correspondiente -->
+        <main class="fondo">
             <div class="container py-4 text-center">
-                <div class="row my-4 py-4 zona"> <!-- Diego: Celeste, En Título, Área, Objetivo, Abstract, Colaboradores, van
-                                                      los correspondientes echo session[''] del php-->
+                <div class="row my-4 py-4 zona">
                     <h1>Título</h1>
-                </div>
-                <div class="row my-4 py-4 zona">
                     <h5>Área</h5>
-                </div>
-                <div class="row my-4 py-4 zona">
                     <h3>Objetivo</h3>
-                </div>
-                <div class="row my-4 py-4 zona">
                     <p>Abstract</p>
-                </div>
-                <div class="row my-4 py-4 zona">
                     <h4>Colaboradores</h4>
                 </div>
             </div>

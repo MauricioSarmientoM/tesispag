@@ -6,7 +6,7 @@
     $con = conectar();
 
     $showUsers = 20;
-    $res = SelectTutors($con, 1, $showUsers); // Si no es una busqueda
+    $res = SelectTutors($con, 1, $showUsers);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,6 +26,7 @@
         <?php include './comp/alerts.php'; ?>
         
         <main>
+            <div class="container-fluid zonasTitulo"><h1 class="container">Tutores</h1></div>
             <div class="container py-4">
                 <div class="row">
                     <?php
