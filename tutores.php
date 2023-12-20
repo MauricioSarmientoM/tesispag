@@ -16,6 +16,7 @@
         <!-- Alerts -->
         <?php include './comp/alerts.php'; ?>
         <main>
+            <div class="container-fluid zonasTitulo"><h1 class="container">Tutores</h1></div>
             <!--Diego: Celeste, en este container va todo el php -->
             <div class="container py-4">
                 <div class="row">

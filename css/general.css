@@ -116,6 +116,10 @@ footer {
     color: white;
 }
 
+.borde {
+    border-bottom: 1px solid gray;
+}
+
 .carousel-caption, h1 {
     height: 80%;
 }
