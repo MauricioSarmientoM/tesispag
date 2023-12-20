@@ -22,10 +22,8 @@
     elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
     elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
 
-    if (isset($_POST['insertC']) || isset($_POST['deleteC'])) unset($_SESSION['addCollab']);
+    if (isset($_POST['insertC']) || isset($_POST['deleteC']) || (isset($_SESSION['addCollab']) && !isset($_SESSION['rut'])) || isset($_POST['return'])) unset($_SESSION['addCollab']);
     elseif (isset($_POST['addCollab'])) $_SESSION['addCollab'] = $_POST['addCollab'];
-
-    if (isset($_SESSION['addCollab']) && !isset($_SESSION['rut'])) unset($_SESSION['addCollab']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -54,7 +52,7 @@
                 <?php include './comp/alerts.php'; ?>
                 <div class = "thesisMenu py-4">
                     <div class="container">
-                    <a href = "profile.php?rut=<?php echo $rut; ?>"><button class="btn btn-danger"/>Volver</button></a>
+                    <a href = "profile.php?rut=<?php echo $rut; ?>&return=back"><button class="btn btn-danger"/>Volver</button></a>
             <?php
             while ($data = $collab->fetch_assoc()) {
                 ?>
@@ -239,7 +237,7 @@
             <?php
             $showWorks = 5;
             $res = SelectWorksWhereRut($con, isset($_GET['page']) ? intval($_GET['page']) : 1, $showWorks, $rut);
-            if ($res->num_rows > 0 /* || $_SESSION['rut'] == $rut */) {
+            if ($res->num_rows > 0 || $_SESSION['rut'] == $rut) {
             ?>
             <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
             <div class = "thesisMenu py-4">
@@ -413,7 +411,7 @@
                     <?php
                         $counter++;
                     }
-                    if (isset($_SESSION['rut'])) if ($_SESSION['rut'] == $rut) echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
+                    if ($_SESSION['rut'] == $rut) echo '<div class="row text-center"><button class="bnt boton" data-bs-toggle="modal" data-bs-target="#createThesisModal"><h1 class="mb-1">Crear Proyecto de Tesis</h1></button></div>';
                     ?>
                     </div>
                 </div>

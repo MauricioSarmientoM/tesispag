@@ -17,6 +17,8 @@
     elseif (isset($_POST['insertC'])) InsertCollab($con, $_POST['collabRut'], $_POST['id']);
     elseif (isset($_POST['deleteC'])) DeleteCollab($con, $_POST['collabRut'], $_POST['id']);
 
+    if (isset($_POST['insertC']) || isset($_POST['deleteC']) || (isset($_SESSION['addCollab']) && !isset($_SESSION['rut'])) || isset($_POST['return'])) unset($_SESSION['addCollab']);
+    elseif (isset($_POST['addCollab'])) $_SESSION['addCollab'] = $_POST['addCollab'];
 
     $showWorks = 10;
     if (isset($_GET['search'])) {
@@ -58,7 +60,7 @@
         if (isset($_POST['addCollab'])) {
             $id = $_POST['id'];
             $name = $_POST['name'];
-            $collab = SelectUsersNotInIdWork($con, 1, 10, $id, $rut);
+            $collab = SelectUsersNotInIdWork($con, 1, 20, $id, $rut);
             ?>
             <main>
                 <div class="container-fluid p-4 thesisSpace"><h1 class="container">Tesis</h1></div>
