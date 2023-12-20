@@ -1,0 +1,20 @@
+.zona {
+    border: solid 2px #364c59;
+    border-radius: 15px;
+    background-color: #364c59;
+    color: white;
+}
+
+.fondo {
+    background-image: url("../src/FotosDIICC/_ALX9325.JPG");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    object-fit: cover;
+    /* filter: brightness(0.5); El filtro no funciona como se desea.
+    Se busca que solo afecte a la foto, pero afecta a todo el div, en este caso, el main.*/
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0 !important;
+}

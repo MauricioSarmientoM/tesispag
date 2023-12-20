@@ -27,9 +27,9 @@ if (!file_exists("uploads/events/")) {
     <body>
         <!-- Navbar -->
         <?php include './comp/navbar.php'; ?>
+        <!-- Alerts -->
+        <?php include './comp/alerts.php'; ?>
         <main>
-            <!-- Alerts -->
-            <?php include './comp/alerts.php'; ?>
             <!-- Banner -->
             <?php include './comp/banner.php'; ?>
             <!-- Zona de tesis -->
