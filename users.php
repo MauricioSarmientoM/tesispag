@@ -13,7 +13,7 @@
     if (isset($_POST['insert'])) InsertUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction']);
     elseif (isset($_POST['update'])) {
         UpdateUser($con, $_POST['rut'], $_POST['name'], $_POST['surname'], $_POST['description'], $_POST['email'], $_POST['phone'], $_POST['password'], $_FILES["imageURL"], $_POST['direction'], $_POST['img']);
-        if (isset($_POST['updateT'])) UpdateTutor($con, $_POST['rut'], $_POST['grade']);
+        if (isset($_POST['grade'])) UpdateTutor($con, $_POST['rut'], $_POST['grade']);
     }
     elseif (isset($_POST['delete'])) DeleteUser($con, $_POST['rut']);
     elseif (isset($_POST['insertS'])) InsertSuper($con, $_POST['rut']);
@@ -250,6 +250,15 @@
                                                         <input type="text" id = "inputDirection" class="form-control mb-3" name="direction" value = "<?php echo $row['direction']?>"/>
                                                         <div class="invalid-feedback">Por favor ingrese un dato válido.</div>
                                                     </div>
+                                                    <?php
+                                                    if ($tutor->num_rows > 0) {
+                                                        $data = $tutor->fetch_assoc();
+                                                        echo '<div class="form-group">';
+                                                        echo '<label for="inputGrade">Grado</label>';
+                                                        echo '<input type = "text" id = "inputGrade" name = "grade" class="form-control mb-3" value = "' . $data['grade'] . '"/>';
+                                                        echo '<div class="invalid-feedback">Por favor ingrese un dato válido.</div></div>';
+                                                    }
+                                                    ?>
                                                     <div class="container d-flex justify-content-end">
                                                         <button type="submit" name = "update" class="btn btn-primary btn-block ">Confirmar</button>
                                                     </div>

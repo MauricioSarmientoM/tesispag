@@ -172,13 +172,13 @@
 
     function SelectTutors ($con, $pageNumber, $itemsPerPage) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.*, usertutor.grade FROM users INNER JOIN usertutor ON users.rut = usertutor.rut LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }
     function SelectTutorsWhereRut($con, $pageNumber, $itemsPerPage, $rut) {
         $offset = ($pageNumber - 1) * $itemsPerPage;
-        $sql = "SELECT users.* FROM users INNER JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' LIMIT $itemsPerPage OFFSET $offset";
+        $sql = "SELECT users.*, usertutor.grade FROM users INNER JOIN usertutor ON users.rut = usertutor.rut WHERE CAST(users.rut AS CHAR) LIKE '%$rut%' LIMIT $itemsPerPage OFFSET $offset";
         $result = $con->query($sql);
         return $result;
     }

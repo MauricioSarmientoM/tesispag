@@ -1,4 +1,13 @@
-<?php session_start() ?>
+<?php
+    session_start();
+
+    include("./backend/connection.php");
+    include("./backend/select.php");
+    $con = conectar();
+
+    $showUsers = 20;
+    $res = SelectTutors($con, 1, $showUsers); // Si no es una busqueda
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -15,26 +24,35 @@
         <?php include './comp/navbar.php'; ?>
         <!-- Alerts -->
         <?php include './comp/alerts.php'; ?>
+        
         <main>
-            <!--Diego: Celeste, en este container va todo el php -->
             <div class="container py-4">
                 <div class="row">
-                    <!-- Diego: Celeste, el col-3 hace que un col tome el tamaño de 3 cols.
-                        Como solo puede haber un máximo de 12 col desplazados en un row,
-                        en este caso, solo puede haber 4 cols, es decir, 4 cards de tutores,
-                        por lo que cuando haya un quinto, este se desplaza para abajo como se desea.-->
+                    <?php
+                    while ($row = $res->fetch_assoc()) {
+                    ?>
                     <div class="col-3 my-4">
-                        <a href="about:blank"> <!-- aquí va el link para el perfil con el id respectivo -->
+                        <a href="profile.php?rut=<?php echo $row['rut']; ?>">
                             <div class="card carta">
                                 <!-- para que la magia sea resposive, la foto tiene que ser un cuadrado perfecto :( -->
-                                <img src="src\icons\iconPlaceholder.png" alt="Un fondo de la universidad" class="card-img-top linea">
+                                <?php
+                                if ($row['imageURL'] != NULL) {
+                                    echo '<img class="card-img-top linea" src = "' . $row['imageURL'] . '"/>';
+                                }
+                                else{
+                                    echo '<img class="card-img-top linea" src = "src/icons/iconPlaceholder.png"/>';
+                                }
+                                ?>
                                 <div class="card-body text-center">
-                                    <h3 class="card-title">Nombre - Apellido</h3> <!-- Diego: Celeste, aquí van los dos echo session -->
-                                    <h4 class="card-text">Rut</h4>
+                                    <h3 class="card-title"><?php echo $row['name'] . ' ' . $row['surname']?></h3>
+                                    <h5 class="card-text"><?php echo $row['grade']?></h5>
                                 </div>
                             </div>
                         </a>
                     </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </main>

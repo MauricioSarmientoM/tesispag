@@ -81,7 +81,7 @@
                 while ($row = $res->fetch_assoc()) {
             ?>
             <div class="container my-4 tesistas">
-                <a href="profile.php?rut=<?php echo $row['rut']; ?>"> <!-- Diego: Aquí se vincula con su perfil -->
+                <a href="profile.php?rut=<?php echo $row['rut']; ?>">
                     <div class="row my-4">
                         <div class="col-md-2 text-center my-auto">
                             <?php
